@@ -1,0 +1,17 @@
+{
+	"status":0,
+	"msg":"success",
+	"data":{
+		"typeId":"1",
+		"typeName":"杂谈2",
+		"list":[
+			{
+				"articalId":"1",
+				"reading":54,
+				"updateDate":1484619511091,
+				"articalName":"2016你的技术提升了多少？",
+				"articalContent":"&nbsp; &nbsp; 一直想写点什么，记录点什么，但是一直不知道在哪里写，从哪开始写好。我们总是这样，想要做一件什么事情，但是又经常不知道从何开始。"
+			}
+		]
+	}
+}

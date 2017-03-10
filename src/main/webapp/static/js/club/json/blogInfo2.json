@@ -1,0 +1,41 @@
+{
+	"name":"wade",
+	"photo":"images/photo.jpg",
+	"introduce":"不想写脚本的切图仔不是好前端<br>to be a JSer",
+	"status":0,
+	"msg":"success",
+	"menus":[
+		{
+			"id":1,
+			"menuName":"技术文章2",
+			"children":[
+				{
+					"typeId":1,
+					"typeName":"杂谈2"
+				},
+				{
+					"typeId":2,
+					"typeName":"JavaScript2"
+				}
+			]
+		},
+		{
+			"id":2,
+			"menuName":"读过的书2",
+			"children":[
+				{
+					"typeId":3,
+					"typeName":"国内文学2"
+				},
+				{
+					"typeId":4,
+					"typeName":"日本文学2"
+				},
+				{
+					"typeId":5,
+					"typeName":"欧美文学2"
+				}
+			]
+		}
+	]
+}
