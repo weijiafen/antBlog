@@ -1,4 +1,2 @@
 node_modules
 build/
-npm-debug.log
-/src/main/webapp/dist/js

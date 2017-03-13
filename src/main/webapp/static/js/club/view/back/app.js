@@ -1,5 +1,7 @@
 import React from 'react';
 import {Row ,Col , Card, Form, Icon, Input, Button, Checkbox} from 'antd'
+import backService from '../../service/backService'; 
+
 const FormItem = Form.Item;
 const NormalLoginForm = Form.create()(React.createClass({
   handleSubmit(e) {
@@ -7,6 +9,9 @@ const NormalLoginForm = Form.create()(React.createClass({
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        backService.login(values).then((res)=>{
+          console.log(res);
+        })
       }
     });
   },
