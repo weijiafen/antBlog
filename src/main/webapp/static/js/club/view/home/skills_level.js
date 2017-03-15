@@ -3,8 +3,8 @@ import { Row , Col , Icon } from 'antd';
 
 var App=React.createClass({
 	render(){
-		if(!this.props.data.isShow){
-			return <section className="skills_level" >1</section>
+		if(!this.props.data||!this.props.data.isShow){
+			return <section className="skills_level" ></section>
 		}else{
 			let bgimg={
 			backgroundImage:`url(${this.props.data.background_img})`
@@ -25,7 +25,7 @@ var App=React.createClass({
 										}else{
 											glyph="star-o"
 										}
-										return <Icon key={num+""+item.id} type={glyph} className='zoomIn animated wow  animated' aria-hidden="true" data-wow-delay={`${num*150}ms`}></Icon>
+										return <Icon key={num+""+item.skillName} type={glyph} className='zoomIn animated wow  animated' aria-hidden="true" data-wow-delay={`${num*150}ms`}></Icon>
 									})}
 								</p>
 							</Col>

@@ -3,7 +3,7 @@ import { Row , Col , Icon } from 'antd';
 
 var App=React.createClass({
 	render(){
-		if(!this.props.data.isShow){
+		if(!this.props.data||!this.props.data.isShow){
 			return <section className="project_exp" ></section>
 		}else{
 			let bgimg={

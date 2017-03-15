@@ -1,6 +1,9 @@
 var session = require('express-session');
 var fs=require('fs');
 var bodyParser=require('body-parser')
+var async = require('asyncawait/async');
+var await = require('asyncawait/await');
+var login=require('../controler/login.js');
 module.exports=function(app){
 	//app是一个express()
 	app.use(bodyParser.json({limit: '1mb'}));  //body-parser 解析json格式数据
@@ -11,8 +14,6 @@ module.exports=function(app){
 	    secret: 'hubwiz app', //secret的值建议使用随机字符串
 	    cookie: {maxAge: 60 * 1000 * 30} // 过期时间（毫秒）
 	}));
-
-
 	app.get('/', function (req, res) {
 	fs.readFile('src/main/webapp/index.html',function(err,data){
 		if(err){
@@ -28,10 +29,12 @@ module.exports=function(app){
 		// }
 		res.end(req.toString())
 	})
-	app.post('/login',function(req,res){
-		console.log(req.body);
-		res.end(JSON.stringify({status:0}))
-	})
+	app.post('/login',(async (function(req,res){
+		var result=await (login(req));
+		console.log("step3")
+		res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
+		res.end(JSON.stringify(result))
+	})))
   
 });
 }

@@ -68,66 +68,64 @@
 			"background_img":"images/bg2.jpg",
 			"data":[
 				{
-					"id":1,
 					"skillName":"HTML",
 					"level":4
 				},
 				{
-					"id":2,
 					"skillName":"CSS",
 					"level":4
 				},
 				{
-					"id":3,
+				
 					"skillName":"JavaScript",
 					"level":4
 				},
 				{
-					"id":4,
+					
 					"skillName":"Jquery",
 					"level":4},
 				{
-					"id":5,
+					
 					"skillName":"AJAX",
 					"level":4},
 				{
-					"id":6,
+					
 					"skillName":"Bootstrap",
 					"level":4},
 				{
-					"id":7,
+					
 					"skillName":"HTML5",
 					"level":3},
 				{
-					"id":8,
+					
 					"skillName":"CSS3",
 					"level":3},
 				{
-					"id":9,
+					
 					"skillName":"Backbone",
 					"level":3},
 				{
-					"id":10,
+					
 					"skillName":"Grunt",
 					"level":2
 				},
 				{
-					"id":11,
+					
 					"skillName":"webpack",
 					"level":3
 				},
 				{
-					"id":12,
+					
 					"skillName":"React",
 					"level":3
 				},
 				{
-					"id":13,
+					
 					"skillName":"ant-design",
 					"level":3
 				},
 				{
-					"id":14,
+					
 					"skillName":"LESS",
 					"level":3
 				}
