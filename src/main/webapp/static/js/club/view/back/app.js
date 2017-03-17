@@ -1,66 +1,17 @@
 import React from 'react';
 import {Row ,Col , Card, Form, Icon, Input, Button, Checkbox} from 'antd'
 import backService from '../../service/backService'; 
-
-const FormItem = Form.Item;
-const NormalLoginForm = Form.create()(React.createClass({
-  handleSubmit(e) {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-        backService.login(values).then((res)=>{
-          console.log(res);
-        })
-      }
-    });
-  },
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        <FormItem>
-          {getFieldDecorator('userName', {
-            rules: [{ required: true, message: 'Please input your username!' }],
-          })(
-            <Input addonBefore={<Icon type="user" />} placeholder="Username" />
-          )}
-        </FormItem>
-        <FormItem>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
-          })(
-            <Input addonBefore={<Icon type="lock" />} type="password" placeholder="Password" />
-          )}
-        </FormItem>
-        <FormItem>
-          {getFieldDecorator('remember', {
-            valuePropName: 'checked',
-            initialValue: true,
-          })(
-            <Checkbox>Remember me</Checkbox>
-          )}
-          <a className="login-form-forgot">Forgot password</a>
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            Log in
-          </Button>
-          Or <a>register now!</a>
-        </FormItem>
-      </Form>
-    );
-  },
-}));
+import BackSlider from './BackSlider'
 var back=React.createClass({
 	render:function(){
-		return <div className="BackContainer">
+		return <div className="backContainer">
 			<Row align="middle">
-				<Col sm={0} md={8}></Col>
-				<Col sm={24} md={8}>
-					<Card title="登录">
-						<NormalLoginForm />
-					</Card>
+				<Col sm={24} md={4}>
+					<BackSlider />
 				</Col>
-				<Col sm={0} md={8}></Col>
+				<Col sm={24} md={20}>
+					login success
+				</Col>
 			</Row>
 		</div>
 	}

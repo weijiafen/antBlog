@@ -4,6 +4,9 @@ var bodyParser=require('body-parser')
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var login=require('../controler/login.js');
+var logOff=require('../controler/logOff.js');
+var register=require('../controler/register.js');
+var isLogin=require('../controler/isLogin.js');
 module.exports=function(app){
 	//app是一个express()
 	app.use(bodyParser.json({limit: '1mb'}));  //body-parser 解析json格式数据
@@ -29,6 +32,24 @@ module.exports=function(app){
 		// }
 		res.end(req.toString())
 	})
+	app.get('/isLogin',function(req,res){
+		var result=isLogin(req);
+		res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
+		if(result){
+			res.end(JSON.stringify({status:0,msg:'已登录'}))
+		}else{
+			res.end(JSON.stringify({status:-1,msg:'未登录'}))
+		}
+	})
+	app.post('/logOff',function(req,res){
+		logOff(req);
+		res.end(JSON.stringify({status:0,msg:'注销成功'}))
+	})
+	app.post('/register',(async (function(req,res){
+		var result=await (register(req));
+		res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
+		res.end(JSON.stringify(result))
+	})))
 	app.post('/login',(async (function(req,res){
 		var result=await (login(req));
 		console.log("step3")

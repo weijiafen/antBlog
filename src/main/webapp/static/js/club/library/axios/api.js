@@ -6,7 +6,8 @@ import 'babel-polyfill';
 
 const NETWORK_ERROR_MESSAGE = '网络异常';
 const SERVER_ERROR_MESSAGE = '系统异常';
-const UNEXPETED_STATUS = -1;
+const UNEXPETED_STATUS = 1;
+const EXPETED_STATUS = -1;
 const UNLOGIN_STATUS = 1000;
 const SUCCESS_STATUS = 0;
 const COMMON_STATUS = 10000;
@@ -45,6 +46,10 @@ api.interceptors.response.use(
         if (confirm('登录信息已失效，请重新登录')) {
           return redirect();
         }
+      }
+      if(status===EXPETED_STATUS){
+        //预期内的status  -1
+        return response.data
       }
       if (status < COMMON_STATUS) {
         alert(response.data.msg || SERVER_ERROR_MESSAGE);

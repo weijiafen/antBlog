@@ -8,6 +8,15 @@ const Service = {
 			},(res)=>{
 				throw new Error(res.msg)
 			})
+	},
+	isLogin:()=>{
+		return api
+			.get(`/isLogin`)
+			.then((res)=>{
+				return res
+			},(res)=>{
+				throw new Error(res.msg)
+			})
 	}
 }
 export default Service;

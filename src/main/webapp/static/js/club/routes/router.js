@@ -21,6 +21,16 @@ const router = (
         callback(null, require('../view/back/app').default);
       });
     }} />
+    <Route path="/login" getComponent={(location, callback) => {
+      require.ensure([], (require) => {
+        callback(null, require('../view/back/login').default);
+      });
+    }} />
+    <Route path="/register" getComponent={(location, callback) => {
+      require.ensure([], (require) => {
+        callback(null, require('../view/back/register').default);
+      });
+    }} />
     <Route path="/home/:userId" getComponent={(location, callback) => {
       require.ensure([], (require) => {
         callback(null, require('../view/home/app').default);

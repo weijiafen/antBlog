@@ -16,9 +16,14 @@ var User = sequelize.define('user', {
   account: {
     //账号
     type: Sequelize.STRING,
+    'unique': true   
   },
   //密码
   password: {
+    type: Sequelize.STRING
+  },
+  //用户名
+  userName:{
     type: Sequelize.STRING
   },
   //头像地址

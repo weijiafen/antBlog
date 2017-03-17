@@ -19,6 +19,9 @@ html,body{
 	height:0;
 	clear:both;
 }
+input:-webkit-autofill {  
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;  
+}  
 #viewport,.application{
 	min-height:100%;
 }
@@ -435,13 +438,29 @@ html,body{
 	  width: 100%;
 	}
 }
-.BackContainer{
+.register-form{
+	.register-form-forgot {
+	  float: right;
+	}
+	.register-form-button {
+	  width: 100%;
+	}
+}
+.loginFormContainer{
 	width:100%;
 	position :absolute;
 	top:50%;
 	transform:translate(0,-50%)
 }
-
+.registerFormContainer{
+	width:100%;
+	position :absolute;
+	top:50%;
+	transform:translate(0,-50%)
+}
+.backContainer{
+	padding-top:65px;
+}
 
 
 

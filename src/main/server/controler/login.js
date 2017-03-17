@@ -5,9 +5,9 @@ var await = require('asyncawait/await');
 var crypto = require('crypto')
 module.exports=(async (function(req){
 	console.log("step1")
-	var name=req.body.userName;
+	var account=req.body.account;
 	var password=req.body.password;
-	if(!name){
+	if(!account){
 		return {status:-1,msg:'账号为空'}
 	}
 	if(!password){
@@ -18,7 +18,7 @@ module.exports=(async (function(req){
 	var result={}
 	var res=await (User.findOne({
 		where:{
-			account:name,
+			account:account,
 			password:password
 		}
 	}))
