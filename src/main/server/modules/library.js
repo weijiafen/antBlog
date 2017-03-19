@@ -31,6 +31,9 @@ var library = sequelize.define('library', {
   background_img:{
     type: Sequelize.STRING
   },
+  color:{
+    type: Sequelize.STRING
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

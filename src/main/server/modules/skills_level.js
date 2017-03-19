@@ -36,6 +36,9 @@ var skills_level = sequelize.define('skills_level', {
   data:{
     type: Sequelize.STRING(1234) 
   },
+  color:{
+    type: Sequelize.STRING
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

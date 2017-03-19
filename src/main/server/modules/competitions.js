@@ -31,6 +31,9 @@ var competitions = sequelize.define('competitions', {
   background_img:{
     type: Sequelize.STRING
   },
+  color:{
+    type: Sequelize.STRING
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

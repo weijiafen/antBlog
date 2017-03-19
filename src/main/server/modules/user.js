@@ -38,6 +38,10 @@ var User = sequelize.define('user', {
   background_img:{
     type: Sequelize.STRING
   },
+  // 排序权重
+  weight:{
+    type:Sequelize.BIGINT
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

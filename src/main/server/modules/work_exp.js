@@ -31,6 +31,9 @@ var work_exp = sequelize.define('work_exp', {
   background_img:{
     type: Sequelize.STRING
   },
+  color:{
+    type: Sequelize.STRING
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

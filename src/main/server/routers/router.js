@@ -7,6 +7,7 @@ var login=require('../controler/login.js');
 var logOff=require('../controler/logOff.js');
 var register=require('../controler/register.js');
 var isLogin=require('../controler/isLogin.js');
+var upload=require('../controler/upload.js');
 module.exports=function(app){
 	//app是一个express()
 	app.use(bodyParser.json({limit: '1mb'}));  //body-parser 解析json格式数据
@@ -55,6 +56,11 @@ module.exports=function(app){
 		console.log("step3")
 		res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
 		res.end(JSON.stringify(result))
+	})))
+	app.post('/upload',(async (function(req,res){
+		upload(req,res);
+		// res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
+		// res.end(JSON.stringify(result))
 	})))
   
 });

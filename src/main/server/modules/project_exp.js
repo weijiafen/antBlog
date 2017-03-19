@@ -31,6 +31,9 @@ var project_exp = sequelize.define('project_exp', {
   background_img:{
     type: Sequelize.STRING
   },
+  color:{
+    type: Sequelize.STRING
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

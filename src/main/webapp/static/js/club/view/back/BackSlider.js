@@ -7,7 +7,7 @@ const SubMenu = Menu.SubMenu;
 var BackSlider=React.createClass({
 	getInitialState(){
 		return {
-			menus:[]
+			resumeTitles:['基础资料','个人信息','技能自评','项目经历','工作经历','获奖经历','个人书库']
 		}
 	},
 	logOff(){
@@ -26,6 +26,9 @@ var BackSlider=React.createClass({
 		})
 		
 	},
+	handleClick:function(obj){
+		redirect(obj.key)
+	},
 	render:function(){
 		return <div className="">
 			<div>
@@ -40,9 +43,14 @@ var BackSlider=React.createClass({
 		        mode="inline"
 		        theme='dark'
 			>
-				<SubMenu key="sub2" title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}>
-		          <Menu.Item key="5">Option 5</Menu.Item>
-		          <Menu.Item key="6">Option 6</Menu.Item>
+				<SubMenu key="sub2" title={<span><Icon type="appstore" /><span>主页管理</span></span>}>
+		          <Menu.Item key="#/back/editTop">{this.state.resumeTitles[0]}</Menu.Item>
+		          <Menu.Item key="#/back/editPersonalInfo">{this.state.resumeTitles[1]}</Menu.Item>
+		          <Menu.Item key="#/back/editSkillsLevel">{this.state.resumeTitles[2]}</Menu.Item>
+		          <Menu.Item key="#/back/editProjectExp">{this.state.resumeTitles[3]}</Menu.Item>
+		          <Menu.Item key="#/back/editWorkExp">{this.state.resumeTitles[4]}</Menu.Item>
+		          <Menu.Item key="#/back/editCompetition">{this.state.resumeTitles[5]}</Menu.Item>
+		          <Menu.Item key="#/back/editLibrary">{this.state.resumeTitles[6]}</Menu.Item>
 		        </SubMenu>
 			</Menu>
 		</div>

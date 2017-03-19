@@ -20,7 +20,18 @@ const router = (
       require.ensure([], (require) => {
         callback(null, require('../view/back/app').default);
       });
-    }} />
+    }} >
+    <IndexRoute getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/index').default); 
+            }, 'home');
+          }} />
+          <Route path="/back/editTop" getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/resume/editTop').default);
+            });
+          }} />
+    </Route>
     <Route path="/login" getComponent={(location, callback) => {
       require.ensure([], (require) => {
         callback(null, require('../view/back/login').default);

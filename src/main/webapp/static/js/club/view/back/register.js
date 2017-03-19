@@ -84,7 +84,7 @@ const NormalRegisterForm = Form.create()(React.createClass({
         		{validator: this.checkConfirm,}
         		]
         	})(
-        		<Input type="password" />
+        		<Input type="password" placeholder="password" />
         		)}
         </FormItem>
         <FormItem
@@ -100,7 +100,7 @@ const NormalRegisterForm = Form.create()(React.createClass({
         		{validator: this.checkPassword,}
         		]
         	})(
-        		<Input type="password" onBlur={this.handleConfirmBlur} />
+        		<Input type="password" onBlur={this.handleConfirmBlur} placeholder="confrim password" />
         		)}
         </FormItem>
         <FormItem
@@ -111,7 +111,7 @@ const NormalRegisterForm = Form.create()(React.createClass({
             rules: [{ required: true, message: 'Please input your username!' }
              ],
           })(
-            <Input placeholder="account" />
+            <Input placeholder="userName" />
           )}
         </FormItem>
         <FormItem>

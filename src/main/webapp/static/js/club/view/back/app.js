@@ -10,7 +10,7 @@ var back=React.createClass({
 					<BackSlider />
 				</Col>
 				<Col sm={24} md={20}>
-					login success
+					{this.props.children}
 				</Col>
 			</Row>
 		</div>

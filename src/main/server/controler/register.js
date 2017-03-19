@@ -42,7 +42,9 @@ module.exports=(async (function(req){
 		updateAt:time,
 		img:'',
 		introduce:'',
-		background_img:''
+		background_img:'',
+		color:'#000',
+		weight:0
 	}))
 	console.log("create account :"+JSON.stringify(res))
 	if(res){
@@ -50,11 +52,12 @@ module.exports=(async (function(req){
 		await(personal_info.create({
 			isShow:0,
 			title:'个人信息',
-			img:'',
+			img:'images/default.jpg',
 			background_img:'',
 			createAt:time,
 			updateAt:time,
 			userId:res.id,
+			color:'',
 			data:''
 		}))
 		await(skills_level.create({
@@ -65,6 +68,7 @@ module.exports=(async (function(req){
 			createAt:time,
 			updateAt:time,
 			userId:res.id,
+			color:'#000',
 			data:''
 		}))
 		await(project_exp.create({
@@ -74,6 +78,7 @@ module.exports=(async (function(req){
 			background_img:'',
 			createAt:time,
 			updateAt:time,
+			color:'',
 			userId:res.id
 		}))
 		await(work_exp.create({
@@ -83,6 +88,7 @@ module.exports=(async (function(req){
 			background_img:'',
 			createAt:time,
 			updateAt:time,
+			color:'',
 			userId:res.id
 		}))
 		await(competitions.create({
@@ -93,6 +99,7 @@ module.exports=(async (function(req){
 			createAt:time,
 			updateAt:time,
 			userId:res.id,
+			color:'#000',
 			data:''
 		}))
 		await(library.create({
@@ -102,6 +109,7 @@ module.exports=(async (function(req){
 			background_img:'',
 			createAt:time,
 			updateAt:time,
+			color:'',
 			userId:res.id
 		}))
 		req.session.uid=res.id;
