@@ -24,7 +24,19 @@ var back=React.createClass({
 	getInitialState:function(){
 		return {
 			imageUrl:'',
-			backgroundImageUrl:''
+			backgroundImageUrl:'',
+			editImage:false
+		}
+	},
+	confirmImage:function(imageUrl){
+		this.setState({
+			editImage:!this.state.editImage
+			
+		})
+		if(imageUrl){
+			this.setState({
+				imageUrl:imageUrl
+			})
 		}
 	},
 	changeImage:function(info){
@@ -40,36 +52,31 @@ var back=React.createClass({
 	    }
 	},
 	render:function(){
-		return <div className="backContainer">
-			头像：
-			<EditImage/>
-			<img src={this.state.imageUrl} alt="" className="avatar" />
-			<Upload
-		        name="file"
-		        showUploadList={false}
-		        action="/upload"
-		        beforeUpload={beforeUpload}
-		        onChange={this.changeImage}
-		      >
-		            <Button>
-		            <Icon type="upload"/>click me 
-		            </Button>
-		      </Upload>
-
-		      背景图:
-		      <img src={this.state.backgroundImageUrl} alt="" className="avatar" />
-		      <Upload
-		        className="avatar-uploader"
-		        name="file"
-		        showUploadList={false}
-		        action="/upload"
-		        beforeUpload={beforeUpload}
-		        onChange={this.changeBackground} 
-		      >
-		            
-		            <Icon type="upload" className="avatar-uploader-trigger" />
-		      </Upload>
-		</div>
+		return (
+			this.state.editImage?(
+				<EditImage callback={this.confirmImage}/>
+				)
+			:
+			(
+			<div className="backContainer">
+				头像：
+				<Button type="primary" onClick={this.confirmImage}>修改</Button>
+			      背景图:
+			      <img src={this.state.backgroundImageUrl} alt="" className="avatar" />
+			      <Upload
+			        className="avatar-uploader"
+			        name="file"
+			        showUploadList={false}
+			        action="/upload"
+			        beforeUpload={beforeUpload}
+			        onChange={this.changeBackground} 
+			      >
+			            
+			            <Icon type="upload" className="avatar-uploader-trigger" />
+			      </Upload>
+			</div>
+			)
+		)
 	}
 })
 

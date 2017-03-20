@@ -27,6 +27,15 @@ const Service = {
         },(error)=>{
             throw error;
         })
+    },
+    upload:(data)=>{
+        return api.post('/upload',{
+            data:data
+        },{headers:{'Content-Type':'multipart/form-data'}}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error;
+        })
     }
 }
 export default Service;
