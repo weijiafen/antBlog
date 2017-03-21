@@ -1,10 +1,9 @@
-var User=require('../modules/user.js');
+var User=require('../modules/resume/user.js');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 //node提供的加密模块
 var crypto = require('crypto')
-module.exports=(async (function(req){
-	console.log("step1")
+module.exports=(async (function(req,response){
 	var account=req.body.account;
 	var password=req.body.password;
 	if(!account){
@@ -22,7 +21,6 @@ module.exports=(async (function(req){
 			password:password
 		}
 	}))
-	console.log("sequlize success :"+JSON.stringify(res))
 	if(res){
 		req.session.uid=res.id;
 		req.session.isLogin=true;
@@ -30,7 +28,6 @@ module.exports=(async (function(req){
 	}else{
 		result={status:-1,msg:"账号名或密码错误"}
 	}
-	
-	console.log("step2")
-	return result;
+	response.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
+	response.end(JSON.stringify(result))
 }))

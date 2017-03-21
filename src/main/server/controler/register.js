@@ -1,15 +1,15 @@
-var User=require('../modules/user.js');
-var personal_info=require('../modules/personal_info.js');
-var skills_level=require('../modules/skills_level.js');
-var project_exp=require('../modules/project_exp.js');
-var work_exp=require('../modules/work_exp.js');
-var competitions=require('../modules/competitions.js');
-var library=require('../modules/library.js');
+var User=require('../modules/resume/user.js');
+var personal_info=require('../modules/resume/personal_info.js');
+var skills_level=require('../modules/resume/skills_level.js');
+var project_exp=require('../modules/resume/project_exp.js');
+var work_exp=require('../modules/resume/work_exp.js');
+var competitions=require('../modules/resume/competitions.js');
+var library=require('../modules/resume/library.js');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 //node提供的加密模块
 var crypto = require('crypto')
-module.exports=(async (function(req){
+module.exports=(async (function(req,response){
 	var userName=req.body.userName;
 	var password=req.body.password;
 	var account=req.body.account;
@@ -118,5 +118,7 @@ module.exports=(async (function(req){
 	}else{
 		result={status:-1,msg:"注册失败"}
 	}
+	response.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
+	response.end(JSON.stringify(result))
 	return result;
 }))

@@ -8,6 +8,8 @@ var logOff=require('../controler/logOff.js');
 var register=require('../controler/register.js');
 var isLogin=require('../controler/isLogin.js');
 var upload=require('../controler/upload.js');
+var userTop=require('../controler/resume/userTop.js')
+var loginFilter = require('../controler/loginFilter');
 module.exports=function(app){
 	//app是一个express()
 	app.use(bodyParser.json({limit: '1mb'}));  //body-parser 解析json格式数据
@@ -28,40 +30,30 @@ module.exports=function(app){
 		}
 	})
 	app.get(/\/blog\/list\/[0-9]+/,function(req,res){
-		// if(!req.session.uid){
-		// 	res.end(JSON.stringify({status:1000}))
-		// }
 		res.end(req.toString())
 	})
 	app.get('/isLogin',function(req,res){
-		var result=isLogin(req);
-		res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
-		if(result){
-			res.end(JSON.stringify({status:0,msg:'已登录'}))
-		}else{
-			res.end(JSON.stringify({status:-1,msg:'未登录'}))
-		}
+		isLogin(req,res);
 	})
 	app.post('/logOff',function(req,res){
 		logOff(req);
 		res.end(JSON.stringify({status:0,msg:'注销成功'}))
 	})
-	app.post('/register',(async (function(req,res){
-		var result=await (register(req));
-		res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
-		res.end(JSON.stringify(result))
-	})))
-	app.post('/login',(async (function(req,res){
-		var result=await (login(req));
-		console.log("step3")
-		res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
-		res.end(JSON.stringify(result))
-	})))
-	app.post('/upload',(async (function(req,res){
+	app.post('/register',function(req,res){
+		register(req,res);
+		
+	})
+	app.post('/login',function(req,res){
+		login(req,res);
+	})
+	app.post('/upload',function(req,res){
 		upload(req,res);
-		// res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
-		// res.end(JSON.stringify(result))
-	})))
+	})
+	//添加登录过滤器，需要登录才能获取数据的接口应放在此句下面
+	app.use(loginFilter);
+	app.get('/resume/userTop',function(req,res){
+		userTop('get',req,res);
+	})
   
 });
 }

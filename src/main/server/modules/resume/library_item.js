@@ -1,26 +1,31 @@
 
 var Sequelize=require('sequelize')
-var dbConfig=require('../connection/dbConfig.js')
+var dbConfig=require('../../connection/dbConfig.js')
 var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password, {
   host: dbConfig.host,
   dialect: 'mysql',
   pool: dbConfig.pool,
 });
-var project_item_des = sequelize.define('project_item_des', {
+var library_item = sequelize.define('library_item', {
   id:{
     type:Sequelize.INTEGER,
     primaryKey:true,
     autoIncrement: true
   },
-  key:{
+  itemImg:{
     type:Sequelize.STRING
   },
-  value: {
+  itemTitle: {
+    type: Sequelize.STRING
+  },
+  itemSum: {
     type: Sequelize.INTEGER
   },
-  itemId: {
-    //外键
+  itemCurrent: {
     type: Sequelize.INTEGER
+  },
+  libraryId:{
+    type:Sequelize.INTEGER,
   },
   createAt:{
     type:Sequelize.BIGINT
@@ -32,4 +37,4 @@ var project_item_des = sequelize.define('project_item_des', {
   freezeTableName: true, // Model tableName will be the same as the model name
   timestamps: false
 });
-module.exports=project_item_des
+module.exports=library_item

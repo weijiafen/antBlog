@@ -43,9 +43,9 @@ api.interceptors.response.use(
     const status = typeof response.data.status !== 'undefined' ? response.data.status : UNEXPETED_STATUS;
     if (typeof status !== 'number' || status !== SUCCESS_STATUS) {
       if (status === UNLOGIN_STATUS) {
-        if (confirm('登录信息已失效，请重新登录')) {
-          return redirect();
-        }
+        alert('登录信息已失效，请重新登录');
+        return redirect();
+        
       }
       if(status===EXPETED_STATUS){
         //预期内的status  -1

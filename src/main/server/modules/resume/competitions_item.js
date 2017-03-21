@@ -1,18 +1,18 @@
 
 var Sequelize=require('sequelize')
-var dbConfig=require('../connection/dbConfig.js')
+var dbConfig=require('../../connection/dbConfig.js')
 var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password, {
   host: dbConfig.host,
   dialect: 'mysql',
   pool: dbConfig.pool,
 });
-var work_item = sequelize.define('work_item', {
+var competitions_item = sequelize.define('competitions_item', {
   id:{
     type:Sequelize.INTEGER,
     primaryKey:true,
     autoIncrement: true
   },
-  itemTitle:{
+  itemImg:{
     type:Sequelize.STRING
   },
   itemDate: {
@@ -21,7 +21,7 @@ var work_item = sequelize.define('work_item', {
   itemTxt: {
     type: Sequelize.STRING
   },
-  workId:{
+  competitionId:{
     type:Sequelize.INTEGER,
   },
   createAt:{
@@ -34,4 +34,4 @@ var work_item = sequelize.define('work_item', {
   freezeTableName: true, // Model tableName will be the same as the model name
   timestamps: false
 });
-module.exports=work_item
+module.exports=competitions_item

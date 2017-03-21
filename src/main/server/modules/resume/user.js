@@ -1,43 +1,46 @@
 
 var Sequelize=require('sequelize')
-var dbConfig=require('../connection/dbConfig.js')
+var dbConfig=require('../../connection/dbConfig.js')
 var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password, {
   host: dbConfig.host,
   dialect: 'mysql',
   pool: dbConfig.pool,
 });
-var personal_info = sequelize.define('personal_info', {
-  //个人信息id
+var User = sequelize.define('user', {
+  //用户id
   id:{
     type:Sequelize.INTEGER,
     primaryKey:true,
-    autoIncrement: true,
+    autoIncrement: true
   },
-  userId:{
-    type:Sequelize.INTEGER
+  account: {
+    //账号
+    type: Sequelize.STRING,
+    'unique': true   
   },
-  isShow: {
-    //是否显示
-    type: Sequelize.INTEGER
-  },
-  //标题
-  title: {
+  //密码
+  password: {
     type: Sequelize.STRING
   },
-  //个人信息块图片
+  //用户名
+  userName:{
+    type: Sequelize.STRING
+  },
+  //头像地址
   img:{
     type: Sequelize.STRING
   },
-  //个人信息块背景图
+  //个性签名
+  introduce:{
+    type: Sequelize.STRING
+  },
+  //简历头部背景图片
   background_img:{
     type: Sequelize.STRING
   },
-  //数据 键值对字符串
-  data:{
-    type: Sequelize.STRING(1234)
-  },
-  color:{
-    type: Sequelize.STRING
+  // 排序权重
+  weight:{
+    type:Sequelize.BIGINT
   },
   createAt:{
     type:Sequelize.BIGINT
@@ -49,4 +52,4 @@ var personal_info = sequelize.define('personal_info', {
   freezeTableName: true, // Model tableName will be the same as the model name
   timestamps: false
 });
-module.exports=personal_info
+module.exports=User

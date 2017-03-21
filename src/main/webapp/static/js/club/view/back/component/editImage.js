@@ -3,6 +3,14 @@ import Cropper from 'react-cropper';
 import { Button , Spin , message } from 'antd';
 import backService from '../../../service/backService'; 
 import 'cropperjs/dist/cropper.css';
+function getRandomFileName(){
+  var pool=[1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F']
+  var fileName="";
+  for(let i of pool){
+    fileName+=pool[parseInt(Math.random()*16)]
+  }
+  return fileName;
+}
 class EditImage extends React.Component {
   constructor(props){
     super(props);
@@ -16,15 +24,37 @@ class EditImage extends React.Component {
   }
   click(){
     try{
+      var ctx=this;
+      this.setState({
+        uploading:true
+      })
       var dataurl=this.refs.cropper.getCroppedCanvas().toDataURL()
       var blob = this.dataURLtoBlob(dataurl);
       var fd = new FormData();
-      fd.append("file", blob, "image.png");
+      //生成一个16位的16进制数作为随机文件名
+      fd.append("file", blob, getRandomFileName()+".jpg");
       // backService.upload(fd);
       var xhr = new XMLHttpRequest();
       xhr.open('POST', '/upload', true);
+      xhr.onreadystatechange=function(){
+        if(xhr.readyState==4){
+          if(xhr.status==200){
+            console.log('response',xhr.responseText)
+            window.xhr=xhr
+            var res=JSON.parse(xhr.responseText);
+            ctx.setState({
+              uploading:false
+            })
+            ctx.props.callback(res.src);
+          }else{
+            ctx.setState({
+              uploading:false
+            })
+          }
+        }
+      }
       xhr.send(fd);
-      this.props.callback(this.state.image);
+      
     }
     catch(e){
       console.log(e)
@@ -57,19 +87,20 @@ class EditImage extends React.Component {
     return (
       <div style={{width:'300px'}}>
         <input type="file" onChange={this.changeImage.bind(this)} />
+        <br/>
         <Cropper
           ref='cropper'
           src={this.state.image}
-          style={{height:300, width:'100%'}}
+          style={{height:300, width:'100%',border:'1px solid #aaa'}}
           // Cropper.js options
           aspectRatio={1 / 1}
           guides={false}
           />
-          <Button onClick={this.props.callback}>cancel</Button>
+          <br/>
           <Spin spinning={this.state.uploading}>
+            <Button onClick={this.props.callback}>cancel</Button>
             <Button type="primary" onClick={this.click.bind(this)}>ok</Button>
           </Spin>
-          <img src={this.state.image}/>
 
       </div>
     );

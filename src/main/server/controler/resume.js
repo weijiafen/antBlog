@@ -1,17 +1,18 @@
 
 process.setMaxListeners(0)
-var User=require('../modules/user.js');
-var personal_info=require('../modules/personal_info.js');
-var skills_level=require('../modules/skills_level.js');
-var project_exp=require('../modules/project_exp.js');
-var project_item=require('../modules/project_item.js');
-var project_item_des=require('../modules/project_item_des.js');
-var work_exp=require('../modules/work_exp.js');
-var work_item=require('../modules/work_item.js');
-var competitions=require('../modules/competitions.js');
-var competitions_item=require('../modules/competitions_item.js');
-var library=require('../modules/library.js');
-var library_item=require('../modules/library_item.js');
+var User=require('../modules/resume/user.js');
+var personal_info=require('../modules/resume/personal_info.js');
+var skills_level=require('../modules/resume/skills_level.js');
+var project_exp=require('../modules/resume/project_exp.js');
+var project_item=require('../modules/resume/project_item.js');
+var project_item_des=require('../modules/resume/project_item_des.js');
+var work_exp=require('../modules/resume/work_exp.js');
+var work_item=require('../modules/resume/work_item.js');
+var competitions=require('../modules/resume/competitions.js');
+var competitions_item=require('../modules/resume/competitions_item.js');
+var library=require('../modules/resume/library.js');
+var library_item=require('../modules/resume/library_item.js');
+
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 

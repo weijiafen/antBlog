@@ -9,7 +9,7 @@ var back=React.createClass({
 				<Col sm={24} md={4}>
 					<BackSlider />
 				</Col>
-				<Col sm={24} md={20}>
+				<Col sm={24} md={20} style={{paddingLeft:'30px',paddingTop:'12px'}}>
 					{this.props.children}
 				</Col>
 			</Row>

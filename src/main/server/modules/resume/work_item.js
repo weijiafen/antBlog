@@ -1,38 +1,28 @@
 
 var Sequelize=require('sequelize')
-var dbConfig=require('../connection/dbConfig.js')
+var dbConfig=require('../../connection/dbConfig.js')
 var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password, {
   host: dbConfig.host,
   dialect: 'mysql',
   pool: dbConfig.pool,
 });
-var library = sequelize.define('library', {
+var work_item = sequelize.define('work_item', {
   id:{
     type:Sequelize.INTEGER,
     primaryKey:true,
     autoIncrement: true
   },
-  userId:{
-    type:Sequelize.INTEGER
+  itemTitle:{
+    type:Sequelize.STRING
   },
-  isShow: {
-    //是否显示
-    type: Sequelize.INTEGER
-  },
-  //标题
-  title: {
+  itemDate: {
     type: Sequelize.STRING
   },
-  //图片
-  img:{
+  itemTxt: {
     type: Sequelize.STRING
   },
-  //背景图
-  background_img:{
-    type: Sequelize.STRING
-  },
-  color:{
-    type: Sequelize.STRING
+  workId:{
+    type:Sequelize.INTEGER,
   },
   createAt:{
     type:Sequelize.BIGINT
@@ -44,4 +34,4 @@ var library = sequelize.define('library', {
   freezeTableName: true, // Model tableName will be the same as the model name
   timestamps: false
 });
-module.exports=library
+module.exports=work_item

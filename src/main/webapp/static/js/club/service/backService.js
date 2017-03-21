@@ -36,6 +36,13 @@ const Service = {
         },(error)=>{
             throw error;
         })
+    },
+    getTop:()=>{
+        return api.get('/resume/userTop').then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
     }
 }
 export default Service;

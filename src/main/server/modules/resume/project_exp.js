@@ -1,22 +1,38 @@
 
 var Sequelize=require('sequelize')
-var dbConfig=require('../connection/dbConfig.js')
+var dbConfig=require('../../connection/dbConfig.js')
 var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password, {
   host: dbConfig.host,
   dialect: 'mysql',
   pool: dbConfig.pool,
 });
-var project_item = sequelize.define('project_item', {
+var project_exp = sequelize.define('project_exp', {
   id:{
     type:Sequelize.INTEGER,
     primaryKey:true,
     autoIncrement: true
   },
-  itemTitle:{
-    type:Sequelize.STRING
+  userId:{
+    type:Sequelize.INTEGER
   },
-  projectId: {
+  isShow: {
+    //是否显示
     type: Sequelize.INTEGER
+  },
+  //标题
+  title: {
+    type: Sequelize.STRING
+  },
+  //图片
+  img:{
+    type: Sequelize.STRING
+  },
+  //背景图
+  background_img:{
+    type: Sequelize.STRING
+  },
+  color:{
+    type: Sequelize.STRING
   },
   createAt:{
     type:Sequelize.BIGINT
@@ -28,4 +44,4 @@ var project_item = sequelize.define('project_item', {
   freezeTableName: true, // Model tableName will be the same as the model name
   timestamps: false
 });
-module.exports=project_item
+module.exports=project_exp

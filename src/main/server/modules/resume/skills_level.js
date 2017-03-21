@@ -1,12 +1,13 @@
 
 var Sequelize=require('sequelize')
-var dbConfig=require('../connection/dbConfig.js')
+var dbConfig=require('../../connection/dbConfig.js')
 var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password, {
   host: dbConfig.host,
   dialect: 'mysql',
   pool: dbConfig.pool,
 });
-var work_exp = sequelize.define('work_exp', {
+var skills_level = sequelize.define('skills_level', {
+  //技能自评id
   id:{
     type:Sequelize.INTEGER,
     primaryKey:true,
@@ -17,19 +18,23 @@ var work_exp = sequelize.define('work_exp', {
   },
   isShow: {
     //是否显示
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
   },
   //标题
   title: {
     type: Sequelize.STRING
   },
-  //图片
+  //技能自评块图片
   img:{
     type: Sequelize.STRING
   },
-  //背景图
+  //个人信息块背景图
   background_img:{
     type: Sequelize.STRING
+  },
+  //数据 键值对字符串
+  data:{
+    type: Sequelize.STRING(1234) 
   },
   color:{
     type: Sequelize.STRING
@@ -44,4 +49,4 @@ var work_exp = sequelize.define('work_exp', {
   freezeTableName: true, // Model tableName will be the same as the model name
   timestamps: false
 });
-module.exports=work_exp
+module.exports=skills_level

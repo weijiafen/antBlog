@@ -481,15 +481,6 @@ input:-webkit-autofill {
 }
 
 
-
-
-
-
-
-
-
-
-
 //首加载动画
 .loading{
 	width: 80px;
@@ -533,4 +524,31 @@ input:-webkit-autofill {
 .loading span:nth-child(5){
 	-webkit-animation-delay:0.8s;
 	animation-delay:0.8s;
+}
+
+.backContainer{
+	header{
+		font-size:18px;
+		font-weight:bold;
+		border-bottom:1px solid #eee;
+		line-height:2;
+		padding-bottom:8px;
+		margin-bottom:12px;
+	}
+	.editItem{
+		margin:15px 0;
+		input{
+			display:inline-block;
+			width:300px;
+		}
+		& > *{
+			vertical-align:middle
+		}
+	}
+}
+.editTopImage{
+	width:200px;
+	height:200px;
+	border:1px solid #aaa;
+	vertical-align:bottom;
 }

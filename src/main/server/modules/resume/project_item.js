@@ -1,38 +1,22 @@
 
 var Sequelize=require('sequelize')
-var dbConfig=require('../connection/dbConfig.js')
+var dbConfig=require('../../connection/dbConfig.js')
 var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password, {
   host: dbConfig.host,
   dialect: 'mysql',
   pool: dbConfig.pool,
 });
-var competitions = sequelize.define('competitions', {
+var project_item = sequelize.define('project_item', {
   id:{
     type:Sequelize.INTEGER,
     primaryKey:true,
     autoIncrement: true
   },
-  userId:{
-    type:Sequelize.INTEGER
+  itemTitle:{
+    type:Sequelize.STRING
   },
-  isShow: {
-    //是否显示
+  projectId: {
     type: Sequelize.INTEGER
-  },
-  //标题
-  title: {
-    type: Sequelize.STRING
-  },
-  //图片
-  img:{
-    type: Sequelize.STRING
-  },
-  //背景图
-  background_img:{
-    type: Sequelize.STRING
-  },
-  color:{
-    type: Sequelize.STRING
   },
   createAt:{
     type:Sequelize.BIGINT
@@ -44,4 +28,4 @@ var competitions = sequelize.define('competitions', {
   freezeTableName: true, // Model tableName will be the same as the model name
   timestamps: false
 });
-module.exports=competitions
+module.exports=project_item
