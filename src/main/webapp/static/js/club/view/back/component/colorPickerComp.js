@@ -7,6 +7,11 @@ var ColorPickerComp=React.createClass({
 			hexString:this.props.color
 		}
 	},
+	componentWillReceiveProps(preProps) {
+		this.setState({
+			hexString:preProps.color
+		})
+	},
 	ChangeColor:function(colors){
 		this.setState({
 			hexString:colors.color

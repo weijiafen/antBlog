@@ -31,6 +31,21 @@ const router = (
               callback(null, require('../view/back/resume/editTop').default);
             });
           }} />
+          <Route path="/back/editPersonalInfo" getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/resume/editInfo').default);
+            });
+          }} />
+          <Route path="/back/editSkillsLevel" getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/resume/editSkills').default);
+            });
+          }} />
+          <Route path="/back/editProjectExp" getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/resume/editProjectExp').default);
+            });
+          }} />
     </Route>
     <Route path="/login" getComponent={(location, callback) => {
       require.ensure([], (require) => {

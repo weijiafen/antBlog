@@ -36,9 +36,6 @@ var personal_info = sequelize.define('personal_info', {
   data:{
     type: Sequelize.STRING(1234)
   },
-  color:{
-    type: Sequelize.STRING
-  },
   createAt:{
     type:Sequelize.BIGINT
   },

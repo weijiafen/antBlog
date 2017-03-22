@@ -43,6 +43,50 @@ const Service = {
         },(error)=>{
             throw error
         })
+    },
+    setTop:(data)=>{
+        return api.post('/resume/userTop',{
+            data:data
+        }).then((res)=>{
+            return res
+        },(error)=>{
+            throw error;
+        })
+    },
+    getInfo:()=>{
+        return api.get('/back/getInfo').then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    getPersonalInfo:()=>{
+        return api.get('/resume/personalInfo').then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    setPersonalInfo:(data)=>{
+        return api.post('/resume/personalInfo',{data:data}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    getSkills:()=>{
+        return api.get('/resume/skills').then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    setSkills:(data)=>{
+        return api.post('/resume/skills',{data:data}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
     }
 }
 export default Service;

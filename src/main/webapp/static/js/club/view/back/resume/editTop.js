@@ -1,13 +1,8 @@
 import React from 'react';
 import {Upload, Icon, message , Button, Input} from 'antd'
-import backService from '../../../service/backService'; 
+import backService from '../../../service/backService';
 import EditImage from '../component/editImage';
 import ColorPickerComp from '../component/colorPickerComp';
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
 function beforeUpload(file) {
   const isJPG = file.type === 'image/jpeg';
   if (!isJPG) {
@@ -23,28 +18,29 @@ function beforeUpload(file) {
 var editTop=React.createClass({
 	getInitialState:function(){
 		return {
-			imageUrl:'',
-			backgroundImageUrl:'',
+			img:'',
+			backgroundImg:'',
 			editImage:false,
-			color:'#000'
+			introduce:'',
+			color:''
 		}
 	},
 	componentDidMount:function(){
 		backService.getTop().then((res)=>{
-			console.log(res);
+			this.setState(res.data)
 		})
 	},
-	confirmImage:function(imageUrl){
+	confirmImage:function(img){
 		this.setState({
 			editImage:!this.state.editImage
 			
 		})
-		console.log('imageUrl',typeof imageUrl);
-		if(typeof imageUrl==="string"&&imageUrl!==""){
+		console.log('img',typeof img);
+		if(typeof img==="string"&&img!==""){
 			this.setState({
-				imageUrl:imageUrl
+				img:img
 			})
-			console.log('imageUrl2',imageUrl);
+			console.log('imageUrl2',img);
 
 		}
 	},
@@ -53,17 +49,28 @@ var editTop=React.createClass({
 			color:color
 		})
 	},
-	changeImage:function(info){
-		if (info.file.status === 'done') {
-	      // Get this url from response in real world.
-	      getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
-	    }
-	},
 	changeBackground:function(info){
 		if (info.file.status === 'done') {
-	      // Get this url from response in real world.
-	      getBase64(info.file.originFileObj, backgroundImageUrl => this.setState({ backgroundImageUrl }));
+	      this.setState({backgroundImg:info.file.response.src})
 	    }
+	},
+	editTop:function(){
+		backService.setTop(this.state).then((res)=>{
+			message.info(res.msg)
+		})
+	},
+	changeText:function(e){
+		var className=e.target.className;
+		if(className.indexOf("userName")>=0){
+			this.setState({
+				userName:e.target.value
+			})
+		}
+		else if(className.indexOf("introduce")>=0){
+			this.setState({
+				introduce:e.target.value
+			})
+		}
 	},
 	render:function(){
 		return (
@@ -78,17 +85,17 @@ var editTop=React.createClass({
 					<label>头像：</label>
 					<Button type="primary" size='small' onClick={this.confirmImage}>修改</Button>
 					<br/>
-					<img src={this.state.imageUrl} className="editTopImage"/>
+					<img src={this.state.img} className="editTopImage"/>
 					
 				</div>
 				<div className="editItem">
 					<label>用户名：</label>
-					<Input type="text"/>
+					<Input type="text" className="userName" value={this.state.userName} onChange={this.changeText}/>
 					
 				</div>
 				<div className="editItem">
 					<label>个性签名：</label>
-					<Input type="text"/>
+					<Input type="text" className="introduce" value={this.state.introduce} onChange={this.changeText}/>
 					
 				</div>
 				<ColorPickerComp
@@ -108,9 +115,9 @@ var editTop=React.createClass({
 				            <Button type="primary" size='small' >上传新背景图</Button>
 				      </Upload>
 				    <br/>
-					<img src={this.state.backgroundImageUrl} alt="" className="" />
+					<img src={this.state.backgroundImg} alt="" className="" />
 				</div>
-			   	<Button type="primary" >保存</Button>
+			   	<Button type="primary" onClick={this.editTop} >保存</Button>
 			      
 			</div>
 			)

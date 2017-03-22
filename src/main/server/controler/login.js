@@ -25,6 +25,20 @@ module.exports=(async (function(req,response){
 		req.session.uid=res.id;
 		req.session.isLogin=true;
 		result={status:0,msg:"登录成功"}
+		var now=(new Date()).valueOf();
+		var weight=res.weight;
+		if(now-res.updateAt>1000*60*60*24){
+			//24小时后登录会给排序权值加1
+			weight+=1;
+		}
+		User.update({
+			updateAt:now,
+			weight:weight
+		},{
+			where:{
+				id:res.id
+			}
+		})
 	}else{
 		result={status:-1,msg:"账号名或密码错误"}
 	}

@@ -43,7 +43,7 @@ module.exports=(async (function(req,response){
 		img:'',
 		introduce:'',
 		background_img:'',
-		color:'#000',
+		color:'',
 		weight:0
 	}))
 	console.log("create account :"+JSON.stringify(res))
@@ -57,7 +57,6 @@ module.exports=(async (function(req,response){
 			createAt:time,
 			updateAt:time,
 			userId:res.id,
-			color:'',
 			data:''
 		}))
 		await(skills_level.create({

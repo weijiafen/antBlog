@@ -30,8 +30,8 @@ const api = axios.create({
       try {
         data = JSON.parse(data);
       } catch (e) {
-        alert('亲，网站数据是静态的，可能没有这页的数据，要不你点其他地方试试？');
-        // alert('服务器异常,请重试!');
+        // alert('亲，网站数据是静态的，可能没有这页的数据，要不你点其他地方试试？');
+        alert('服务器异常,请重试!');
       }
     }
     return data;

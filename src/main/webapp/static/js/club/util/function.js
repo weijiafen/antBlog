@@ -1,4 +1,4 @@
-function redirect(location = '/') {
+function redirect(location = '#/login') {
   const hashReg = /^#w+/;
   if (hashReg.test(location)) {
     return window.location.hash = location;

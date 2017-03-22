@@ -38,9 +38,13 @@ var User = sequelize.define('user', {
   background_img:{
     type: Sequelize.STRING
   },
-  // 排序权重
+  // 排序权重,用于简历列表页的排序。活跃度高的用户会得到权重加成
   weight:{
     type:Sequelize.BIGINT
+  },
+  //字体颜色
+  color:{
+    type: Sequelize.STRING
   },
   createAt:{
     type:Sequelize.BIGINT

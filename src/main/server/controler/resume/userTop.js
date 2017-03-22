@@ -16,11 +16,23 @@ module.exports=(async (function(method,req,response){
 			userName:res.userName,
 			introduce:res.introduce,
 			img:res.img,
-			backgroundImg:res.background_img
+			backgroundImg:res.background_img,
+			color:res.color
 		}};
 	}
 	else if(method==='post'){
-
+		var res=await(User.update({
+			userName:req.body.userName,
+			introduce:req.body.introduce,
+			img:req.body.img,
+			background_img:req.body.backgroundImg,
+			color:req.body.color
+		},{
+			where:{
+				id:uid
+			}
+		}))
+		result={status:0,msg:'保存成功'};
 	}
 	console.log('after getusertop')
 	response.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons

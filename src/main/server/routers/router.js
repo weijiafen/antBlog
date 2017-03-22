@@ -10,6 +10,9 @@ var isLogin=require('../controler/isLogin.js');
 var upload=require('../controler/upload.js');
 var userTop=require('../controler/resume/userTop.js')
 var loginFilter = require('../controler/loginFilter');
+var getInfo = require('../controler/getInfo');
+var personalInfo=require('../controler/resume/personalInfo.js')
+var skills=require('../controler/resume/skills.js')
 module.exports=function(app){
 	//app是一个express()
 	app.use(bodyParser.json({limit: '1mb'}));  //body-parser 解析json格式数据
@@ -21,13 +24,13 @@ module.exports=function(app){
 	    cookie: {maxAge: 60 * 1000 * 30} // 过期时间（毫秒）
 	}));
 	app.get('/', function (req, res) {
-	fs.readFile('src/main/webapp/index.html',function(err,data){
-		if(err){
-			res.end('404');
-		}
-		else{
-			res.end(data.toString());
-		}
+		fs.readFile('src/main/webapp/index.html',function(err,data){
+			if(err){
+				res.end('404');
+			}
+			else{
+				res.end(data.toString());
+			}
 	})
 	app.get(/\/blog\/list\/[0-9]+/,function(req,res){
 		res.end(req.toString())
@@ -51,8 +54,26 @@ module.exports=function(app){
 	})
 	//添加登录过滤器，需要登录才能获取数据的接口应放在此句下面
 	app.use(loginFilter);
+	app.get('/back/getInfo',function(req,res){
+		getInfo(req,res);
+	})
 	app.get('/resume/userTop',function(req,res){
 		userTop('get',req,res);
+	})
+	app.post('/resume/userTop',function(req,res){
+		userTop('post',req,res);
+	})
+	app.get('/resume/personalInfo',function(req,res){
+		personalInfo('get',req,res);
+	})
+	app.post('/resume/personalInfo',function(req,res){
+		personalInfo('post',req,res);
+	})
+	app.get('/resume/skills',function(req,res){
+		skills('get',req,res);
+	})
+	app.post('/resume/skills',function(req,res){
+		skills('post',req,res);
 	})
   
 });
