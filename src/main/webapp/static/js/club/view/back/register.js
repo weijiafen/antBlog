@@ -60,7 +60,7 @@ const NormalRegisterForm = Form.create()(React.createClass({
     };
     return (
       <Form onSubmit={this.handleSubmit} className="register-form">
-        (后台功能正在开发中，只有部分功能可用，且还未影响前台数据。数据将可能被清楚)
+        (后台功能正在开发中，只有部分功能可用。数据将可能被清除)
         <FormItem
         	{...formItemLayout}
           label="Account"
