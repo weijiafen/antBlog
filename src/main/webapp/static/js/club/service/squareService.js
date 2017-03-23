@@ -2,7 +2,8 @@ import api from '../library/axios/api';
 const Service = {
 	getUser:()=>{
 		return api
-			.get('/js/club/json/userList.json')
+			// .get('/js/club/json/userList.json')
+			.get('/getUserList')
 			.then((res)=>{
 				return res
 			},(res)=>{

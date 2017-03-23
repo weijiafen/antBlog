@@ -33,8 +33,8 @@ var square=React.createClass({
 										<Button type="primary" className="homeBtn">
 											<a href={`#/home/${item.userId}`}>简介</a>
 										</Button>
-										<Button type="primary" className="blogBtn">
-											<a href={`#/blog/${item.userId}/0`}>博客</a>
+										<Button type="primary" className="blogBtn" disabled>
+											<a href={`#/blog/${item.userId}/0`} disabled>博客</a>
 										</Button>
 									</Card>
 								</Col>)

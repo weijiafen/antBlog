@@ -1,3 +1,4 @@
+process.setMaxListeners(0)
 var session = require('express-session');
 var fs=require('fs');
 var bodyParser=require('body-parser')
@@ -23,6 +24,7 @@ var competitionsItem=require('../controler/resume/competitionsItem')
 var library=require('../controler/resume/library')
 var libraryItem=require('../controler/resume/libraryItem')
 var resume=require('../controler/resume')
+var getUserList=require('../controler/resume/getUserList')
 module.exports=function(app){
 	//app是一个express()
 	app.use(bodyParser.json({limit: '1mb'}));  //body-parser 解析json格式数据
@@ -41,6 +43,9 @@ module.exports=function(app){
 			else{
 				res.end(data.toString());
 			}
+	})
+	app.get('/getUserList',function(req,res){
+		getUserList(req,res);
 	})
 	app.get('/getResume',function(req,res){
 		resume(req,res);
