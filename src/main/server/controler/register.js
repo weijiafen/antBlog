@@ -26,99 +26,99 @@ module.exports=(async (function(req,response){
 		}
 	}))
 	if(isExits){
-		return {
+		result= {
 			status:-1,
 			msg:"账号已存在"
 		}
-	}
-	var md5 = crypto.createHash('md5');
-	password = md5.update(password).digest('hex');
-	var result={}
-	var res=await (User.create({
-		account:account,
-		password:password,
-		userName:userName,
-		createAt:time,
-		updateAt:time,
-		img:'images/default.jpg',
-		introduce:'',
-		background_img:'',
-		color:'',
-		weight:0
-	}))
-	console.log("create account :"+JSON.stringify(res))
-	if(res){
-		//新建主页的各标题
-		await(personal_info.create({
-			isShow:0,
-			title:'个人信息',
-			img:'images/default.jpg',
-			background_img:'',
-			createAt:time,
-			updateAt:time,
-			userId:res.id,
-			color:'',
-			data:''
-		}))
-		await(skills_level.create({
-			isShow:0,
-			title:'技能自评',
-			img:'',
-			background_img:'',
-			createAt:time,
-			updateAt:time,
-			userId:res.id,
-			color:'',
-			data:''
-		}))
-		await(project_exp.create({
-			isShow:0,
-			title:'项目经历',
-			img:'',
-			background_img:'',
-			createAt:time,
-			updateAt:time,
-			color:'',
-			userId:res.id
-		}))
-		await(work_exp.create({
-			isShow:0,
-			title:'工作经历',
-			img:'',
-			background_img:'',
-			createAt:time,
-			updateAt:time,
-			color:'',
-			userId:res.id
-		}))
-		await(competitions.create({
-			isShow:0,
-			title:'获奖经历',
-			img:'',
-			background_img:'',
-			createAt:time,
-			updateAt:time,
-			userId:res.id,
-			color:'',
-			data:''
-		}))
-		await(library.create({
-			isShow:0,
-			title:'个人书库',
-			img:'',
-			background_img:'',
-			createAt:time,
-			updateAt:time,
-			color:'',
-			userId:res.id
-		}))
-		req.session.uid=res.id;
-		req.session.isLogin=true;
-		result={status:0,msg:"注册成功,将为您自动登录..."}
 	}else{
-		result={status:-1,msg:"注册失败"}
+		var md5 = crypto.createHash('md5');
+		password = md5.update(password).digest('hex');
+		var result={}
+		var res=await (User.create({
+			account:account,
+			password:password,
+			userName:userName,
+			createAt:time,
+			updateAt:time,
+			img:'images/default.jpg',
+			introduce:'',
+			background_img:'',
+			color:'',
+			weight:0
+		}))
+		if(res){
+			//新建主页的各标题
+			await(personal_info.create({
+				isShow:0,
+				title:'个人信息',
+				img:'images/default.jpg',
+				background_img:'',
+				createAt:time,
+				updateAt:time,
+				userId:res.id,
+				color:'',
+				data:''
+			}))
+			await(skills_level.create({
+				isShow:0,
+				title:'技能自评',
+				img:'',
+				background_img:'',
+				createAt:time,
+				updateAt:time,
+				userId:res.id,
+				color:'',
+				data:''
+			}))
+			await(project_exp.create({
+				isShow:0,
+				title:'项目经历',
+				img:'',
+				background_img:'',
+				createAt:time,
+				updateAt:time,
+				color:'',
+				userId:res.id
+			}))
+			await(work_exp.create({
+				isShow:0,
+				title:'工作经历',
+				img:'',
+				background_img:'',
+				createAt:time,
+				updateAt:time,
+				color:'',
+				userId:res.id
+			}))
+			await(competitions.create({
+				isShow:0,
+				title:'获奖经历',
+				img:'',
+				background_img:'',
+				createAt:time,
+				updateAt:time,
+				userId:res.id,
+				color:'',
+				data:''
+			}))
+			await(library.create({
+				isShow:0,
+				title:'个人书库',
+				img:'',
+				background_img:'',
+				createAt:time,
+				updateAt:time,
+				color:'',
+				userId:res.id
+			}))
+			req.session.uid=res.id;
+			req.session.isLogin=true;
+			result={status:0,msg:"注册成功,将为您自动登录..."}
+		}else{
+			result={status:-1,msg:"注册失败"}
+		}
 	}
+	
 	response.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
 	response.end(JSON.stringify(result))
-	return result;
 }))
