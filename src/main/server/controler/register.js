@@ -57,6 +57,7 @@ module.exports=(async (function(req,response){
 			createAt:time,
 			updateAt:time,
 			userId:res.id,
+			color:'',
 			data:''
 		}))
 		await(skills_level.create({
@@ -67,7 +68,7 @@ module.exports=(async (function(req,response){
 			createAt:time,
 			updateAt:time,
 			userId:res.id,
-			color:'#000',
+			color:'',
 			data:''
 		}))
 		await(project_exp.create({
@@ -98,7 +99,7 @@ module.exports=(async (function(req,response){
 			createAt:time,
 			updateAt:time,
 			userId:res.id,
-			color:'#000',
+			color:'',
 			data:''
 		}))
 		await(library.create({

@@ -4,15 +4,17 @@ import backService from '../../../service/backService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
 function beforeUpload(file) {
+	console.log(file.type)
   const isJPG = file.type === 'image/jpeg';
-  if (!isJPG) {
-    message.error('You can only upload JPG file!');
+  const isPNG = file.type === "image/png"
+  if (!isJPG&&!isPNG) {
+    message.error('You can only upload JPG or PNG file!');
   }
   const isLt250K = file.size < 250*1024;
   if (!isLt250K) {
     message.error('Image must smaller than 250K!');
   }
-  return isJPG && isLt250K;
+  return (isJPG || isPNG) && isLt250K;
 }
 var editWorkExp=React.createClass({
 	getInitialState:function(){
@@ -124,6 +126,11 @@ var editWorkExp=React.createClass({
 		
 		
 	},
+	resetBgImage(){
+		this.setState({
+			backgroundImg:''
+		})
+	},
 	changeColor:function(color){
 		this.setState({
 			color:color
@@ -173,6 +180,9 @@ var editWorkExp=React.createClass({
 					            
 					            <Button type="primary" size='small' >上传新背景图</Button>
 					      </Upload>
+					      <Button onClick={this.resetBgImage} size="small">
+					    	<Icon type="delete" />
+					    	</Button>
 					    <br/>
 						<img src={this.state.backgroundImg} alt="" className="" />
 					</div>
@@ -184,7 +194,7 @@ var editWorkExp=React.createClass({
 						<div>
 							{this.state.data.map(function(item,index){
 								return (
-									<div key={"work"+index}>
+									<div key={"work"+index} className="dataItem">
 										条目标题：<Input value={item.itemTitle} onChange={_.partial(ctx.changeItemTitle,index)} />
 										条目副标题：<Input value={item.itemDate} onChange={_.partial(ctx.changeItemDate,index)} />
 										条目描述：<Input value={item.itemTxt} type="textarea" autosize={{ minRows: 2, maxRows: 6 }}

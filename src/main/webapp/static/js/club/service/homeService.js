@@ -2,7 +2,12 @@ import api from '../library/axios/api';
 const Service = {
 	getUserInfo:(id)=>{
 		return api
-			.get(`/js/club/json/userInfo${id}.json`)
+			// .get(`/js/club/json/userInfo${id}.json`,{
+			.get('/getResume',{
+				params:{
+					id:id
+				}
+			})
 			.then((res)=>{
 				return res
 			},(res)=>{

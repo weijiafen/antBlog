@@ -31,6 +31,17 @@ var BackSlider=React.createClass({
 		
 	},
 	componentDidMount(){
+		this.getInitData();
+
+		//在全局中放置token并每次渲染组件时判断是否存在，防止重复订阅事件
+		if(window.reloadInfoToken){
+			PubSub.unsubscribe(window.reloadInfoToken);
+		}
+		window.reloadInfoToken=PubSub.subscribe('reloadInfo',function(){
+			this.getInitData();
+		}.bind(this))
+	},
+	getInitData(){
 		backService.getInfo().then((res)=>{
 			this.setState({
 				userName:res.data.userName,
@@ -45,7 +56,7 @@ var BackSlider=React.createClass({
 	render:function(){
 		return <div className="BackSlider">
 			<div>
-				<p>你好：{this.state.userName}</p>
+				<h2>你好：{this.state.userName}</h2>
 				<img src={this.state.img}/>
 				<p>最后一次登录时间：{moment(this.state.updateAt).format("YYYY-MM-DD HH:mm:ss")}</p>
 				<Button type="primary" onClick={this.logOff}>注销</Button>

@@ -15,8 +15,8 @@ var App=React.createClass({
 					<Col xs={24} sm={24} md={18} lg={12}>
 						<h2>{this.props.data.title}</h2>
 						<Row type="flex" align="top">
-						{this.props.data.data.map((item)=>{
-							return <Col xs={24} sm={12} md={6} lg={6} key={item.itemImg} className="competitions_container wow bounceInUp animated animated">
+						{this.props.data.data.map((item,index)=>{
+							return <Col xs={24} sm={12} md={6} lg={6} key={"competitionItem"+index} className="competitions_container wow bounceInUp animated animated">
 								<div className="competitions_item">
 									<img src={item.itemImg}/>
 									<p>{item.itemTxt}</p>

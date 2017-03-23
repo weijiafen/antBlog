@@ -3,12 +3,13 @@ import {Row , Col ,} from 'antd'
 let App=React.createClass({
 	
 	render(){
-		let bgimg={
-			backgroundImage:`url(${this.props.data.background_img})`
+		let sesstionStyle={
+			backgroundImage:`url(${this.props.data.background_img})`,
+			color:`${this.props.data.color}`
 		}
 		let introduce={__html:this.props.data.introduce}
 		debugger
-		return (<section className="section_top" style={bgimg}>
+		return (<section className="section_top" style={sesstionStyle}>
 			<Row>
 				<Col xs={0} sm={0} md={3} lg={4}></Col>
 				<Col xs={24} sm={24} md={18} lg={16}>

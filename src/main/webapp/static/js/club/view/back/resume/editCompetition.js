@@ -3,6 +3,7 @@ import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin } from 'antd
 import backService from '../../../service/backService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
+import ColorPickerComp from '../component/colorPickerComp';
 function beforeUpload(file) {
 	console.log(file.type)
   const isJPG = file.type === 'image/jpeg';
@@ -16,14 +17,15 @@ function beforeUpload(file) {
   }
   return (isJPG || isPNG) && isLt250K;
 }
-var editInfo=React.createClass({
+var editCompetition=React.createClass({
 	getInitialState:function(){
 		return {
 			loading:true,
+			id:0,
 			title:'',
 			isShow:false,
-			img:'',
 			backgroundImg:'',
+			color:'',
 			data:[],
 			staticTitle:''//保存header上的title，异步获取到后不再改变
 		}
@@ -32,7 +34,7 @@ var editInfo=React.createClass({
 		this.getInitData();
 	},
 	getInitData:function(){
-		backService.getPersonalInfo().then((res)=>{
+		backService.getCompetitions().then((res)=>{
 			this.setState(res.data)
 			this.setState({
 				staticTitle:res.data.title,
@@ -40,14 +42,14 @@ var editInfo=React.createClass({
 			})
 		})
 	},
+	changeColor:function(color){
+		this.setState({
+			color:color
+		})
+	},
 	changeBackground:function(info){
 		if (info.file.status === 'done') {
 	      this.setState({backgroundImg:info.file.response.src})
-	    }
-	},
-	changeImage:function(info){
-		if (info.file.status === 'done') {
-	      this.setState({img:info.file.response.src})
 	    }
 	},
 	toggleShow:function(bool){
@@ -56,17 +58,32 @@ var editInfo=React.createClass({
 		})
 
 	},
-	changeKey:function(index,e){
+	resetBgImage(){
+		this.setState({
+			backgroundImg:''
+		})
+	},
+	changeItemImg:function(index,info){
+		if (info.file.status === 'done') {
+	    	// this.setState({backgroundImg:info.file.response.src})
+	    	var data=this.state.data;
+			data[index].itemImg=info.file.response.src;
+			this.setState({
+				data:data
+			})
+	    }
+		
+	},
+	changeItemDate:function(index,e){
 		var data=this.state.data;
-		data[index].key=e.target.value;
+		data[index].itemDate=e.target.value;
 		this.setState({
 			data:data
 		})
 	},
-	
-	changeValue:function(index,e){
+	changeItemTxt:function(index,e){
 		var data=this.state.data;
-		data[index].value=e.target.value;
+		data[index].itemTxt=e.target.value;
 		this.setState({
 			data:data
 		})
@@ -82,8 +99,10 @@ var editInfo=React.createClass({
 	addData:function(){
 		var data=this.state.data;
 		data.push({
-			key:'',
-			value:''
+			"id":0,
+			"itemImg":"",
+			"itemDate":"",
+			"itemTxt":""
 		})
 		this.setState({
 			data:data
@@ -91,29 +110,44 @@ var editInfo=React.createClass({
 	},
 	deleteData:function(index,e){
 		var ctx=this;
-		Modal.confirm({
-			title:'是否确认删除该条数据？',
-			onOk(){
-				var data=ctx.state.data;
-				data.splice(index,1);
-				ctx.setState({
-					data:data
-				})
-			}
-		})
+		if(this.state.data[index].id===0){
+			Modal.confirm({
+				title:'是否确认删除该条数据？',
+				onOk(){
+					var data=ctx.state.data;
+					data.splice(index,1);
+					ctx.setState({
+						data:data
+					})
+				}
+			})
+		}else{
+			Modal.confirm({
+				title:'删除已保存数据将即刻生效，是否确认删除该条数据？',
+				onOk(){
+					backService.deleteCompetitionsItem(ctx.state.data[index].id).then((res)=>{
+						if(res.status===0){
+							var data=ctx.state.data;
+							data.splice(index,1);
+							ctx.setState({
+								data:data
+							})
+						}
+						message.info(res.msg)
+					})
+					
+				}
+			})
+		}
+		
 		
 	},
-	resetBgImage(){
+	changeColor:function(color){
 		this.setState({
-			backgroundImg:''
+			color:color
 		})
 	},
-	resetImage(){
-		this.setState({
-			img:''
-		})
-	},
-	editPersonalInfo:function(){
+	editCompetition:function(){
 		if(ustr.trim(this.state.title)===""){
 			message.error('标题不能为空！');
 			return ;
@@ -121,12 +155,12 @@ var editInfo=React.createClass({
 			this.setState({
 				loading:true
 			})
-			backService.setPersonalInfo(this.state).then((res)=>{
+			backService.setCompetitions(this.state).then((res)=>{
 				this.setState({
 					loading:false
 				})
-				this.getInitData();
 				message.info(res.msg)
+				this.getInitData();
 			})
 		}
 		
@@ -135,7 +169,7 @@ var editInfo=React.createClass({
 		let ctx=this;
 		return (
 				<div>
-				<Spin spinning={this.state.loading}>
+					<Spin spinning={this.state.loading}>
 					<header>{this.state.staticTitle}</header>
 					<div className="editItem">
 						<label>标题名称：</label>
@@ -145,24 +179,10 @@ var editInfo=React.createClass({
 						<label>是否在主页展示：</label>
 						<Switch checked={this.state.isShow} onChange={this.toggleShow}/>
 					</div>
-					<div className="editItem">
-						<label>配图：</label>
-						<Upload
-					        name="file"
-					        showUploadList={false}
-					        action="/upload"
-					        beforeUpload={beforeUpload}
-					        onChange={this.changeImage} 
-					      >
-					            
-					            <Button type="primary" size='small' >上传新配图</Button>
-					      </Upload>
-					      <Button onClick={this.resetImage} size="small">
-					    	<Icon type="delete" />
-					    	</Button>
-					    <br/>
-						<img src={this.state.img} alt="" className="" />
-					</div>
+					<ColorPickerComp
+						color={this.state.color}
+						callback={this.changeColor}
+					/>
 					<div className="editItem">
 						<label>背景图：</label>
 						<Upload
@@ -189,21 +209,34 @@ var editInfo=React.createClass({
 						<div>
 							{this.state.data.map(function(item,index){
 								return (
-									<div key={"info"+index} className="dataItem">
-										<Input value={item.key} onChange={_.partial(ctx.changeKey,index)} />：
-										<Input value={item.value} onChange={_.partial(ctx.changeValue,index)}/>
+									<div key={"work"+index} className="dataItem">
+										条目副标题：<Input value={item.itemDate} onChange={_.partial(ctx.changeItemDate,index)} />
+										条目描述：<Input value={item.itemTxt} autosize={{ minRows: 2, maxRows: 6 }}
+										 onChange={_.partial(ctx.changeItemTxt,index)} />
+										 条目图片：<img src={item.itemImg} className="itemImage"/>
+										 <Upload
+									        name="file"
+									        showUploadList={false}
+									        action="/upload"
+									        beforeUpload={beforeUpload}
+									        onChange={_.partial(ctx.changeItemImg,index)}
+									      >
+									            
+									            <Button type="primary" size='small' >上传图片</Button>
+									      </Upload>
 										<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
 											<Icon type="delete" />
 										</Button>
+										<br/>
 									</div>
 									)
 							})}
 						</div>
 					</div>
-					<Button type="primary" onClick={this.editPersonalInfo} >保存</Button>
+					<Button type="primary" onClick={this.editCompetition} >保存</Button>
 					</Spin>
 				</div>
 			)
 	}
 })
-export default editInfo
+export default editCompetition

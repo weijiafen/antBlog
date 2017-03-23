@@ -1,14 +1,23 @@
 import React from 'react';
-import {Row ,Col , Card, Form, Icon, Input, Button, Checkbox ,Modal} from 'antd'
+import {Row ,Col , Card, Form, Icon, Input, Button, Checkbox ,Modal , Spin} from 'antd'
 import backService from '../../service/backService'; 
 import {redirect} from '../../util/function.js';
 import PubSub from 'pubsub-js'; 
 const FormItem = Form.Item;
 const NormalLoginForm = Form.create()(React.createClass({
+  getInitialState(){
+    return {
+      loading:false
+    }
+  },
   handleSubmit(e) {
     e.preventDefault();
+    var ctx=this;
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        ctx.setState({
+            loading:true
+          })
         backService.login(values).then((res)=>{
           if(res.status==0){
             redirect('#/back');
@@ -16,6 +25,9 @@ const NormalLoginForm = Form.create()(React.createClass({
           }else{
             Modal.info({title:res.msg}) 
           }
+          ctx.setState({
+            loading:false
+          })
         })
       }
     });
@@ -46,9 +58,11 @@ const NormalLoginForm = Form.create()(React.createClass({
             <Checkbox>Remember me</Checkbox>
           )}
           <a className="login-form-forgot">Forgot password</a>
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            Log in
-          </Button>
+          <Spin spinning={this.state.loading}>
+            <Button type="primary" htmlType="submit" className="login-form-button">
+              Log in
+            </Button>
+          </Spin>
           Or <a href="#/register">register now!</a>
         </FormItem>
       </Form>

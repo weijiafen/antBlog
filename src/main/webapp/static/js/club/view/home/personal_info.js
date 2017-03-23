@@ -14,8 +14,8 @@ var App=React.createClass({
 					<Col xs={0} sm={0} md={4} lg={6}></Col>
 					<Col xs={24} sm={24} md={18} lg={12}>
 						<h2 className="section_title">{this.props.data.title}</h2>
-						{this.props.data.data.map((item)=>{
-							return <Col xs={24} sm={24} md={12} lg={12} key={item.key}>
+						{this.props.data.data.map((item,index)=>{
+							return <Col xs={24} sm={24} md={12} lg={12} key={"psersonalInfo"+index}>
 								<p className="wow fadeIn animated animated">{item.key}：<span>{item.value}</span></p>
 							</Col>
 						})}

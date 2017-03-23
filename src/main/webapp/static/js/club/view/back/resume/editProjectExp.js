@@ -4,15 +4,17 @@ import backService from '../../../service/backService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
 function beforeUpload(file) {
+	console.log(file.type)
   const isJPG = file.type === 'image/jpeg';
-  if (!isJPG) {
-    message.error('You can only upload JPG file!');
+  const isPNG = file.type === "image/png"
+  if (!isJPG&&!isPNG) {
+    message.error('You can only upload JPG or PNG file!');
   }
   const isLt250K = file.size < 250*1024;
   if (!isLt250K) {
     message.error('Image must smaller than 250K!');
   }
-  return isJPG && isLt250K;
+  return (isJPG || isPNG) && isLt250K;
 }
 var editProjectExp=React.createClass({
 	getInitialState:function(){
@@ -48,6 +50,11 @@ var editProjectExp=React.createClass({
 			isShow:bool
 		})
 
+	},
+	resetBgImage(){
+		this.setState({
+			backgroundImg:''
+		})
 	},
 	changeItemTitle:function(index,e){
 		var data=this.state.data;
@@ -225,6 +232,9 @@ var editProjectExp=React.createClass({
 					            
 					            <Button type="primary" size='small' >上传新背景图</Button>
 					      </Upload>
+					      <Button onClick={this.resetBgImage} size="small">
+					    	<Icon type="delete" />
+					    	</Button>
 					    <br/>
 						<img src={this.state.backgroundImg} alt="" className="" />
 					</div>
@@ -236,14 +246,14 @@ var editProjectExp=React.createClass({
 						<div>
 							{this.state.data.map(function(item,index){
 								return (
-									<div key={"project"+index}>
+									<div key={"project"+index} className="dataItem">
 										<Input value={item.itemTitle} onChange={_.partial(ctx.changeItemTitle,index)} />
 										<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
 											<Icon type="delete" />
 										</Button>
 										<br/>
 										
-										<div style={{padding:'20px'}}>
+										<div style={{padding:'15px 30px'}}>
 											<label>描述：</label>
 											<Button type="primary" size="small" onClick={_.partial(ctx.addItem,index)}>
 												<Icon type="plus"/>
@@ -251,7 +261,7 @@ var editProjectExp=React.createClass({
 											{
 												item.descriptions.map(function(desItem,desIndex){
 													return (
-															<div key={"descriptions"+index+desIndex}>
+															<div key={"descriptions"+index+desIndex} className="dataItemDes">
 																<Input value={desItem.key} onChange={_.partial(ctx.changeKey,index,desIndex)} />
 																<Input value={desItem.value} onChange={_.partial(ctx.changeValue,index,desIndex)}/>
 																<Button size="small" onClick={_.partial(ctx.deleteItem,index,desIndex)}>

@@ -14,8 +14,8 @@ var App=React.createClass({
 					<Col xs={0} sm={0} md={4} lg={6}></Col>
 					<Col xs={24} sm={24} md={18} lg={12}>
 						<h2>{this.props.data.title}</h2>
-						{this.props.data.data.map((item)=>{
-							return <Col xs={24} sm={24} md={8} lg={8} key={item.id} className="project_container wow zoomIn animated animated">
+						{this.props.data.data.map((item,index)=>{
+							return <Col xs={24} sm={24} md={8} lg={8} key={"projectItem"+index} className="project_container wow zoomIn animated animated">
 								<div className="project_item">
 									<h3>{item.itemTitle}</h3>
 									{item.descriptions.map((des)=>{

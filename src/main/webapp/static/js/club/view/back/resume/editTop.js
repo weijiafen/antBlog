@@ -3,16 +3,19 @@ import {Upload, Icon, message , Button, Input , Spin} from 'antd'
 import backService from '../../../service/backService';
 import EditImage from '../component/editImage';
 import ColorPickerComp from '../component/colorPickerComp';
+import PubSub from 'pubsub-js';
 function beforeUpload(file) {
+	console.log(file.type)
   const isJPG = file.type === 'image/jpeg';
-  if (!isJPG) {
-    message.error('You can only upload JPG file!');
+  const isPNG = file.type === "image/png"
+  if (!isJPG&&!isPNG) {
+    message.error('You can only upload JPG or PNG file!');
   }
   const isLt250K = file.size < 250*1024;
   if (!isLt250K) {
     message.error('Image must smaller than 250K!');
   }
-  return isJPG && isLt250K;
+  return (isJPG || isPNG) && isLt250K;
 }
 
 var editTop=React.createClass({
@@ -66,7 +69,13 @@ var editTop=React.createClass({
 			this.setState({
 				loading:false
 			})
+			PubSub.publish('reloadInfo')
 			message.info(res.msg)
+		})
+	},
+	resetBgImage(){
+		this.setState({
+			backgroundImg:''
 		})
 	},
 	changeText:function(e){
@@ -125,6 +134,9 @@ var editTop=React.createClass({
 				            
 				            <Button type="primary" size='small' >上传新背景图</Button>
 				      </Upload>
+				      <Button onClick={this.resetBgImage} size="small">
+					    	<Icon type="delete" />
+					    	</Button>
 				    <br/>
 					<img src={this.state.backgroundImg} alt="" className="" />
 				</div>

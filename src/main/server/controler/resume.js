@@ -16,7 +16,7 @@ var library_item=require('../modules/resume/library_item.js');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 
-module.exports=(async (function(req){
+module.exports=(async (function(req,response){
 	//建立表联系
 	personal_info.belongsTo(User);
 	User.hasOne(personal_info);
@@ -31,7 +31,7 @@ module.exports=(async (function(req){
 	library.belongsTo(User);
 	User.hasOne(library);
 
-	var id=req.id;
+	var id=req.query.id;
 	var result={}
 	var res=await (User.findOne({
 		where:{
@@ -41,23 +41,26 @@ module.exports=(async (function(req){
 		include:[personal_info,skills_level,project_exp,work_exp,competitions,library]
 	}))
 	if(res){
-		result.id=res.dataValues.id;
-		result.top={
+		result.status=0;
+		var resultData={}
+		resultData.id=res.dataValues.id;
+		resultData.top={
 			name:res.dataValues.userName||'',
 			introduce:res.dataValues.introduce||'',
 			img:res.dataValues.img||'',
-			background_img:res.dataValues.background_img||''
+			background_img:res.dataValues.background_img||'',
+			color:res.dataValues.color
 		}
 
 		//简历块个人信息，技能数据适配
-		result.personal_info=undefined;
-		result.skills_level=undefined;
+		resultData.personal_info=undefined;
+		resultData.skills_level=undefined;
 		if(res.personal_info){
-			result.personal_info=res.personal_info.dataValues;
-			if(result.personal_info.data===''){
-				result.personal_info.data=[];
+			resultData.personal_info=res.personal_info.dataValues;
+			if(resultData.personal_info.data===''){
+				resultData.personal_info.data=[];
 			}else{
-				var data=result.personal_info.data;
+				var data=resultData.personal_info.data;
 				var dataArr=[]
 				for(var info of data.split('@@')){
 					var obj={}
@@ -65,33 +68,34 @@ module.exports=(async (function(req){
 					obj.value=info.split('||')[1]
 					dataArr.push(obj)
 				}
-				result.personal_info.data=dataArr;
+				resultData.personal_info.data=dataArr;
 			}
 			
 
 		}
 		if(res.skills_level){
-			result.skills_level=res.skills_level.dataValues;
-			if(result.skills_level.data===''){
-				result.skills_level.data=[];
+			resultData.skills_level=res.skills_level.dataValues;
+			if(resultData.skills_level.data===''){
+				resultData.skills_level.data=[];
 			}else{
-				var data=result.skills_level.data;
+				var data=resultData.skills_level.data;
 				var dataArr=[]
 				for(var skill of data.split('@@')){
 					var obj={}
 					obj.key=skill.split('||')[0]
-					obj.value=skill.split('||')[1]
+					//空时会为0
+					obj.value=Number(skill.split('||')[1])
 					dataArr.push(obj)
 				}
-				result.skills_level.data=dataArr;
+				resultData.skills_level.data=dataArr;
 			}
 		}
 
 		//简历块项目经验数据适配
-		result.project_exp=undefined
+		resultData.project_exp=undefined
 		if(res.project_exp){
-			result.project_exp=res.project_exp.dataValues;
-			result.project_exp.data=[];
+			resultData.project_exp=res.project_exp.dataValues;
+			resultData.project_exp.data=[];
 			var projectExpItem=await(project_item.findAll({
 				where:{
 					projectId:res.project_exp.dataValues.id
@@ -107,59 +111,58 @@ module.exports=(async (function(req){
 				for(var des of descriptions){
 					item.dataValues.descriptions.push(des.dataValues);
 				}
-				result.project_exp.data.push(item.dataValues)
+				resultData.project_exp.data.push(item.dataValues)
 			}
 		}
 		//简历块工作经验数据适配
-		result.work_exp=undefined
+		resultData.work_exp=undefined
 		if(res.work_exp){
-			result.work_exp=res.work_exp.dataValues;
-			result.work_exp.data=[];
+			resultData.work_exp=res.work_exp.dataValues;
+			resultData.work_exp.data=[];
 			var workItem=await(work_item.findAll({
 				where:{
 					workId:res.work_exp.dataValues.id
 				}
 			}))
 			for(var item of workItem){
-				result.work_exp.data.push(item.dataValues)
+				resultData.work_exp.data.push(item.dataValues)
 			}
 		}
 		//简历块获奖经历数据适配
-		result.competitions=undefined
+		resultData.competitions=undefined
 		//我也不知道为什么这里被sequelize变成了competition,把s给忽略了。感觉略坑
 		if(res.competition){
-			result.competitions=res.competition.dataValues;
-			result.competitions.data=[];
+			resultData.competitions=res.competition.dataValues;
+			resultData.competitions.data=[];
 			var competitionsItem=await(competitions_item.findAll({
 				where:{
 					competitionId:res.competition.dataValues.id
 				}
 			}))
 			for(var item of competitionsItem){
-				result.competitions.data.push(item.dataValues)
+				resultData.competitions.data.push(item.dataValues)
 			}
 		}
 		//简历块个人书库数据适配
-		result.library=undefined
+		resultData.library=undefined
 		//我也不知道为什么这里被sequelize变成了competition,把s给忽略了。感觉略坑
 		if(res.library){
-			result.library=res.library.dataValues;
-			result.library.data=[];
+			resultData.library=res.library.dataValues;
+			resultData.library.data=[];
 			var libraryItem=await(library_item.findAll({
 				where:{
 					libraryId:res.library.dataValues.id
 				}
 			}))
 			for(var item of libraryItem){
-				result.library.data.push(item.dataValues)
+				resultData.library.data.push(item.dataValues)
 			}
 		}
-		
+		result.data=resultData;
 		
 	}else{
 		result={status:-1,msg:"此页面不存在"}
 	}
-	
-	console.log("step2")
-	return result;
+	response.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
+	response.end(JSON.stringify(result))
 }))

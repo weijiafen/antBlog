@@ -51,6 +51,16 @@ const router = (
               callback(null, require('../view/back/resume/editWorkExp').default);
             });
           }} />
+          <Route path="/back/editCompetition" getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/resume/editCompetition').default);
+            });
+          }} />
+          <Route path="/back/editLibrary" getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/resume/editLibrary').default);
+            });
+          }} />
     </Route>
     <Route path="/login" getComponent={(location, callback) => {
       require.ensure([], (require) => {

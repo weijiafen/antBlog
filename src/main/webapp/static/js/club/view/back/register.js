@@ -14,11 +14,11 @@ const NormalRegisterForm = Form.create()(React.createClass({
  	handleSubmit(e) {
 	    e.preventDefault();
       var ctx=this;
-      ctx.setState({
-        loading:true
-      })
 	    this.props.form.validateFields((err, values) => {
 	      if (!err) {
+          ctx.setState({
+            loading:true
+          })
 	        backService.register(values).then((res)=>{
 	          if(res.status==0){
 	            Modal.info({title:res.msg}) 

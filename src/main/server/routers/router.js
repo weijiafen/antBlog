@@ -18,6 +18,11 @@ var projectExpItem=require('../controler/resume/projectExpItem')
 var projectExpItemDes=require('../controler/resume/projectExpItemDes')
 var workExp=require('../controler/resume/workExp')
 var workExpItem=require('../controler/resume/workExpItem')
+var competitions=require('../controler/resume/competitions')
+var competitionsItem=require('../controler/resume/competitionsItem')
+var library=require('../controler/resume/library')
+var libraryItem=require('../controler/resume/libraryItem')
+var resume=require('../controler/resume')
 module.exports=function(app){
 	//app是一个express()
 	app.use(bodyParser.json({limit: '1mb'}));  //body-parser 解析json格式数据
@@ -36,6 +41,9 @@ module.exports=function(app){
 			else{
 				res.end(data.toString());
 			}
+	})
+	app.get('/getResume',function(req,res){
+		resume(req,res);
 	})
 	app.get(/\/blog\/list\/[0-9]+/,function(req,res){
 		res.end(req.toString())
@@ -62,6 +70,9 @@ module.exports=function(app){
 	app.post('/upload',function(req,res){
 		upload(req,res);
 	})
+
+
+
 	//添加登录过滤器，需要登录才能获取数据的接口应放在此句下面
 	app.use(loginFilter);
 
@@ -120,6 +131,30 @@ module.exports=function(app){
 	//管理后台删除一个工作项
 	app.delete('/resume/workExpItem',function(req,res){
 		workExpItem(req,res);
+	})
+	//管理后台获取获奖经历
+	app.get('/resume/competitions',function(req,res){
+		competitions('get',req,res);
+	})
+	//管理后台设置获奖经历
+	app.post('/resume/competitions',function(req,res){
+		competitions('post',req,res);
+	})
+	//管理后台删除一个获奖经历
+	app.delete('/resume/competitionsItem',function(req,res){
+		competitionsItem(req,res);
+	})
+	//管理后台获取个人书库
+	app.get('/resume/library',function(req,res){
+		library('get',req,res);
+	})
+	//管理后台设置个人书库
+	app.post('/resume/library',function(req,res){
+		library('post',req,res);
+	})
+	//管理后台删除一个图书记录
+	app.delete('/resume/libraryItem',function(req,res){
+		libraryItem(req,res);
 	})
 });
 }

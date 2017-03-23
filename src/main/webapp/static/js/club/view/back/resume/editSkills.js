@@ -1,19 +1,21 @@
 import React from 'react';
-import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin } from 'antd'
+import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin ,Select} from 'antd'
 import backService from '../../../service/backService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
 import ColorPickerComp from '../component/colorPickerComp';
 function beforeUpload(file) {
+	console.log(file.type)
   const isJPG = file.type === 'image/jpeg';
-  if (!isJPG) {
-    message.error('You can only upload JPG file!');
+  const isPNG = file.type === "image/png"
+  if (!isJPG&&!isPNG) {
+    message.error('You can only upload JPG or PNG file!');
   }
   const isLt250K = file.size < 250*1024;
   if (!isLt250K) {
     message.error('Image must smaller than 250K!');
   }
-  return isJPG && isLt250K;
+  return (isJPG || isPNG) && isLt250K;
 }
 var editSkills=React.createClass({
 	getInitialState:function(){
@@ -29,6 +31,9 @@ var editSkills=React.createClass({
 		}
 	},
 	componentDidMount:function(){
+		this.getInitData();
+	},
+	getInitData:function(){
 		backService.getSkills().then((res)=>{
 			this.setState(res.data)
 			this.setState({
@@ -61,12 +66,13 @@ var editSkills=React.createClass({
 		})
 	},
 	
-	changeValue:function(index,e){
+	changeValue:function(index,value){
 		var data=this.state.data;
-		data[index].value=e.target.value;
+	    data[index].value=value;
 		this.setState({
 			data:data
 		})
+		
 	},
 	changeText:function(e){
 		var className=e.target.className;
@@ -100,6 +106,16 @@ var editSkills=React.createClass({
 		})
 		
 	},
+	resetBgImage(){
+		this.setState({
+			backgroundImg:''
+		})
+	},
+	resetImage(){
+		this.setState({
+			img:''
+		})
+	},
 	changeColor:function(color){
 		this.setState({
 			color:color
@@ -114,6 +130,7 @@ var editSkills=React.createClass({
 				loading:true
 			})
 			backService.setSkills(this.state).then((res)=>{
+				this.getInitData();
 				this.setState({
 					loading:false
 				})
@@ -152,6 +169,9 @@ var editSkills=React.createClass({
 					            
 					            <Button type="primary" size='small' >上传新配图</Button>
 					      </Upload>
+					      <Button onClick={this.resetImage} size="small">
+					    	<Icon type="delete" />
+					    	</Button>
 					    <br/>
 						<img src={this.state.img} alt="" className="" />
 					</div>
@@ -167,6 +187,9 @@ var editSkills=React.createClass({
 					            
 					            <Button type="primary" size='small' >上传新背景图</Button>
 					      </Upload>
+					      <Button onClick={this.resetBgImage} size="small">
+					    	<Icon type="delete" />
+					    	</Button>
 					    <br/>
 						<img src={this.state.backgroundImg} alt="" className="" />
 					</div>
@@ -178,9 +201,15 @@ var editSkills=React.createClass({
 						<div>
 							{this.state.data.map(function(item,index){
 								return (
-									<div key={"skills"+index}>
+									<div key={"skills"+index} className="dataItem">
 										<Input value={item.key} onChange={_.partial(ctx.changeKey,index)} />：
-										<Input value={item.value} onChange={_.partial(ctx.changeValue,index)}/>
+										<Select onChange={_.partial(ctx.changeValue,index)} value={item.value} style={{ width: 120 }}>
+											<Select.Option value="1">1</Select.Option>
+											<Select.Option value="2">2</Select.Option>
+											<Select.Option value="3">3</Select.Option>
+											<Select.Option value="4">4</Select.Option>
+											<Select.Option value="5">5</Select.Option>
+										</Select>
 										<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
 											<Icon type="delete" />
 										</Button>
