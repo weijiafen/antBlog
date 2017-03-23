@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upload, Icon, message , Button, Input ,Switch , Modal } from 'antd'
+import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin } from 'antd'
 import backService from '../../../service/backService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
@@ -18,6 +18,7 @@ function beforeUpload(file) {
 var editSkills=React.createClass({
 	getInitialState:function(){
 		return {
+			loading:true,
 			title:'',
 			isShow:false,
 			img:'',
@@ -30,7 +31,10 @@ var editSkills=React.createClass({
 	componentDidMount:function(){
 		backService.getSkills().then((res)=>{
 			this.setState(res.data)
-			this.setState({staticTitle:res.data.title})
+			this.setState({
+				staticTitle:res.data.title,
+				loading:false
+			})
 		})
 	},
 	changeBackground:function(info){
@@ -106,7 +110,13 @@ var editSkills=React.createClass({
 			message.error('标题不能为空！');
 			return ;
 		}else{
+			this.setState({
+				loading:true
+			})
 			backService.setSkills(this.state).then((res)=>{
+				this.setState({
+					loading:false
+				})
 				message.info(res.msg)
 			})
 		}
@@ -116,6 +126,7 @@ var editSkills=React.createClass({
 		let ctx=this;
 		return (
 				<div>
+				<Spin spinning={this.state.loading}>
 					<header>{this.state.staticTitle}</header>
 					<div className="editItem">
 						<label>标题名称：</label>
@@ -167,7 +178,7 @@ var editSkills=React.createClass({
 						<div>
 							{this.state.data.map(function(item,index){
 								return (
-									<div key={item.key+index}>
+									<div key={"skills"+index}>
 										<Input value={item.key} onChange={_.partial(ctx.changeKey,index)} />：
 										<Input value={item.value} onChange={_.partial(ctx.changeValue,index)}/>
 										<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
@@ -179,6 +190,7 @@ var editSkills=React.createClass({
 						</div>
 					</div>
 					<Button type="primary" onClick={this.editSkills} >保存</Button>
+				</Spin>
 				</div>
 			)
 	}

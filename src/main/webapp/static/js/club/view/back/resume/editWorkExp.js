@@ -14,7 +14,7 @@ function beforeUpload(file) {
   }
   return isJPG && isLt250K;
 }
-var editProjectExp=React.createClass({
+var editWorkExp=React.createClass({
 	getInitialState:function(){
 		return {
 			loading:true,
@@ -30,7 +30,7 @@ var editProjectExp=React.createClass({
 		this.getInitData();
 	},
 	getInitData:function(){
-		backService.getProjectExp().then((res)=>{
+		backService.getWorkExp().then((res)=>{
 			this.setState(res.data)
 			this.setState({
 				staticTitle:res.data.title,
@@ -56,17 +56,16 @@ var editProjectExp=React.createClass({
 			data:data
 		})
 	},
-	changeKey:function(index,desIndex,e){
+	changeItemDate:function(index,e){
 		var data=this.state.data;
-		data[index].descriptions[desIndex].key=e.target.value;
+		data[index].itemDate=e.target.value;
 		this.setState({
 			data:data
 		})
 	},
-	
-	changeValue:function(index,desIndex,e){
+	changeItemTxt:function(index,e){
 		var data=this.state.data;
-		data[index].descriptions[desIndex].value=e.target.value;
+		data[index].itemTxt=e.target.value;
 		this.setState({
 			data:data
 		})
@@ -84,13 +83,8 @@ var editProjectExp=React.createClass({
 		data.push({
 			"id":0,
 			"itemTitle":"",
-			"descriptions":[
-				{
-					"id":0,
-					"key":"",
-					"value":""
-				}
-			]
+			"itemDate":"",
+			"itemTxt":""
 		})
 		this.setState({
 			data:data
@@ -113,7 +107,7 @@ var editProjectExp=React.createClass({
 			Modal.confirm({
 				title:'删除已保存数据将即刻生效，是否确认删除该条数据？',
 				onOk(){
-					backService.deleteProjectExpItem(ctx.state.data[index].id).then((res)=>{
+					backService.deleteWorkExpItem(ctx.state.data[index].id).then((res)=>{
 						if(res.status===0){
 							var data=ctx.state.data;
 							data.splice(index,1);
@@ -130,58 +124,12 @@ var editProjectExp=React.createClass({
 		
 		
 	},
-	addItem:function(index){
-		console.log(this.state.data)
-		var data=this.state.data;
-		data[index].descriptions.push(
-				{
-					"id":0,
-					"key":"",
-					"value":""
-				}
-		)
-		this.setState({
-			data:data
-		})
-	},
-	deleteItem:function(index,desIndex,e){
-		var ctx=this;
-		if(this.state.data[index].descriptions[desIndex].id===0){
-			Modal.confirm({
-				title:'是否确认删除该条数据？',
-				onOk(){
-					var data=ctx.state.data;
-					data[index].descriptions.splice(desIndex,1);
-					ctx.setState({
-						data:data
-					})
-				}
-			})
-		}else{
-			Modal.confirm({
-				title:'删除已保存数据将即刻生效，是否确认删除该条数据？',
-				onOk(){
-					backService.deleteProjectExpItemDes(ctx.state.data[index].descriptions[desIndex].id).then((res)=>{
-						if(res.status===0){
-							var data=ctx.state.data;
-							data[index].descriptions.splice(desIndex,1);
-							ctx.setState({
-								data:data
-							})
-						}
-						message.info(res.msg)
-					})
-					
-				}
-			})
-		}
-	},
 	changeColor:function(color){
 		this.setState({
 			color:color
 		})
 	},
-	editProjectExp:function(){
+	editWorkExp:function(){
 		if(ustr.trim(this.state.title)===""){
 			message.error('标题不能为空！');
 			return ;
@@ -189,7 +137,7 @@ var editProjectExp=React.createClass({
 			this.setState({
 				loading:true
 			})
-			backService.setProjectExp(this.state).then((res)=>{
+			backService.setWorkExp(this.state).then((res)=>{
 				this.setState({
 					loading:false
 				})
@@ -236,42 +184,24 @@ var editProjectExp=React.createClass({
 						<div>
 							{this.state.data.map(function(item,index){
 								return (
-									<div key={"project"+index}>
-										<Input value={item.itemTitle} onChange={_.partial(ctx.changeItemTitle,index)} />
+									<div key={"work"+index}>
+										条目标题：<Input value={item.itemTitle} onChange={_.partial(ctx.changeItemTitle,index)} />
+										条目副标题：<Input value={item.itemDate} onChange={_.partial(ctx.changeItemDate,index)} />
+										条目描述：<Input value={item.itemTxt} type="textarea" autosize={{ minRows: 2, maxRows: 6 }}
+										 onChange={_.partial(ctx.changeItemTxt,index)} />
 										<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
 											<Icon type="delete" />
 										</Button>
 										<br/>
-										
-										<div style={{padding:'20px'}}>
-											<label>描述：</label>
-											<Button type="primary" size="small" onClick={_.partial(ctx.addItem,index)}>
-												<Icon type="plus"/>
-											</Button>
-											{
-												item.descriptions.map(function(desItem,desIndex){
-													return (
-															<div key={"descriptions"+index+desIndex}>
-																<Input value={desItem.key} onChange={_.partial(ctx.changeKey,index,desIndex)} />
-																<Input value={desItem.value} onChange={_.partial(ctx.changeValue,index,desIndex)}/>
-																<Button size="small" onClick={_.partial(ctx.deleteItem,index,desIndex)}>
-																	<Icon type="delete" />
-																</Button>
-															</div>
-														)
-												})
-											}
-										</div>
-										
 									</div>
 									)
 							})}
 						</div>
 					</div>
-					<Button type="primary" onClick={this.editProjectExp} >保存</Button>
+					<Button type="primary" onClick={this.editWorkExp} >保存</Button>
 					</Spin>
 				</div>
 			)
 	}
 })
-export default editProjectExp
+export default editWorkExp

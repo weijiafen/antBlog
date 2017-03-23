@@ -46,6 +46,11 @@ const router = (
               callback(null, require('../view/back/resume/editProjectExp').default);
             });
           }} />
+          <Route path="/back/editWorkExp" getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/resume/editWorkExp').default);
+            });
+          }} />
     </Route>
     <Route path="/login" getComponent={(location, callback) => {
       require.ensure([], (require) => {

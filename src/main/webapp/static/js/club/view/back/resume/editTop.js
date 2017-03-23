@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upload, Icon, message , Button, Input} from 'antd'
+import {Upload, Icon, message , Button, Input , Spin} from 'antd'
 import backService from '../../../service/backService';
 import EditImage from '../component/editImage';
 import ColorPickerComp from '../component/colorPickerComp';
@@ -18,6 +18,7 @@ function beforeUpload(file) {
 var editTop=React.createClass({
 	getInitialState:function(){
 		return {
+			loading:true,
 			img:'',
 			backgroundImg:'',
 			editImage:false,
@@ -28,6 +29,9 @@ var editTop=React.createClass({
 	componentDidMount:function(){
 		backService.getTop().then((res)=>{
 			this.setState(res.data)
+			this.setState({
+				loading:false
+			})
 		})
 	},
 	confirmImage:function(img){
@@ -55,7 +59,13 @@ var editTop=React.createClass({
 	    }
 	},
 	editTop:function(){
+		this.setState({
+			loading:true
+		})
 		backService.setTop(this.state).then((res)=>{
+			this.setState({
+				loading:false
+			})
 			message.info(res.msg)
 		})
 	},
@@ -80,6 +90,7 @@ var editTop=React.createClass({
 			:
 			(
 			<div>
+			<Spin spinning={this.state.loading}>
 				<header>基础资料</header>
 				<div className="editItem">
 					<label>头像：</label>
@@ -118,7 +129,7 @@ var editTop=React.createClass({
 					<img src={this.state.backgroundImg} alt="" className="" />
 				</div>
 			   	<Button type="primary" onClick={this.editTop} >保存</Button>
-			      
+			</Spin>
 			</div>
 			)
 		)

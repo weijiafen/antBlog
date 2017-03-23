@@ -87,6 +87,55 @@ const Service = {
         },(error)=>{
             throw error
         })
-    }
+    },
+    getProjectExp:()=>{
+        return api.get('/resume/projectExp').then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    setProjectExp:(data)=>{
+        return api.post('/resume/projectExp',{data:data}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    deleteProjectExpItem:(id)=>{
+        return api.delete('/resume/projectExpItem',{params:{id:id}}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    deleteProjectExpItemDes:(id)=>{
+        return api.delete('/resume/projectExpItemDes',{params:{id:id}}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    getWorkExp:()=>{
+        return api.get('/resume/workExp').then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    setWorkExp:(data)=>{
+        return api.post('/resume/workExp',{data:data}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    deleteWorkExpItem:(id)=>{
+        return api.delete('/resume/workExpItem',{params:{id:id}}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
 }
 export default Service;

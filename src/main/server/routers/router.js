@@ -12,7 +12,12 @@ var userTop=require('../controler/resume/userTop.js')
 var loginFilter = require('../controler/loginFilter');
 var getInfo = require('../controler/getInfo');
 var personalInfo=require('../controler/resume/personalInfo.js')
-var skills=require('../controler/resume/skills.js')
+var skills=require('../controler/resume/skills.js');
+var projectExp=require('../controler/resume/projectExp')
+var projectExpItem=require('../controler/resume/projectExpItem')
+var projectExpItemDes=require('../controler/resume/projectExpItemDes')
+var workExp=require('../controler/resume/workExp')
+var workExpItem=require('../controler/resume/workExpItem')
 module.exports=function(app){
 	//app是一个express()
 	app.use(bodyParser.json({limit: '1mb'}));  //body-parser 解析json格式数据
@@ -35,46 +40,86 @@ module.exports=function(app){
 	app.get(/\/blog\/list\/[0-9]+/,function(req,res){
 		res.end(req.toString())
 	})
+	//判断是否登录状态
 	app.get('/isLogin',function(req,res){
 		isLogin(req,res);
 	})
+	//注销登录
 	app.post('/logOff',function(req,res){
 		logOff(req);
 		res.end(JSON.stringify({status:0,msg:'注销成功'}))
 	})
+	//注册
 	app.post('/register',function(req,res){
 		register(req,res);
 		
 	})
+	//登录
 	app.post('/login',function(req,res){
 		login(req,res);
 	})
+	//上传文件接口
 	app.post('/upload',function(req,res){
 		upload(req,res);
 	})
 	//添加登录过滤器，需要登录才能获取数据的接口应放在此句下面
 	app.use(loginFilter);
+
+	//管理后台获取头像，最后登录时间
 	app.get('/back/getInfo',function(req,res){
 		getInfo(req,res);
 	})
+	//管理后台获取基础资料
 	app.get('/resume/userTop',function(req,res){
 		userTop('get',req,res);
 	})
+	//管理后台设置基础资料
 	app.post('/resume/userTop',function(req,res){
 		userTop('post',req,res);
 	})
+	//管理后台获取个人信息
 	app.get('/resume/personalInfo',function(req,res){
 		personalInfo('get',req,res);
 	})
+	//管理后台设置个人信息
 	app.post('/resume/personalInfo',function(req,res){
 		personalInfo('post',req,res);
 	})
+	//管理后台获取技能
 	app.get('/resume/skills',function(req,res){
 		skills('get',req,res);
 	})
+	//管理后台设置技能
 	app.post('/resume/skills',function(req,res){
 		skills('post',req,res);
 	})
-  
+	//管理后台获取项目经验
+	app.get('/resume/projectExp',function(req,res){
+		projectExp('get',req,res);
+	})
+	//管理后台设置项目经验
+	app.post('/resume/projectExp',function(req,res){
+		projectExp('post',req,res);
+	})
+	//管理后台删除一个项目经验项
+	app.delete('/resume/projectExpItem',function(req,res){
+		projectExpItem(req,res);
+	})
+	//管理后台删除一个经验项下的键值对
+	app.delete('/resume/projectExpItemDes',function(req,res){
+		projectExpItemDes(req,res);
+	})
+  	//管理后台获取工作经验
+	app.get('/resume/workExp',function(req,res){
+		workExp('get',req,res);
+	})
+	//管理后台设置工作经验
+	app.post('/resume/workExp',function(req,res){
+		workExp('post',req,res);
+	})
+	//管理后台删除一个工作项
+	app.delete('/resume/workExpItem',function(req,res){
+		workExpItem(req,res);
+	})
 });
 }
