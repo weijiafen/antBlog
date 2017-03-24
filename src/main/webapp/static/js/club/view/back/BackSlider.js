@@ -46,7 +46,8 @@ var BackSlider=React.createClass({
 			this.setState({
 				userName:res.data.userName,
 				updateAt:res.data.updateAt,
-				img:res.data.img
+				img:res.data.img,
+				resumeTitles:res.data.resumeTitles
 			})
 		})
 	},
