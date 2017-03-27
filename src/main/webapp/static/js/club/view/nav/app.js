@@ -1,6 +1,5 @@
 import React from 'react';
-// import { NavBar } from 'antd-mobile';
-import { Row, Col , Menu,Icon } from 'antd';
+import { Row, Col , Menu } from 'antd';
 import homeService from'../../service/homeService';
 import nav_icon from '../../../../images/logo.png';
 import {redirect} from '../../util/function.js'

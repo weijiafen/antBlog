@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row , Col , Icon } from 'antd';
+import { Row , Col  } from 'antd';
 
 var App=React.createClass({
 	render(){
