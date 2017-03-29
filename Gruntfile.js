@@ -63,6 +63,12 @@ module.exports=function(grunt){
 				    cwd:'src/main/webapp/static/images',
 				    src: '**',
 				    dest: 'src/main/webapp/build/images',
+				},
+				{
+		  			expand: true,
+				    cwd:'src/main/webapp/static/js/club/library/ueditor',
+				    src: '**',
+				    dest: 'src/main/webapp/build/js/club/ueditor/',
 				}
 		  	]
 		    

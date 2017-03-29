@@ -179,5 +179,61 @@ const Service = {
             throw error
         })
     },
+    getCategory:()=>{
+        return api.get('/blog/getCategory').then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    setCategory:(data)=>{
+        return api.post('/blog/getCategory',{data:data}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    deleteMenu:(id)=>{
+        return api.delete('/blog/deleteMenu',{params:{id:id}}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    deleteCategory:(id)=>{
+        return api.delete('/blog/deleteCategory',{params:{id:id}}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    getArticalList:(data)=>{
+        return api.get('/blog/getArticalList',{params:{
+            menuId:data.menuId,
+            categoryId:data.categoryId,
+            pageSize:data.pageSize,
+            pageNum:data.pageNum
+        }}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    setArticalDetail:(data)=>{
+        return api.post('/blog/ArticalDetail',{data:data}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    getArticalDetail:(id)=>{
+        return api.get('/blog/ArticalDetail',{params:{
+            id:id
+        }}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
 }
 export default Service;

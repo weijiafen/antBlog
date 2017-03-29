@@ -79,8 +79,8 @@ var BackSlider=React.createClass({
 		          <Menu.Item key="#/back/editLibrary">{this.state.resumeTitles[6]}</Menu.Item>
 		        </SubMenu>
 		        <SubMenu key="sub2" title={<span><Icon type="edit" /><span>博客管理</span></span>}>
-		          <Menu.Item key="#/back/bars">管理分类</Menu.Item>
-		          <Menu.Item key="#/back/editArtical">管理文章</Menu.Item>
+		          <Menu.Item key="#/back/category">管理分类</Menu.Item>
+		          <Menu.Item key="#/back/ArticalList">管理文章</Menu.Item>
 		        </SubMenu>
 		        <Menu.Item key="#/back/message"><Icon type="notification" />消息中心</Menu.Item>
 		        <Menu.Item key="#/back/account"><Icon type="user" />账号中心</Menu.Item>

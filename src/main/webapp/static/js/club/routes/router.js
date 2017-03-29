@@ -61,6 +61,26 @@ const router = (
               callback(null, require('../view/back/resume/editLibrary').default);
             });
           }} />
+          <Route path="/back/category" getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/blog/category').default);
+            });
+          }} />
+          <Route path="/back/ArticalList" getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/blog/ArticalList').default);
+            });
+          }} />
+          <Route path="/back/editArtical" getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/blog/editArtical').default);
+            });
+          }} />
+          <Route path="/back/editArtical/:id" getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/blog/editArtical').default);
+            });
+          }} />
     </Route>
     <Route path="/login" getComponent={(location, callback) => {
       require.ensure([], (require) => {
@@ -87,7 +107,7 @@ const router = (
             callback(null, require('../view/blog/content').default); 
           });
         }} />
-      <Route path="/blog/:userId/:typeId/:articleId" getComponent={(location, callback) => {
+      <Route path="/blog/:userId/:typeId/:articalId" getComponent={(location, callback) => {
       require.ensure([], (require) => {
         callback(null, require('../view/blog/article').default);
       });

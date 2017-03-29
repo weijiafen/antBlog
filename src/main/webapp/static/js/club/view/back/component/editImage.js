@@ -4,7 +4,7 @@ import { Button , Spin , message } from 'antd';
 import backService from '../../../service/backService'; 
 import 'cropperjs/dist/cropper.css';
 function getRandomFileName(){
-  var pool=[1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F']
+  var pool=["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
   var fileName="";
   for(let i of pool){
     fileName+=pool[parseInt(Math.random()*16)]

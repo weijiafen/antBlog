@@ -1,6 +1,7 @@
 process.setMaxListeners(0)
 var session = require('express-session');
 var fs=require('fs');
+var path = require('path');
 var bodyParser=require('body-parser')
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
@@ -25,6 +26,14 @@ var library=require('../controler/resume/library')
 var libraryItem=require('../controler/resume/libraryItem')
 var resume=require('../controler/resume')
 var getUserList=require('../controler/resume/getUserList')
+var getCategory=require('../controler/blog/getCategory')
+var deleteMenu=require('../controler/blog/deleteMenu')
+var deleteCategory=require('../controler/blog/deleteCategory')
+var getArticalList=require('../controler/blog/getArticalList')
+var ArticalDetail=require('../controler/blog/ArticalDetail')
+var articalComment=require('../controler/blog/articalComment')
+var getHead=require('../controler/blog/getHead')
+var ueditor = require("ueditor")
 module.exports=function(app){
 	//app是一个express()
 	app.use(bodyParser.json({limit: '1mb'}));  //body-parser 解析json格式数据
@@ -33,7 +42,8 @@ module.exports=function(app){
 	}));
 	app.use(session({
 	    secret: 'hubwiz app', //secret的值建议使用随机字符串
-	    cookie: {maxAge: 60 * 1000 * 30} // 过期时间（毫秒）
+	    cookie: {maxAge: 60 * 1000 * 30}, // 过期时间（毫秒）
+	    resave:true		//在操作的时候重新设置session。顺延登录时间
 	}));
 	app.get('/', function (req, res) {
 		fs.readFile('src/main/webapp/index.html',function(err,data){
@@ -49,9 +59,6 @@ module.exports=function(app){
 	})
 	app.get('/getResume',function(req,res){
 		resume(req,res);
-	})
-	app.get(/\/blog\/list\/[0-9]+/,function(req,res){
-		res.end(req.toString())
 	})
 	//判断是否登录状态
 	app.get('/isLogin',function(req,res){
@@ -75,8 +82,23 @@ module.exports=function(app){
 	app.post('/upload',function(req,res){
 		upload(req,res);
 	})
-
-
+	//获取文章详情，在管理后台和博客前台都可用，不需权限
+	app.get('/blog/ArticalDetail',function(req,res){
+		ArticalDetail('get',req,res);
+	})
+	//获取博客头部信息和列表
+	app.get('/blog/getHead',function(req,res){
+		getHead(req,res);
+	})
+	//获取博客文章列表,管理后台和博客前端都可使用，不需权限。
+	//后台使用session.uid取，博客前台用query.userId取对应用户ID
+	app.get('/blog/getArticalList',function(req,res){
+		getArticalList(req,res);
+	})
+	//博客前台获取文章评论列表
+	app.get('/blog/articalComment',function(req,res){
+		articalComment(req,res);
+	})
 
 	//添加登录过滤器，需要登录才能获取数据的接口应放在此句下面
 	app.use(loginFilter);
@@ -161,5 +183,59 @@ module.exports=function(app){
 	app.delete('/resume/libraryItem',function(req,res){
 		libraryItem(req,res);
 	})
+	//管理后台获取博客分类
+	app.get('/blog/getCategory',function(req,res){
+		getCategory('get',req,res);
+	})
+	//管理后台设置博客分类
+	app.post('/blog/getCategory',function(req,res){
+		getCategory('post',req,res);
+	})
+	//管理后台删除一个一级菜单
+	app.delete('/blog/deleteMenu',function(req,res){
+		deleteMenu(req,res);
+	})
+	//管理后台删除一个二级菜单
+	app.delete('/blog/deleteCategory',function(req,res){
+		deleteCategory(req,res);
+	})
+	
+	//管理后台修改文章详情
+	app.post('/blog/ArticalDetail',function(req,res){
+		ArticalDetail('post',req,res);
+	})
+	//管理后台删除文章
+	app.delete('/blog/ArticalDetail',function(req,res){
+		ArticalDetail('delete',req,res);
+	})
+
+	// /ueditor 入口地址配置 https://github.com/netpi/ueditor/blob/master/example/public/ueditor/ueditor.config.js
+	// 官方例子是这样的 serverUrl: URL + "php/controller.php"
+	// 我们要把它改成 serverUrl: URL + 'ue'
+	app.use("/ueditor/ue", ueditor(path.join(process.cwd(), '/upload'), function(req, res, next) {
+
+	  // ueditor 客户发起上传图片请求
+
+	  if(req.query.action === 'uploadimage'){
+
+	    // 这里你可以获得上传图片的信息
+	    var foo = req.ueditor;
+
+	    // 下面填写你要把图片保存到的路径 （ 以 path.join(__dirname, 'public') 作为根路径）
+	    var img_url = '/ueditor';
+	    res.ue_up(img_url); //你只要输入要保存的地址 。保存操作交给ueditor来做
+	  }
+	  //  客户端发起图片列表请求
+	  else if (req.query.action === 'listimage'){
+	    var dir_url = 'your img_dir'; // 要展示给客户端的文件夹路径
+	    res.ue_list(dir_url) // 客户端会列出 dir_url 目录下的所有图片
+	  }
+	  // 客户端发起其它请求
+	  else {
+
+	    res.setHeader('Content-Type', 'application/json');
+	    // 这里填写 ueditor.config.json 这个文件的路径
+	    res.redirect('/js/club/ueditor/ueditor.config.json')
+	}}));
 });
 }

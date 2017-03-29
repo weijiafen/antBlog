@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row , Col , Breadcrumb , Icon} from 'antd';
+import { Row , Col , Breadcrumb , Icon , Pagination } from 'antd';
 import blogService from '../../service/blogService';
 import moment from 'moment';
 var content=React.createClass({
@@ -8,7 +8,10 @@ var content=React.createClass({
 			typeName:"",
 			list:null,
 			typeId:this.props.params.typeId,
-			userId:this.props.params.userId
+			userId:this.props.params.userId,
+			pageSize:10,
+			pageNum:1,
+			total:0
 		}
 	},
 	componentWillMount:function(){
@@ -25,13 +28,38 @@ var content=React.createClass({
 		})
 		this.getList(this,userId,typeId);
 	},
+	changePage(page){
+		var ctx=this;
+		this.setState({
+			pageNum:page
+		},function(){
+			ctx.getList(ctx,ctx.state.userId,ctx.state.typeId)
+		})
+	},
 	getList:(ctx,userId,typeId)=>{
 		//ctx:需要把作用域传过来设置state
-		blogService.getList(userId,typeId).then((res)=>{
-			ctx.setState({
-				typeName:res.data.typeName,
-				list:res.data.list
-			})
+		var menuId=-1;
+		blogService.getList({
+			userId:userId,
+			categoryId:typeId,
+			menuId:menuId,
+			pageNum:ctx.state.pageNum,
+			pageSize:ctx.state.pageSize
+		}).then((res)=>{
+			if(res.status===0){
+				ctx.setState({
+					typeName:res.data.categoryName,
+					list:res.data.articalList,
+					total:res.data.total
+				})
+			}else{
+				ctx.setState({
+					typeName:res.data.categoryName,
+					list:[],
+					total:0
+				})
+			}
+			
 		})
 	},
 	render:function(){
@@ -46,16 +74,17 @@ var content=React.createClass({
 			blogList=(<div  className="blogList">
 			{
 				this.state.list.map((item)=>{
-					return <div className="blogItem clearfix" key={item.articalId}>
+					return <div className="blogItem clearfix" key={"artical"+item.id}>
 						<h2>{item.articalName}</h2>
-						<p>更新时间：{moment(item.updataDate).format("YYYY-MM-DD HH:mm:ss")}</p>
+						<p>更新时间：{moment(item.updataAt).format("YYYY-MM-DD HH:mm:ss")}</p>
 						<div dangerouslySetInnerHTML={{__html:item.articalContent}}></div>
-						<a href={`#/blog/${this.state.userId}/${this.state.typeId}/${item.articalId}`}>
+						<a href={`#/blog/${this.state.userId}/${this.state.typeId}/${item.id}`}>
 							<Icon type="eye-o" />
 						({item.reading})</a>
 					</div>
 				})
 			}
+			<Pagination  total={this.state.total}  onChange={this.changePage}/>
 			</div>)
 		}
 		return <section className="">

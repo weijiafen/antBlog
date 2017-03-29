@@ -35,7 +35,7 @@ module.exports=(async (function(req,response){
 	}))
 	//又是这个坑，返回的res自动去掉了s
 	// console.log('res',res.competitions)
-	var resumeTitles=[];
+	var resumeTitles=['基础资料'];
 	resumeTitles.push(res.personal_info.dataValues.title)
 	resumeTitles.push(res.skills_level.dataValues.title)
 	resumeTitles.push(res.project_exp.dataValues.title)

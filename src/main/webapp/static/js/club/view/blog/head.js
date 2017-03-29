@@ -4,13 +4,13 @@ import blogService from '../../service/blogService';
 const SubMenu = Menu.SubMenu;
 var head=React.createClass({
 	getInitialState(){
-		let typeId=this.props.typeId;
+		let categoryId=this.props.typeId;
 		let userId=this.props.userId;
 		return {
 			name:"",
 			photo:"",
 			introduce:"",
-			typeId:typeId,
+			categoryId:categoryId,
 			menus:[],
 			 openKeys: [],
 			 userId:userId
@@ -20,32 +20,32 @@ var head=React.createClass({
 		let userId=this.props.userId;
 		blogService.getHead(userId).then((res)=>{
 			this.setState({
-				name:res.name,
-				photo:res.photo,
-				introduce:res.introduce,
-				menus:res.menus,
+				name:res.data.name,
+				photo:res.data.img,
+				introduce:res.data.introduce,
+				menus:res.data.menus,
 			})
 		})
 	},
 	componentWillReceiveProps(obj){
 		let userId=obj.userId;
-		let typeId=obj.typeId;
+		let categoryId=obj.typeId;
 		this.setState({
 			userId:userId,
-			typeId:typeId
+			categoryId:categoryId
 		})
-		blogService.getHead(userId).then((res)=>{
-			this.setState({
-				name:res.name,
-				photo:res.photo,
-				introduce:res.introduce,
-				menus:res.menus,
-			})
-		})
+		// blogService.getHead(userId).then((res)=>{
+		// 	this.setState({
+		// 		name:res.name,
+		// 		photo:res.photo,
+		// 		introduce:res.introduce,
+		// 		menus:res.menus,
+		// 	})
+		// })
 	},
 	clickMenu(e){
 		this.setState({
-			typeId:e.key
+			categoryId:e.key
 		})
 	},
 	 onOpenChange(openKeys) {
@@ -74,7 +74,7 @@ var head=React.createClass({
 				
 			</div>
 			<Menu  
-        selectedKeys={[this.state.typeId]}
+        selectedKeys={[this.state.categoryId]}
         mode="inline"
         openKeys={this.state.openKeys}
         onOpenChange={this.onOpenChange}
@@ -86,8 +86,8 @@ var head=React.createClass({
       			{this.state.menus.map((sub)=>{
       				 return <SubMenu title={sub.menuName} key={"sub"+sub.id}>
       				 	{sub.children.map((type)=>{
-      				 		return <Menu.Item key={`${type.typeId}`}>
-      				 			<a href={`/#/blog/${this.props.userId}/${type.typeId}`}>{type.typeName}</a>
+      				 		return <Menu.Item key={`${type.id}`}>
+      				 			<a href={`/#/blog/${this.props.userId}/${type.id}`}>{type.categoryName}</a>
       				 		</Menu.Item>
       				 	})}
 					    

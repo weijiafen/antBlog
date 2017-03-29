@@ -24,16 +24,26 @@ var Navbar=React.createClass({
 		let ctx=this;
 		//发布一个切换登录状态的任务给登录页面
 		PubSub.subscribe('changeLogin',function(msg,data){
-			console.log('changeLogin')
 			ctx.setState({
 				isLogin:data
 			})
+			window.isLogin=data;
 		})
+		//定义一个全局的isLogin变量，Pubsub无法return 值，只能这么做着先了，除非用上redux
+		window.isLogin=false;
 		homeService.isLogin().then((res)=>{
-			if(res.status==0)
-			ctx.setState({
-				isLogin:true
-			})
+			if(res.status==0){
+				ctx.setState({
+					isLogin:true
+				})
+				window.isLogin=true;
+			}else{
+				ctx.setState({
+					isLogin:false
+				})
+				window.isLogin=false;
+			}
+			
 		})
 	},
  	MenuClick:function(item){

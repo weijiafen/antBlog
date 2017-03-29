@@ -1,42 +1,96 @@
 import React from 'react';
-import { Row , Col , Breadcrumb ,Button , Pagination , Icon } from 'antd';
+import { Row , Col , Breadcrumb ,Button , Pagination , Icon, Modal ,Input } from 'antd';
 import moment from 'moment';
 import blogService from '../../service/blogService';
+import {redirect} from '../../util/function.js';
+import _ from 'underscore';
+import NormalLoginForm from '../back/component/NormalLoginForm';
 var article=React.createClass({
 	getInitialState(){
 		return {
 			userId:this.props.params.userId,
-			typeId:this.props.params.typeId,
-			articleId:this.props.params.articleId,
+			articalId:this.props.params.articalId,
 			data:{},
-			comments:null
+			comments:null,
+			commentTxt:'22'
 		}
 	},
 	componentWillMount:function(){
-		let typeId=this.state.typeId;
-		let userId=this.state.userId;
-		let articleId=this.state.articleId
-		this.getArtical(this,userId,typeId,articleId);
+		let articalId=this.state.articalId
+		this.getArtical(this,articalId);
 	},
 	componentWillReceiveProps:function(object ,nextProps){
 		console.log("article",object)
-		let typeId=object.params.typeId;
-		let userId=object.params.userId;
-		let articleId=object.params.articleId
+		let articalId=object.params.articalId
+		let userId=object.params.userId
 		this.setState({
 			userId:userId,
-			typeId:typeId,
-			articleId:articleId
+			articalId:articalId
 		})
-		this.getArtical(this,userId,typeId,articleId);
+		this.getArtical(this,articalId);
 	},
-	getArtical(ctx,userId,typeId,articleId){
-		blogService.getArtical(userId,typeId,articleId).then((res)=>{
+	getArtical(ctx,articalId){
+		blogService.getArtical(articalId).then((res)=>{
 			ctx.setState({
-				userId:userId,
 				data:res.data
 			})
-			this.changeComments(1)
+			// this.changeComments(1)
+		})
+	},
+	changeComentTxt(e){
+		//输入时改变commentTxt，这里无法进行Input value与state的绑定
+		this.setState({
+			commentTxt:e.target.value
+		},function(){
+			console.log(this.state.commentTxt)
+		})
+		
+
+	},
+	comment(articalId,userId,targetId,targetName){
+		var ctx=this;
+		var isLogin=window.isLogin;
+		console.log(isLogin)
+		if(isLogin){
+			Modal.info({
+				title:'评论',
+				onCancel:function(){
+					//关闭时清空commentTxt
+					ctx.setState({
+						commentTxt:''
+					})
+				},
+				onOk:function(){},
+				okText:'确定',
+				content:<div>
+					<Input type="textarea" onChange={ctx.changeComentTxt} autosize={{ minRows: 3, maxRows: 6 }} placeholder={`回复：${targetName}`} />
+				</div>
+			})
+		}else{
+			var loginModal=Modal.info({
+				title:'需要登录才能评论哦~',
+				footer:null,
+				okText:'不了不了',
+				onCancel:function(){},
+				content:<NormalLoginForm onSuccess={this.loginSuccess} onRegister={this.toRegister}/>
+			})
+			//放到state中，登录成功后可以destroy关闭
+			this.setState({
+				loginModal:loginModal
+			})
+		}
+		
+	},
+	agree(){},
+	toRegister(){
+		this.state.loginModal.destroy();
+		redirect('#/register')
+	},
+	loginSuccess(){
+		this.state.loginModal.destroy();
+		Modal.info({
+			onCancel:function(){},
+			title:'success'
 		})
 	},
 	changeComments(page){
@@ -45,7 +99,7 @@ var article=React.createClass({
 		})
 	},
 	render:function(){
-		let articleId=this.props.params.articleId;
+		let articalId=this.props.params.articalId;
 		let comments;
 		if(this.state.comments==null){
 			comments= <div>加载留言中...</div>
@@ -84,8 +138,8 @@ var article=React.createClass({
 			<div className="blogBreadcrumb">
 				<Breadcrumb>
 					<Breadcrumb.Item>
-						<a href={`#/blog/${this.state.userId}/${this.state.typeId}`}>
-							{this.state.data.typeName}
+						<a href={`#/blog/${this.state.userId}/${this.state.data.categoryId}`}>
+							{this.state.data.categoryName}
 						</a>
 					</Breadcrumb.Item>
 					<Breadcrumb.Item>
@@ -96,17 +150,17 @@ var article=React.createClass({
 			<div className="articalWrap">
 				 <h2>{this.state.data.articalName}</h2>
 				 <div className="articalInfo">
-				 	<span>作者：{this.state.data.author}</span>
 				 	<span>阅读量：{this.state.data.reading}</span>
-				 	<span>创作日期：{moment(this.state.data.createDate).format("YYYY-MM-DD HH:mm:ss")}</span>
-				 	<span>最后修改日期：{moment(this.state.data.updateDate).format("YYYY-MM-DD HH:mm:ss")}</span>
+				 	<span>创作日期：{moment(this.state.data.createAt).format("YYYY-MM-DD HH:mm:ss")}</span>
+				 	<span>最后修改日期：{moment(this.state.data.updateAt).format("YYYY-MM-DD HH:mm:ss")}</span>
 				 </div>
 				 <div className="articalBody" dangerouslySetInnerHTML={{__html:this.state.data.articalContent}}></div>
 				 <div className="articalOperation">
-				 	<Button type="primary">留言</Button>
-				 	<a>
-				 	<Icon type="like-o" />
-				 	({this.state.data.applaud})</a>
+				 	<Button type="primary" onClick={_.partial(this.comment,this.state.articalId,this.state.userId,this.state.userId,this.state.data.author)}>留言</Button>
+				 	<a onClick={this.agree}>
+				 		<Icon type="like-o" />
+				 		({this.state.data.agree})
+				 	</a>
 
 				 </div>
 				 <div>

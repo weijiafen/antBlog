@@ -1,7 +1,7 @@
 import React from 'react';
 import {Row ,Col , Card, Form, Icon, Input, Button, Checkbox} from 'antd'
 import backService from '../../service/backService'; 
-import BackSlider from './BackSlider'
+import BackSlider from './BackSlider';
 var back=React.createClass({
 	render:function(){
 		return <div className="backContainer">
