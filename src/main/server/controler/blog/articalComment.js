@@ -1,140 +1,124 @@
 var comment=require('../../modules/blog/comment');
 var User=require('../../modules/resume/user');
-var category=require('../../modules/blog/category')
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 module.exports=(async(function(method,req,res){
 	var result;
 	
 	if(method==="get"){
-		User.hasMany(artical);
-		artical.belongsTo(User);
-		var id=req.query.id
-
-
-		var detail=await(artical.findOne({
+		User.hasMany(comment);
+		comment.belongsTo(User);
+		var articalId=req.query.articalId;
+		var pageSize=parseInt(req.query.pageSize)||10;
+		var pageNum=parseInt(req.query.pageNum)||1;
+		var commentsData=await(comment.findAll({
 			where:{
-				id:id
+				articalId:articalId
 			},
-			include:[User]
+			'limit': pageSize,                      // 每页多少条
+			'offset': pageSize * (pageNum - 1) , // 跳过多少条
+			include:[User],
+			'order': [
+					['createAt', 'DESC']	//按照最新发表排序
+				]
 		}))
-		if(detail){
-			//type:为1时表示来自博客前台的请求，执行增加阅读量的逻辑操作
-			var type=req.query.type;
-			var reading=detail.dataValues.reading+1;
-			if(req.session.artical){
-				//将文章id存入session中，没有读过该文章则给reading字段加1
-				if(!req.session.artical[id]){
-					req.session.artical[id]=id;
-					console.log(" exe reading")
-					artical.update({
-						reading:reading
-					},{
-						where:{
-							id:id
-						}
-					})
-					console.log("exed reading")
-				}else{
-					//已读则不做操作
-					console.log("no exe reading")
+		if(commentsData){
+			var commentList=[];
+			var countComment=await(comment.findAndCountAll({
+				where:{
+					articalId:articalId
 				}
-			}else{
-				req.session.artical=[];
-					console.log("no read")
-					artical.update({
-						reading:reading
-					},{
-						where:{
-							id:id
-						}
-					})
-					console.log("has read")
-					req.session.artical[id]=id;
+			}))
+			for(commentItem of commentsData){
+				commentList.push({
+					id:commentItem.dataValues.id,
+					userId:commentItem.dataValues.userId,
+					targetId:commentItem.dataValues.targetId,
+					content:commentItem.dataValues.content,
+					createAt:commentItem.dataValues.createAt,
+					articalId:commentItem.dataValues.articalId,
+					authorId:commentItem.dataValues.authorId,
+					userName:commentItem.dataValues.user.userName,
+					img:commentItem.dataValues.user.img,
+				})
 			}
-			var categoryData=await(category.findOne({
-				where:{
-					id:detail.dataValues.categoryId
-				}
-			}))
-			var agreeData=await(agree.findAndCountAll({
-				where:{
-					articalId:id
-				}
-			}))
 			result={
 				status:0,
-				msg:'查询成功',
+				msg:"查询成功",
 				data:{
-					agree:agreeData.count,
-					reading:detail.dataValues.reading,
-					categoryId:detail.dataValues.categoryId,
-					articalName:detail.dataValues.articalName,
-					articalContent:detail.dataValues.articalContent,
-					createAt:detail.dataValues.createAt,
-					updateAt:detail.dataValues.updateAt,
-					author:detail.dataValues.user.dataValues.userName,
-					menuId:categoryData.dataValues.menuId,
-					categoryName:categoryData.dataValues.categoryName
+					total:countComment.count,
+					commentList:commentList
 				}
 			}
 		}
 		else{
-			result={status:1,msg:"没有查到这篇文章"}
+			result={
+				status:1,
+				msg:"查询异常"
+			}
 		}
 		
 	}
 	else if(method==='post'){
+		var nowStamp=new Date().valueOf();
 		var uid=req.session.uid;
-		var id=req.body.id;
-		var categoryId=req.body.categoryId;
-		var articalName=req.body.articalName;
-		var articalContent=req.body.articalContent;
-		if(id){
-			var nowStamp=new Date().valueOf();
-			var item=await(artical.update({
-				categoryId:categoryId,
-				articalName:articalName,
-				articalContent:articalContent,
-				updateAt:nowStamp
+		var articalId=req.body.articalId;
+		var authorId=req.body.authorId;
+		var targetId=req.body.targetId;
+		var content=req.body.content;
+		//type:0直接留言；1回复留言
+		var type=parseInt(req.body.type);
+		//type为1时传入回复的评论id
+		var commentId=req.body.commentId
+		//目标不是作者的时候
+		if(type===1){
+			var oldComment=await(comment.findOne({
+				where:{
+					id:commentId
+				},
+				attributes:['content']
+			}))
+			content=content+oldComment.dataValues.content;
+		}else{
+			//只有留言才增加博主排序权重
+			console.log("add weight")
+			var master=await(User.findOne({
+				where:{
+					id:authorId
+				}
+			}))
+			var weight=master.dataValues.weight+1;
+			User.update({
+				weight:weight
 			},{
 				where:{
-					userId:uid,
-					id:id
+					id:authorId
 				}
-			}))
-			if(item){
-				result={
-					status:0,
-					msg:"修改文章成功",
-					data:{
-						updateAt:nowStamp
-					}
-				}
+			})
+		}
+		var commentResult=await(comment.create({
+			userId:uid,
+			articalId:articalId,
+			authorId:authorId,
+			targetId:targetId,
+			content:content,
+			createAt:nowStamp,
+			targetRead:0,
+			authorRead:0
+
+		}))
+		if(commentResult){
+			result={
+				status:0,
+				msg:"评论成功"
 			}
 		}else{
-			var nowStamp=new Date().valueOf();
-			var item=await(artical.create({
-				userId:uid,
-				categoryId:categoryId,
-				articalName:articalName,
-				articalContent:articalContent,
-				reading:0,
-				createAt:nowStamp,
-				updateAt:nowStamp
-			}))
-			if(item){
-				result={
-					status:0,
-					msg:"新增文章成功",
-					data:{
-						createAt:nowStamp,
-						updateAt:nowStamp,
-						id:item.dataValues.id
-					}
-				}
+			result={
+				status:-1,
+				msg:"评论失败"
 			}
 		}
+		
 	}
 	else if(method==='delete'){
 

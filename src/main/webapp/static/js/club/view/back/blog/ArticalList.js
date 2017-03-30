@@ -212,7 +212,7 @@ var ArticalList=React.createClass({
 					<div className="editItem">
 						<Button className="newArticalBtn" type="primary" onClick={this.newArtical}>写文章</Button>
 					</div>
-					<Table dataSource={this.state.dataSource} columns={this.state.columns} pagination={ this.paginationConfig() } />
+					<Table bordered dataSource={this.state.dataSource} columns={this.state.columns} pagination={ this.paginationConfig() } />
 				</Spin>
 			</div>
 			)

@@ -11,13 +11,18 @@ var article=React.createClass({
 			userId:this.props.params.userId,
 			articalId:this.props.params.articalId,
 			data:{},
+			agree:0,
 			comments:null,
-			commentTxt:'22'
+			commentTxt:'',
+			//评论分页
+			pageSize:10,
+			pageNum:1
 		}
 	},
 	componentWillMount:function(){
 		let articalId=this.state.articalId
 		this.getArtical(this,articalId);
+		this.getComments(this,articalId);
 	},
 	componentWillReceiveProps:function(object ,nextProps){
 		console.log("article",object)
@@ -28,31 +33,44 @@ var article=React.createClass({
 			articalId:articalId
 		})
 		this.getArtical(this,articalId);
+		this.getComments(this,articalId);
 	},
 	getArtical(ctx,articalId){
 		blogService.getArtical(articalId).then((res)=>{
 			ctx.setState({
-				data:res.data
+				data:res.data,
+				agree:res.data.agree
 			})
 			// this.changeComments(1)
+		})
+	},
+	getComments(ctx,articalId){
+		blogService.getComments({
+			articalId:articalId,
+			pageSize:this.state.pageSize,
+			pageNum:this.state.pageNum
+		}).then((res)=>{
+			ctx.setState({
+				comments:res.data.commentList,
+				total:res.data.total
+			})
 		})
 	},
 	changeComentTxt(e){
 		//输入时改变commentTxt，这里无法进行Input value与state的绑定
 		this.setState({
 			commentTxt:e.target.value
-		},function(){
-			console.log(this.state.commentTxt)
 		})
 		
 
 	},
-	comment(articalId,userId,targetId,targetName){
+	comment(type,articalId,authorId,targetId,targetName,commentId){
+		//type:0直接留言；1回复留言
+		//commentId:type为1时需要传入回复哪条评论
 		var ctx=this;
 		var isLogin=window.isLogin;
-		console.log(isLogin)
 		if(isLogin){
-			Modal.info({
+			Modal.confirm({
 				title:'评论',
 				onCancel:function(){
 					//关闭时清空commentTxt
@@ -60,7 +78,41 @@ var article=React.createClass({
 						commentTxt:''
 					})
 				},
-				onOk:function(){},
+				onOk:function(){
+					var content=ctx.state.commentTxt;
+					if(content.replace(/\s/g,"")===""){
+						Modal.error({
+							title:'内容不能为空！',
+							onCancel:function(){}
+						})
+						return ;
+					}
+					if(type){
+						content=`${content}//<a>@${targetName}</a>回复：`
+					}else{
+						commentId=undefined
+					}
+					blogService.setComment({
+						articalId:articalId,
+						authorId:authorId,
+						targetId:targetId,
+						targetName:targetName,
+						content:content,
+						type:type,
+						commentId:commentId
+					}).then((res)=>{
+						Modal.info({
+							title:res.msg,
+							onCancel:function(){}
+						})
+						ctx.setState({
+							pageNum:1
+						},function(){
+							ctx.getComments(ctx,articalId)
+						})
+						
+					})
+				},
 				okText:'确定',
 				content:<div>
 					<Input type="textarea" onChange={ctx.changeComentTxt} autosize={{ minRows: 3, maxRows: 6 }} placeholder={`回复：${targetName}`} />
@@ -81,7 +133,44 @@ var article=React.createClass({
 		}
 		
 	},
-	agree(){},
+	agree(e){
+		var isLogin=window.isLogin;
+		var ctx=this;
+		if(isLogin){
+			ctx.refs.agreeBtn.setAttribute("disabled",true);
+			blogService.agree({articalId:ctx.state.articalId}).then((res)=>{
+				if(res.status===0){
+					Modal.success({
+						title:res.msg,
+						onCancel(){}
+					})
+					var num=ctx.state.agree+1
+					ctx.setState({
+						agree:num
+					})
+				}else{
+					Modal.error({
+						title:res.msg,
+						onCancel(){}
+					})
+				}
+			})
+			
+			// e.target.innerHTML=1
+		}else{
+			var loginModal=Modal.info({
+				title:'需要登录才能点赞哦~',
+				footer:null,
+				okText:'不了不了',
+				onCancel:function(){},
+				content:<NormalLoginForm onSuccess={this.loginSuccess} onRegister={this.toRegister}/>
+			})
+			//放到state中，登录成功后可以destroy关闭
+			this.setState({
+				loginModal:loginModal
+			})
+		}
+	},
 	toRegister(){
 		this.state.loginModal.destroy();
 		redirect('#/register')
@@ -90,12 +179,15 @@ var article=React.createClass({
 		this.state.loginModal.destroy();
 		Modal.info({
 			onCancel:function(){},
-			title:'success'
+			title:'登录成功'
 		})
 	},
 	changeComments(page){
+		var ctx=this;
 		this.setState({
-			comments:this.state.data.comments.list.slice((page-1)*10,page*10+1)
+			pageNum:page
+		},function(){
+			ctx.getComments(ctx,ctx.state.articalId);
 		})
 	},
 	render:function(){
@@ -109,18 +201,18 @@ var article=React.createClass({
 				<div>
 					{
 						this.state.comments.map((item)=>{
-							return <Row key={item.commentId} className="commentsWrap">
+							return <Row key={"comment"+item.id} className="commentsWrap">
 									<Col xs={6} md={3}>
-										<img src={item.userImg} style={{width:'100%'}}/>
+										<img src={item.img} style={{width:'100%'}}/>
 									</Col>
 									<Col xs={18} md={21} className="commentBody clearfix">
 										<h3 className="commenter">{item.userName}
 										</h3>
-										<p>{moment(item.createDate).format("YYYY-MM-DD HH:mm:ss")}</p>
-										<p className="commentTxt">{item.commentTxt}</p>
-										<a>
-												<Icon type="like-o"/>
-											({item.applaud})</a>
+										<p>{moment(item.createAt).format("YYYY-MM-DD HH:mm:ss")}</p>
+										<p className="commentTxt" dangerouslySetInnerHTML={{__html:item.content}}></p>
+										<a onClick={_.partial(this.comment,1,item.articalId,item.authorId,item.userId,item.userName,item.id)}>
+												回复
+											</a>
 									</Col>
 								
 
@@ -128,7 +220,7 @@ var article=React.createClass({
 						})
 					}
 				</div>
-				<Pagination defaultCurrent={1} total={this.state.data.comments.extra} onChange={this.changeComments}></Pagination>
+				<Pagination defaultCurrent={1} total={this.state.total} onChange={this.changeComments}></Pagination>
 			</div>
 		}
 		else{
@@ -156,10 +248,10 @@ var article=React.createClass({
 				 </div>
 				 <div className="articalBody" dangerouslySetInnerHTML={{__html:this.state.data.articalContent}}></div>
 				 <div className="articalOperation">
-				 	<Button type="primary" onClick={_.partial(this.comment,this.state.articalId,this.state.userId,this.state.userId,this.state.data.author)}>留言</Button>
-				 	<a onClick={this.agree}>
+				 	<Button type="primary" onClick={_.partial(this.comment,0,this.state.articalId,this.state.userId,this.state.userId,this.state.data.author)}>留言</Button>
+				 	<a onClick={this.agree} ref="agreeBtn">
 				 		<Icon type="like-o" />
-				 		({this.state.data.agree})
+				 		({this.state.agree})
 				 	</a>
 
 				 </div>

@@ -32,6 +32,37 @@ const Service={
 			},(res)=>{
 				throw new Error(res.msg)
 			})
-	}
+	},
+	setComment:(data)=>{
+        return api.post('/blog/articalComment',{
+            data:data
+        }).then((res)=>{
+            return res
+        },(error)=>{
+            throw error;
+        })
+    },
+    getComments:(obj)=>{
+		return api
+			.get('/blog/articalComment',{params:{
+				articalId:obj.articalId,
+				pageSize:obj.pageSize,
+				pageNum:obj.pageNum,
+			}})
+			.then((res)=>{
+				return res
+			},(res)=>{
+				throw new Error(res.msg)
+			})
+	},
+	agree:(data)=>{
+        return api.post('/blog/setAgree',{
+            data:data
+        }).then((res)=>{
+            return res
+        },(error)=>{
+            throw error;
+        })
+    },
 }
 export default Service;

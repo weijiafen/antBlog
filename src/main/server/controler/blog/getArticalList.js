@@ -72,10 +72,13 @@ module.exports=(async (function(req,response){
 					id:categoryId
 				}
 			}))
-			categoryName=item.dataValues.categoryName;
-			result.data={
-				categoryName:categoryName
-			};
+			if(item){
+				categoryName=item.dataValues.categoryName;
+				result.data={
+					categoryName:categoryName
+				};
+			}
+			
 		}
 	}
 	var articalsData=[];

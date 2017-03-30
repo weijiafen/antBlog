@@ -33,6 +33,7 @@ var getArticalList=require('../controler/blog/getArticalList')
 var ArticalDetail=require('../controler/blog/ArticalDetail')
 var articalComment=require('../controler/blog/articalComment')
 var getHead=require('../controler/blog/getHead')
+var setAgree=require('../controler/blog/setAgree')
 var ueditor = require("ueditor")
 module.exports=function(app){
 	//app是一个express()
@@ -97,8 +98,13 @@ module.exports=function(app){
 	})
 	//博客前台获取文章评论列表
 	app.get('/blog/articalComment',function(req,res){
-		articalComment(req,res);
+		articalComment('get',req,res);
 	})
+	//点赞
+	app.post('/blog/setAgree',function(req,res){
+		setAgree(req,res);
+	})
+
 
 	//添加登录过滤器，需要登录才能获取数据的接口应放在此句下面
 	app.use(loginFilter);
@@ -207,6 +213,10 @@ module.exports=function(app){
 	//管理后台删除文章
 	app.delete('/blog/ArticalDetail',function(req,res){
 		ArticalDetail('delete',req,res);
+	})
+	//添加评论
+	app.post('/blog/articalComment',function(req,res){
+		articalComment('post',req,res);
 	})
 
 	// /ueditor 入口地址配置 https://github.com/netpi/ueditor/blob/master/example/public/ueditor/ueditor.config.js

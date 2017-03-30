@@ -17,12 +17,16 @@ var comment = sequelize.define('comment', {
   articalId:{
     type:Sequelize.INTEGER
   },
-  //评论的用户Id
+  //评论者Id
   userId:{
     type: Sequelize.INTEGER
   },
   //接收到此消息通知的用户ID，可用于评论与回复
   targetId:{
+    type: Sequelize.INTEGER
+  },
+  //作者ID，用于作者查询评论
+  authorId:{
     type: Sequelize.INTEGER
   },
   //是否已读

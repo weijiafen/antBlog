@@ -28,7 +28,6 @@ module.exports=(async(function(method,req,res){
 				//将文章id存入session中，没有读过该文章则给reading字段加1
 				if(!req.session.artical[id]){
 					req.session.artical[id]=id;
-					console.log(" exe reading")
 					artical.update({
 						reading:reading
 					},{
@@ -36,14 +35,11 @@ module.exports=(async(function(method,req,res){
 							id:id
 						}
 					})
-					console.log("exed reading")
 				}else{
 					//已读则不做操作
-					console.log("no exe reading")
 				}
 			}else{
 				req.session.artical=[];
-					console.log("no read")
 					artical.update({
 						reading:reading
 					},{
@@ -51,7 +47,6 @@ module.exports=(async(function(method,req,res){
 							id:id
 						}
 					})
-					console.log("has read")
 					req.session.artical[id]=id;
 			}
 			var categoryData=await(category.findOne({
