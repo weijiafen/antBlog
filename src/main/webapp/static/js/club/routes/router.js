@@ -81,6 +81,11 @@ const router = (
               callback(null, require('../view/back/blog/editArtical').default);
             });
           }} />
+          <Route path="/back/message" getComponent={(location, callback) => {
+            require.ensure([], (require) => {
+              callback(null, require('../view/back/blog/message').default);
+            });
+          }} />
     </Route>
     <Route path="/login" getComponent={(location, callback) => {
       require.ensure([], (require) => {

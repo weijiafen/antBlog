@@ -1,8 +1,8 @@
 
-var articalComment=require('./src/main/server/controler/blog/articalComment.js')
+var getMessageList=require('./src/main/server/controler/blog/getMessageList.js')
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 (async (()=>{
-	var s=await(articalComment('get',{query:{articalId:32}}))
+	var s=await(getMessageList({session:{uid:1}}))
 	console.log(s)
 }))()

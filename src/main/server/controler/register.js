@@ -40,6 +40,7 @@ module.exports=(async (function(req,response){
 			userName:userName,
 			createAt:time,
 			updateAt:time,
+			lastLoginAt:time,
 			img:'images/default.jpg',
 			introduce:'',
 			background_img:'',

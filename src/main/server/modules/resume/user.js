@@ -46,6 +46,10 @@ var User = sequelize.define('user', {
   color:{
     type: Sequelize.STRING
   },
+  //最近一次登录时间
+  lastLoginAt:{
+    type:Sequelize.BIGINT
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

@@ -8,6 +8,8 @@ var project_exp=require('../modules/resume/project_exp.js');
 var work_exp=require('../modules/resume/work_exp.js');
 var competitions=require('../modules/resume/competitions.js');
 var library=require('../modules/resume/library.js');
+var agree=require('../modules/blog/agree.js');
+var comment=require('../modules/blog/comment.js');
 module.exports=(async (function(req,response){
 	//建立表联系
 	personal_info.belongsTo(User);
@@ -33,6 +35,43 @@ module.exports=(async (function(req,response){
 		//联表查询
 		include:[personal_info,skills_level,project_exp,work_exp,competitions,library]
 	}))
+	//统计所有未读的点赞
+	var agreeData=await(agree.findAndCountAll({
+		where:{
+			targetId:uid,
+			read:0
+		}
+	}))
+	//统计所有未读留言数量
+	var commentData=await(comment.findAndCountAll({
+		where:{
+			'$or':[
+				{
+					//目标和作者ID都是该user，是直接留言
+					targetId:uid,
+					authorId:uid,
+					targetRead:0,
+					authorRead:0
+				},
+				{
+					//目标id是该user，作者id不是，是在别人的文章中留言被回复
+					targetId:uid,
+					authorId:{
+						'$ne':uid
+					},
+					targetRead:0
+				},
+				{
+					//目标Id不是该user，作者id是，表示别人在自己文章下对话，文章作者得到通知
+					targetId:{
+						'$ne':uid
+					},
+					authorId:uid,
+					authorRead:0
+				}
+			]
+		}
+	}))
 	//又是这个坑，返回的res自动去掉了s
 	// console.log('res',res.competitions)
 	var resumeTitles=['基础资料'];
@@ -45,8 +84,10 @@ module.exports=(async (function(req,response){
 	result={status:0,data:{
 		userName:res.userName,
 		updateAt:res.updateAt,
+		lastLoginAt:res.lastLoginAt,
 		img:res.img,
-		resumeTitles:resumeTitles
+		resumeTitles:resumeTitles,
+		messageCount:agreeData.count+commentData.count
 	}};
 	response.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
 	response.end(JSON.stringify(result))

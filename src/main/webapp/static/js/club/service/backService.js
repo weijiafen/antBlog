@@ -235,5 +235,14 @@ const Service = {
             throw error
         })
     },
+     getMessageList:()=>{
+        return api
+            .get('/blog/getMessageList')
+            .then((res)=>{
+                return res
+            },(res)=>{
+                throw new Error(res.msg)
+            })
+    },
 }
 export default Service;

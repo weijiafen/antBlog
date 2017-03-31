@@ -34,6 +34,7 @@ var ArticalDetail=require('../controler/blog/ArticalDetail')
 var articalComment=require('../controler/blog/articalComment')
 var getHead=require('../controler/blog/getHead')
 var setAgree=require('../controler/blog/setAgree')
+var getMessageList=require('../controler/blog/getMessageList')
 var ueditor = require("ueditor")
 module.exports=function(app){
 	//app是一个express()
@@ -217,6 +218,10 @@ module.exports=function(app){
 	//添加评论
 	app.post('/blog/articalComment',function(req,res){
 		articalComment('post',req,res);
+	})
+	//管理后台获取消息列表
+	app.get('/blog/getMessageList',function(req,res){
+		getMessageList(req,res);
 	})
 
 	// /ueditor 入口地址配置 https://github.com/netpi/ueditor/blob/master/example/public/ueditor/ueditor.config.js

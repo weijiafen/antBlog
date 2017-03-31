@@ -220,7 +220,7 @@ var article=React.createClass({
 						})
 					}
 				</div>
-				<Pagination defaultCurrent={1} total={this.state.total} onChange={this.changeComments}></Pagination>
+				<Pagination current={this.state.pageNum} defaultCurrent={1} total={this.state.total} onChange={this.changeComments}></Pagination>
 			</div>
 		}
 		else{

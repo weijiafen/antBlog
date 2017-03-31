@@ -113,7 +113,7 @@ module.exports=(async (function(req,response){
 		for(var item of articalsData){
 			var temp={};
 			//去除文章正文的Html标签并截取200字
-			var trimmed =trimHtml(item.dataValues.articalContent,{limit:150});
+			var trimmed =trimHtml(item.dataValues.articalContent,{limit:120});
 			temp.menuId=item.dataValues.category.dataValues.menuId;
 			temp.categoryName=item.dataValues.category.dataValues.categoryName;
 			temp.categoryId=item.dataValues.category.dataValues.id;

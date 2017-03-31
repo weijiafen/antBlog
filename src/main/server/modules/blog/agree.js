@@ -21,6 +21,14 @@ var agree = sequelize.define('agree', {
   articalId:{
     type: Sequelize.INTEGER
   },
+  //接收到点赞的用户id
+  targetId:{
+    type: Sequelize.INTEGER
+  },
+  //目标是否已读
+  read:{
+    type: Sequelize.INTEGER
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

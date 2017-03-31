@@ -19,23 +19,24 @@ module.exports=(async(function(req,res){
 			msg:"你已经给这篇文章点过赞了哦"
 		}
 	}else{
+		var author=await(artical.findOne({
+				where:{
+					id:articalId
+				},
+				attributes:['userId']
+			}))
 		var agreeData=await(agree.create({
 			articalId:articalId,
 			userId:uid,
-			createAt:new Date().valueOf()
+			createAt:new Date().valueOf(),
+			targetId:author.dataValues.userId,
+			read:0
 		}))
 		if(agreeData){
 			result={
 				status:0,
 				msg:"点赞成功"
 			}
-			var author=await(artical.findOne({
-				where:{
-					id:articalId
-				},
-				attributes:['userId']
-			}))
-			console.log("add weight")
 			var master=await(User.findOne({
 				where:{
 					id:author.dataValues.userId
