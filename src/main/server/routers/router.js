@@ -25,6 +25,7 @@ var competitionsItem=require('../controler/resume/competitionsItem')
 var library=require('../controler/resume/library')
 var libraryItem=require('../controler/resume/libraryItem')
 var resume=require('../controler/resume')
+var captcha=require('../controler/captcha')
 var getUserList=require('../controler/resume/getUserList')
 var getCategory=require('../controler/blog/getCategory')
 var deleteMenu=require('../controler/blog/deleteMenu')
@@ -61,6 +62,10 @@ module.exports=function(app){
 	})
 	app.get('/getResume',function(req,res){
 		resume(req,res);
+	})
+	//获取验证码
+	app.get('/captcha',function(req,res){
+		captcha(req,res);
 	})
 	//判断是否登录状态
 	app.get('/isLogin',function(req,res){

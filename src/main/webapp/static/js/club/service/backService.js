@@ -235,14 +235,27 @@ const Service = {
             throw error
         })
     },
-     getMessageList:()=>{
+    removeArtical:(id)=>{
+        return api.delete('/blog/ArticalDetail',{params:{
+            id:id
+        }}).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+     getMessageList:(data)=>{
         return api
-            .get('/blog/getMessageList')
+            .get('/blog/getMessageList',{params:{
+                pageSize:data.pageSize,
+                pageNum:data.pageNum
+            }})
             .then((res)=>{
                 return res
             },(res)=>{
                 throw new Error(res.msg)
             })
     },
+    
 }
 export default Service;

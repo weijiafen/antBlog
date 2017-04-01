@@ -134,7 +134,26 @@ module.exports=(async(function(method,req,res){
 		}
 	}
 	else if(method==='delete'){
-
+		var id=req.query.id
+		var uid=req.session.uid;
+		//删除该用户下的articalId文章
+		var deleteArt=await(artical.destroy({
+			where:{
+				id:id,
+				userId:uid
+			}
+		}))
+		if(deleteArt){
+			result={
+				status:0,
+				msg:"删除成功"
+			}
+		}else{
+			result={
+				status:-1,
+				msg:"删除失败"
+			}
+		}
 	}else{
 		result={status:1,msg:"系统异常"}
 	}

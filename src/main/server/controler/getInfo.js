@@ -66,6 +66,9 @@ module.exports=(async (function(req,response){
 					targetId:{
 						'$ne':uid
 					},
+					userId:{
+						'$ne':uid
+					},
 					authorId:uid,
 					authorRead:0
 				}

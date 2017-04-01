@@ -66,6 +66,7 @@ var ArticalList=React.createClass({
 					title:'操作',
 					dataIndex:'id',
 					render:function(value){
+						console.log('record',record)
 						var obj={
 							children:'',
 							props:{}
@@ -74,8 +75,8 @@ var ArticalList=React.createClass({
 							<Button onClick={_.partial(ctx.editArtical,value)}>
 								<Icon type="edit" />
 							</Button>
-							<Button>
-								<Icon type="eye-o" />
+							<Button onClick={_.partial(ctx.removeArtical,value)}>>
+								<Icon type="remove" />
 							</Button>
 						</div>)
 						return obj;
@@ -179,6 +180,16 @@ var ArticalList=React.createClass({
 	},
 	newArtical(){
 		redirect('/#/back/editArtical')
+	},
+	removeArtical(id){
+		var ctx=this;
+		backService.removeArtical(id).then((res)=>{
+			Modal.info({
+				title:res.msg,
+				onCancel:function(){}
+			})
+			ctx.getArticalList(ctx.state.pageNum)
+		})
 	},
 	search(){
 		this.getArticalList(1);

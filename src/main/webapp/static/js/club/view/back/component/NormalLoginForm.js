@@ -7,7 +7,8 @@ const FormItem = Form.Item;
 const NormalLoginForm = Form.create()(React.createClass({
   getInitialState(){
     return {
-      loading:false
+      loading:false,
+      captcha:"/captcha?"+new Date().valueOf()
     }
   },
   getDefaultProps(){
@@ -21,8 +22,21 @@ const NormalLoginForm = Form.create()(React.createClass({
   		},
   		onForget:function(){
   			redirect('#/forgetPassword')
-  		}
+  		},
+      forgetPassword:function(){
+        Modal.info({
+          title:'功能未开发',
+          onCancle:function(){}
+        })
+      }
   	}
+  },
+  componentDidMount(){
+  },
+  getCaptcha(){
+    this.setState({
+      captcha:"/captcha?"+new Date().valueOf()
+    })
   },
   handleSubmit(e) {
     e.preventDefault();
@@ -39,6 +53,7 @@ const NormalLoginForm = Form.create()(React.createClass({
             PubSub.publish('changeLogin',true)
           }else{
           	this.props.onFail();
+            this.getCaptcha();
             Modal.info({title:res.msg}) 
           }
           ctx.setState({
@@ -67,19 +82,30 @@ const NormalLoginForm = Form.create()(React.createClass({
           )}
         </FormItem>
         <FormItem>
+          {getFieldDecorator('captcha', {
+            rules: [{ required: true, message: 'Please input your captcha!' }],
+          })(
+            <Input  placeholder="captcha" style={{width:'30%'}} />
+
+          )}
+          <img src={this.state.captcha} style={{width:'30%',verticalAlign:'middle'}} />
+          <a onClick={this.getCaptcha} style={{width:'40%',verticalAlign:'bottom'}}>change captcha</a>
+        </FormItem>
+        <FormItem>
           {getFieldDecorator('remember', {
             valuePropName: 'checked',
             initialValue: true,
           })(
             <Checkbox>Remember me</Checkbox>
           )}
-          <a className="login-form-forgot">Forgot password</a>
+          <a className="login-form-forgot" onClick={this.props.forgetPassword}>Forgot password</a>
           <Spin spinning={this.state.loading}>
             <Button type="primary" htmlType="submit" className="login-form-button">
               Log in
             </Button>
           </Spin>
           Or <a onClick={this.props.onRegister}>register now!</a>
+          
         </FormItem>
       </Form>
     );

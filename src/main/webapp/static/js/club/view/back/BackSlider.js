@@ -54,6 +54,12 @@ var BackSlider=React.createClass({
 		})
 	},
 	handleClick:function(obj){
+		//点击消息中心时去掉红点
+		if(obj.key==="#/back/message"){
+			this.setState({
+				messageCount:0
+			})
+		}
 		redirect(obj.key)
 	},
 	render:function(){
@@ -86,10 +92,10 @@ var BackSlider=React.createClass({
 		        </SubMenu>
 		        <Menu.Item key="#/back/message"><Icon type="notification" />
 		        	
-		        		消息中心<Badge count={this.state.messageCount} status="processing">
+		        		消息中心<Badge count={this.state.messageCount} status={this.state.messageCount===0?'':'error'}>
 		        	</Badge>
 		        </Menu.Item>
-		        <Menu.Item key="#/back/account"><Icon type="user" />账号中心</Menu.Item>
+		        
 			</Menu>
 		</div>
 	}

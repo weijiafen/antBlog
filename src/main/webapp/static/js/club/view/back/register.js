@@ -8,7 +8,8 @@ const NormalRegisterForm = Form.create()(React.createClass({
 	getInitialState(){
 		return {
 			confirmDirty:false,
-      loading:false
+      loading:false,
+      captcha:"/captcha?"+new Date().valueOf()
 		}
 	},
  	handleSubmit(e) {
@@ -26,6 +27,7 @@ const NormalRegisterForm = Form.create()(React.createClass({
               PubSub.publish('changeLogin',true)
 	          }else{
 	            Modal.info({title:res.msg}) 
+              ctx.getCaptcha();
               ctx.setState({
                 loading:false
               })
@@ -34,7 +36,11 @@ const NormalRegisterForm = Form.create()(React.createClass({
 	      }
     });
   },
-
+  getCaptcha(){
+    this.setState({
+      captcha:"/captcha?"+new Date().valueOf()
+    })
+  },
   //输入password时的验证规则
   checkConfirm(rule, value, callback){
     const form = this.props.form;
@@ -112,8 +118,22 @@ const NormalRegisterForm = Form.create()(React.createClass({
             rules: [{ required: true, message: 'Please input your username!' }
              ],
           })(
-            <Input placeholder="userName" />
+            <Input placeholder="userName"/>
           )}
+          
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="captcha"
+          >
+          {getFieldDecorator('captcha', {
+            rules: [{ required: true, message: 'Please input your captcha!' }
+             ],
+          })(
+            <Input placeholder="captcha"  style={{width:'30%'}}  />
+          )}
+          <img src={this.state.captcha} style={{width:'30%',verticalAlign:'middle'}} />
+          <a onClick={this.getCaptcha} style={{width:'40%',verticalAlign:'bottom'}}>change captcha</a>
         </FormItem>
         <FormItem>
           <Spin spinning={this.state.loading}>
