@@ -97,6 +97,11 @@ const router = (
         callback(null, require('../view/back/register').default);
       });
     }} />
+    <Route path="/forgetPassword" getComponent={(location, callback) => {
+      require.ensure([], (require) => {
+        callback(null, require('../view/forgetPassword/app').default);
+      });
+    }} />
     <Route path="/home/:userId" getComponent={(location, callback) => {
       require.ensure([], (require) => {
         callback(null, require('../view/home/app').default);

@@ -66,7 +66,6 @@ const NormalRegisterForm = Form.create()(React.createClass({
     };
     return (
       <Form onSubmit={this.handleSubmit} className="register-form">
-        (后台功能正在开发中，只有部分功能可用。数据将可能被清除)
         <FormItem
         	{...formItemLayout}
           label="Account"
@@ -119,6 +118,18 @@ const NormalRegisterForm = Form.create()(React.createClass({
              ],
           })(
             <Input placeholder="userName"/>
+          )}
+          
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="Email"
+          hasFeedback>
+          {getFieldDecorator('email', {
+            rules: [{ required: true, type:'email', message: 'Please input your Email!' }
+             ],
+          })(
+            <Input placeholder="Email"/>
           )}
           
         </FormItem>

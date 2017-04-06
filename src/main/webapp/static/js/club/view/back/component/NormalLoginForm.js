@@ -22,13 +22,7 @@ const NormalLoginForm = Form.create()(React.createClass({
   		},
   		onForget:function(){
   			redirect('#/forgetPassword')
-  		},
-      forgetPassword:function(){
-        Modal.info({
-          title:'功能未开发',
-          onCancle:function(){}
-        })
-      }
+  		}
   	}
   },
   componentDidMount(){
@@ -98,7 +92,7 @@ const NormalLoginForm = Form.create()(React.createClass({
           })(
             <Checkbox>Remember me</Checkbox>
           )}
-          <a className="login-form-forgot" onClick={this.props.forgetPassword}>Forgot password</a>
+          <a className="login-form-forgot" onClick={this.props.onForget}>Forgot password</a>
           <Spin spinning={this.state.loading}>
             <Button type="primary" htmlType="submit" className="login-form-button">
               Log in

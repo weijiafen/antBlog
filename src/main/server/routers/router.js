@@ -36,6 +36,8 @@ var articalComment=require('../controler/blog/articalComment')
 var getHead=require('../controler/blog/getHead')
 var setAgree=require('../controler/blog/setAgree')
 var getMessageList=require('../controler/blog/getMessageList')
+var email=require('../controler/blog/email')
+var password=require('../controler/password')
 var ueditor = require("ueditor")
 module.exports=function(app){
 	//app是一个express()
@@ -66,6 +68,18 @@ module.exports=function(app){
 	//获取验证码
 	app.get('/captcha',function(req,res){
 		captcha(req,res);
+	})
+	//获取邮箱验证码
+	app.get('/emailCaptcha',function(req,res){
+		email('get',req,res);
+	})
+	//提交邮箱验证码
+	app.post('/emailCaptcha',function(req,res){
+		email('post',req,res);
+	})
+	//修改密码
+	app.post('/modifyPassword',function(req,res){
+		password(req,res);
 	})
 	//判断是否登录状态
 	app.get('/isLogin',function(req,res){

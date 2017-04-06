@@ -124,7 +124,7 @@ var article=React.createClass({
 				footer:null,
 				okText:'不了不了',
 				onCancel:function(){},
-				content:<NormalLoginForm onSuccess={this.loginSuccess} onRegister={this.toRegister}/>
+				content:<NormalLoginForm onSuccess={this.loginSuccess} onRegister={this.toRegister} onForget={this.onForget}/>
 			})
 			//放到state中，登录成功后可以destroy关闭
 			this.setState({
@@ -163,7 +163,7 @@ var article=React.createClass({
 				footer:null,
 				okText:'不了不了',
 				onCancel:function(){},
-				content:<NormalLoginForm onSuccess={this.loginSuccess} onRegister={this.toRegister}/>
+				content:<NormalLoginForm onSuccess={this.loginSuccess} onRegister={this.toRegister} onForget={this.onForget}/>
 			})
 			//放到state中，登录成功后可以destroy关闭
 			this.setState({
@@ -174,6 +174,10 @@ var article=React.createClass({
 	toRegister(){
 		this.state.loginModal.destroy();
 		redirect('#/register')
+	},
+	onForget(){
+		this.state.loginModal.destroy();
+		redirect('#/forgetPassword')
 	},
 	loginSuccess(){
 		this.state.loginModal.destroy();

@@ -9,15 +9,15 @@ const Service = {
 			},(res)=>{
 				throw new Error(res.msg)
 			})
-	},
-	getNode:()=>{
-		return api
-			.get('/blog/list/1')
-			.then((res)=>{
-				return res
-			},(res)=>{
-				throw new Error(res.msg)
-			})
 	}
+	// getNode:()=>{
+	// 	return api
+	// 		.get('/blog/list/1')
+	// 		.then((res)=>{
+	// 			return res
+	// 		},(res)=>{
+	// 			throw new Error(res.msg)
+	// 		})
+	// }
 }
 export default Service;

@@ -26,6 +26,10 @@ var User = sequelize.define('user', {
   userName:{
     type: Sequelize.STRING
   },
+  //邮箱地址
+  email:{
+    type: Sequelize.STRING
+  },
   //头像地址
   img:{
     type: Sequelize.STRING

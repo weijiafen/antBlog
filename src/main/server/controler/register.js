@@ -13,6 +13,7 @@ module.exports=(async (function(req,response){
 	var userName=req.body.userName;
 	var password=req.body.password;
 	var account=req.body.account;
+	var email=req.body.email;
 	var time=new Date().valueOf();
 	var captcha=req.body.captcha.toLowerCase();
 	console.log('captcha',captcha)
@@ -45,6 +46,7 @@ module.exports=(async (function(req,response){
 				account:account,
 				password:password,
 				userName:userName,
+				email:email,
 				createAt:time,
 				updateAt:time,
 				lastLoginAt:time,
