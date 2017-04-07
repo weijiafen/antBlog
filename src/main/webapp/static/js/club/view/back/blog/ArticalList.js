@@ -66,7 +66,6 @@ var ArticalList=React.createClass({
 					title:'操作',
 					dataIndex:'id',
 					render:function(value){
-						console.log('record',record)
 						var obj={
 							children:'',
 							props:{}
@@ -75,8 +74,8 @@ var ArticalList=React.createClass({
 							<Button onClick={_.partial(ctx.editArtical,value)}>
 								<Icon type="edit" />
 							</Button>
-							<Button onClick={_.partial(ctx.removeArtical,value)}>>
-								<Icon type="remove" />
+							<Button onClick={_.partial(ctx.removeArtical,value)}>
+								<Icon type="delete" />
 							</Button>
 						</div>)
 						return obj;

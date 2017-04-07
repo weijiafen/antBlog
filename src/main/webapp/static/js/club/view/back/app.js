@@ -1,18 +1,39 @@
 import React from 'react';
-import {Row ,Col , Card, Form, Icon, Input, Button, Checkbox} from 'antd'
+import {Row ,Col , Layout } from 'antd'
+const { Header, Content, Footer, Sider } = Layout;
 import backService from '../../service/backService'; 
 import BackSlider from './BackSlider';
 var back=React.createClass({
+	getInitialState(){
+		return {
+			collapsed: false,
+    		mode: 'inline',
+		}
+	},
+	onCollapse(collapsed){
+	    console.log(collapsed);
+	    this.setState({
+	      collapsed,
+	      mode: collapsed ? 'vertical' : 'inline',
+	    });
+	  },
 	render:function(){
 		return <div className="backContainer">
-			<Row align="middle">
-				<Col sm={24} md={4}>
-					<BackSlider />
-				</Col>
-				<Col sm={24} md={20} style={{padding:'12px 0 50px 30px'}}>
-					{this.props.children}
-				</Col>
-			</Row>
+			<Layout>
+				<Sider
+		           breakpoint="md"
+    				collapsedWidth="0"
+		        >
+		        	<BackSlider />
+		        </Sider>
+		        <Layout>
+		        	<Content className="backBody">
+		        		{this.props.children}
+		        	</Content>
+		        	
+		        </Layout>
+			</Layout>
+			
 		</div>
 	}
 })

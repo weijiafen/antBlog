@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin ,Select} from 'antd'
+import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin ,Select ,Row , Col} from 'antd'
 import backService from '../../../service/backService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
@@ -202,17 +202,28 @@ var editSkills=React.createClass({
 							{this.state.data.map(function(item,index){
 								return (
 									<div key={"skills"+index} className="dataItem">
-										<Input value={item.key} onChange={_.partial(ctx.changeKey,index)} />：
-										<Select onChange={_.partial(ctx.changeValue,index)} value={item.value} style={{ width: 120 }}>
-											<Select.Option value="1">1</Select.Option>
-											<Select.Option value="2">2</Select.Option>
-											<Select.Option value="3">3</Select.Option>
-											<Select.Option value="4">4</Select.Option>
-											<Select.Option value="5">5</Select.Option>
-										</Select>
-										<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
-											<Icon type="delete" />
-										</Button>
+										
+										<Row>
+											<Col sm={24} md={10}>
+												<Row>
+													<Col xs={14}><Input value={item.key} onChange={_.partial(ctx.changeKey,index)} /></Col>
+													<Col xs={6}>
+														<Select onChange={_.partial(ctx.changeValue,index)} value={item.value} style={{ width: "100%" }}>
+															<Select.Option value="1">1</Select.Option>
+															<Select.Option value="2">2</Select.Option>
+															<Select.Option value="3">3</Select.Option>
+															<Select.Option value="4">4</Select.Option>
+															<Select.Option value="5">5</Select.Option>
+														</Select>
+													</Col>
+													<Col xs={4}>
+														<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
+															<Icon type="delete" />
+														</Button>
+													</Col>
+												</Row>
+											</Col>
+										</Row>
 									</div>
 									)
 							})}

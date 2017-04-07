@@ -26,6 +26,11 @@ const NormalLoginForm = Form.create()(React.createClass({
   	}
   },
   componentDidMount(){
+    const { setFieldsValue  } = this.props.form;
+    var account=localStorage.getItem("account");
+    var password=localStorage.getItem("password");
+    setFieldsValue({account:account});
+    setFieldsValue({password:password});
   },
   getCaptcha(){
     this.setState({
@@ -35,8 +40,23 @@ const NormalLoginForm = Form.create()(React.createClass({
   handleSubmit(e) {
     e.preventDefault();
     var ctx=this;
+    const { getFieldValue  } = this.props.form;
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        //设置记住密码
+        var isRemember=getFieldValue("remember")
+        if(isRemember){
+          var account=getFieldValue("account");
+          var password=getFieldValue("password");
+          localStorage.setItem("account",account);
+          localStorage.setItem("password",password);
+        }
+        else{
+          localStorage.setItem("account","");
+          localStorage.setItem("password","");
+        }
+        
+
         ctx.setState({
             loading:true
           })

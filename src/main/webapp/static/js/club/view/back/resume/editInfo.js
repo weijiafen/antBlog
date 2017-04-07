@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin } from 'antd'
+import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin , Row , Col } from 'antd'
 import backService from '../../../service/backService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
@@ -190,11 +190,23 @@ var editInfo=React.createClass({
 							{this.state.data.map(function(item,index){
 								return (
 									<div key={"info"+index} className="dataItem">
-										<Input value={item.key} onChange={_.partial(ctx.changeKey,index)} />：
-										<Input value={item.value} onChange={_.partial(ctx.changeValue,index)}/>
-										<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
-											<Icon type="delete" />
-										</Button>
+										<Row>
+											<Col sm={24} md={10}>
+												<Row>
+													<Col xs={10}><Input value={item.key} onChange={_.partial(ctx.changeKey,index)} /></Col>
+													<Col xs={10}><Input value={item.value} onChange={_.partial(ctx.changeValue,index)}/></Col>
+													<Col xs={4}>
+														<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
+															<Icon type="delete" />
+														</Button>
+													</Col>
+												</Row>
+											</Col>
+										</Row>
+										
+										
+										
+										
 									</div>
 									)
 							})}

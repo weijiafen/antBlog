@@ -67,10 +67,10 @@ var Navbar=React.createClass({
 				<Col span={18}>
 					<Menu className="NavContainer" mode="horizontal" selectedKeys={this.state.current} onClick={this.MenuClick}>
 						<Menu.Item key="/">
-					          Square
+					          博主列表
 				        </Menu.Item>
 				         <Menu.Item onClick={this.toBack} key='#/login' >
-					         Back
+					         后台
 				        </Menu.Item>
 					</Menu>
 				</Col>

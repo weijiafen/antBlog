@@ -64,10 +64,11 @@ var BackSlider=React.createClass({
 	},
 	render:function(){
 		return <div className="BackSlider">
-			<div>
+			<div className="backInfo">
 				<h2>你好：{this.state.userName}</h2>
 				<img src={this.state.img}/>
-				<p>最后一次登录时间：{moment(this.state.lastLoginAt).format("YYYY-MM-DD HH:mm:ss")}</p>
+				<p>最后一次登录时间：</p>
+				<p>{moment(this.state.lastLoginAt).format("YYYY-MM-DD HH:mm:ss")}</p>
 				<Button type="primary" onClick={this.logOff}>注销</Button>
 			</div>
 			<Menu
@@ -95,7 +96,10 @@ var BackSlider=React.createClass({
 		        		消息中心<Badge count={this.state.messageCount} status={this.state.messageCount===0?'':'error'}>
 		        	</Badge>
 		        </Menu.Item>
-		        
+		        <Menu.Item key="#/back/modifyPassword">
+		        	<Icon type="lock" />
+		        	修改密码
+		        </Menu.Item>
 			</Menu>
 		</div>
 	}

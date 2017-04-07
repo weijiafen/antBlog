@@ -42,6 +42,7 @@ input:-webkit-autofill {
 	border-bottom:0;
 	color:#fff;
 	font-size:14px;
+	margin-top:10px;
 }
 .nav_icon{
 	margin-left:10px;
@@ -406,6 +407,9 @@ input:-webkit-autofill {
 			p{
 				margin:5px 0;
 			}
+			img{
+				max-width:100%
+			}
 		}
 		.articalOperation{
 			text-align:right;
@@ -534,27 +538,33 @@ input:-webkit-autofill {
 }
 
 .BackSlider{
-	img{
-		width:200px;
-		height:200px;
-		display:block;
-		margin:5px auto;
+	.backInfo{
+		color:#fff;
+		padding:5px;
+		img{
+			width:80%;
+			display:block;
+			margin:5px auto;
+		}
 	}
+	
 }
 .backContainer{
 	header{
 		font-size:18px;
 		font-weight:bold;
-		border-bottom:1px solid #eee;
+		border-bottom:1px solid #ccc;
 		line-height:2;
 		padding-bottom:8px;
 		margin-bottom:12px;
+	}
+	.backBody{
+		padding:35px 15px;
 	}
 	.editItem{
 		margin:15px 0;
 		input,textarea{
 			display:inline-block;
-			width:300px;
 		}
 		& > *{
 			vertical-align:middle
