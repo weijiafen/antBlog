@@ -27,13 +27,13 @@ module.exports=(async (function(req,response){
 			}
 		}))
 		if(res){
-			req.session.uid=res.id;
+			req.session.uid=res.dataValues.id;
 			req.session.isLogin=true;
 			result={status:0,msg:"登录成功"}
 			var now=(new Date()).valueOf();
-			var weight=res.weight;
-			var newUpdate=res.updateAt;
-			if(now-res.updateAt>1000*60*60*22){
+			var weight=res.dataValues.weight;
+			var newUpdate=res.dataValues.updateAt;
+			if(now-res.dataValues.updateAt>1000*60*60*22){
 				//22小时后登录会给排序权值加1
 				weight+=1;
 				newUpdate=now;
