@@ -36,6 +36,7 @@ var blog=React.createClass({
 					           breakpoint="md"
 			    				collapsedWidth="0"
 			    				width="300"
+			    				style={{backgroundColor:'#fff'}}
 					        >
 					        	<Head userId={this.state.userId} typeId={this.state.typeId} />
 					        </Sider>
