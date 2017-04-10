@@ -1,5 +1,5 @@
 var webpack = require('webpack');
-var commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common.js');
+var commonsPlugin = new webpack.optimize.CommonsChunkPlugin({names:['vendor'],filename:'[name].js'});
 // var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 var path = require('path');
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
     plugins: [
         commonsPlugin,
         // new webpack.HotModuleReplacementPlugin(),
-        new webpack.optimize.CommonsChunkPlugin('vendor',  'vendor.js'),
+        // new webpack.optimize.CommonsChunkPlugin('vendor',  'vendor.js'),
          new webpack.ProgressPlugin((percentage, message) => {
               const percent = Math.round(percentage * 100);
               // process.stderr.clearLine();
@@ -27,7 +27,7 @@ module.exports = {
     //页面入口文件配置
     entry: {
           app:'./src/main/webapp/static/js/index.js',
-           vendor: ['react']
+          vendor: ['react']
     },
        
     //入口文件输出配置

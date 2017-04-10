@@ -23,6 +23,7 @@ var back=React.createClass({
 				<Sider
 		           breakpoint="md"
     				collapsedWidth="0"
+    				width="300"
 		        >
 		        	<BackSlider />
 		        </Sider>
