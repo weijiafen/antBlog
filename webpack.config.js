@@ -8,7 +8,7 @@ module.exports = {
     plugins: [
         commonsPlugin,
         // new webpack.HotModuleReplacementPlugin(),
-        
+        new webpack.optimize.CommonsChunkPlugin('vendor',  'vendor.js'),
          new webpack.ProgressPlugin((percentage, message) => {
               const percent = Math.round(percentage * 100);
               // process.stderr.clearLine();
@@ -26,7 +26,8 @@ module.exports = {
     ],
     //页面入口文件配置
     entry: {
-          app:'./src/main/webapp/static/js/index.js'
+          app:'./src/main/webapp/static/js/index.js',
+           vendor: ['react']
     },
        
     //入口文件输出配置
