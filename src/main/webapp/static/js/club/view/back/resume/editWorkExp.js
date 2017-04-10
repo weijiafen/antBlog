@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin } from 'antd'
+import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin ,Row , Col } from 'antd'
 import backService from '../../../service/backService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
@@ -160,54 +160,59 @@ var editWorkExp=React.createClass({
 				<div>
 					<Spin spinning={this.state.loading}>
 					<header>{this.state.staticTitle}</header>
-					<div className="editItem">
-						<label>标题名称：</label>
-						<Input className="title" value={this.state.title}  onChange={this.changeText}/>
-					</div>
-					<div className="editItem">
-						<label>是否在主页展示：</label>
-						<Switch checked={this.state.isShow} onChange={this.toggleShow}/>
-					</div>
-					<div className="editItem">
-						<label>背景图：</label>
-						<Upload
-					        name="file"
-					        showUploadList={false}
-					        action="/upload"
-					        beforeUpload={beforeUpload}
-					        onChange={this.changeBackground} 
-					      >
-					            
-					            <Button type="primary" size='small' >上传新背景图</Button>
-					      </Upload>
-					      <Button onClick={this.resetBgImage} size="small">
-					    	<Icon type="delete" />
-					    	</Button>
-					    <br/>
-						<img src={this.state.backgroundImg} alt="" className="" />
-					</div>
-					<div className="editItem">
-						<label>数据：</label>
-						<Button type="primary" size="small" onClick={this.addData}>
-							<Icon type="plus"/>
-						</Button>
-						<div>
-							{this.state.data.map(function(item,index){
-								return (
-									<div key={"work"+index} className="dataItem">
-										条目标题：<Input value={item.itemTitle} onChange={_.partial(ctx.changeItemTitle,index)} />
-										条目副标题：<Input value={item.itemDate} onChange={_.partial(ctx.changeItemDate,index)} />
-										条目描述：<Input value={item.itemTxt} type="textarea" autosize={{ minRows: 2, maxRows: 6 }}
-										 onChange={_.partial(ctx.changeItemTxt,index)} />
-										<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
-											<Icon type="delete" />
-										</Button>
-										<br/>
-									</div>
-									)
-							})}
-						</div>
-					</div>
+					<Row>
+						<Col sm={24} md={8}>
+							<div className="editItem">
+								<label>标题名称：</label>
+								<Input className="title" value={this.state.title}  onChange={this.changeText}/>
+							</div>
+							<div className="editItem">
+								<label>是否在主页展示：</label>
+								<Switch checked={this.state.isShow} onChange={this.toggleShow}/>
+							</div>
+							<div className="editItem">
+								<label>背景图：</label>
+								<Upload
+							        name="file"
+							        showUploadList={false}
+							        action="/upload"
+							        beforeUpload={beforeUpload}
+							        onChange={this.changeBackground} 
+							      >
+							            
+							            <Button type="primary" size='small' >上传新背景图</Button>
+							      </Upload>
+							      <Button onClick={this.resetBgImage} size="small">
+							    	<Icon type="delete" />
+							    	</Button>
+							    <br/>
+								<img src={this.state.backgroundImg} alt="" className="" />
+							</div>
+							<div className="editItem">
+								<label>数据：</label>
+								<Button type="primary" size="small" onClick={this.addData}>
+									<Icon type="plus"/>
+								</Button>
+								<div>
+									{this.state.data.map(function(item,index){
+										return (
+											<div key={"work"+index} className="dataItem">
+												条目标题：<Input value={item.itemTitle} onChange={_.partial(ctx.changeItemTitle,index)} />
+												条目副标题：<Input value={item.itemDate} onChange={_.partial(ctx.changeItemDate,index)} />
+												条目描述：<Input value={item.itemTxt} type="textarea" autosize={{ minRows: 2, maxRows: 6 }}
+												 onChange={_.partial(ctx.changeItemTxt,index)} />
+												<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
+													<Icon type="delete" />
+												</Button>
+												<br/>
+											</div>
+											)
+									})}
+								</div>
+							</div>
+						</Col>
+					</Row>
+					
 					<Button type="primary" onClick={this.editWorkExp} >保存</Button>
 					</Spin>
 				</div>

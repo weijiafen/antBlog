@@ -145,10 +145,15 @@ var editSkills=React.createClass({
 				<div>
 				<Spin spinning={this.state.loading}>
 					<header>{this.state.staticTitle}</header>
-					<div className="editItem">
-						<label>标题名称：</label>
-						<Input className="title" value={this.state.title}  onChange={this.changeText}/>
-					</div>
+					<Row>
+						<Col sm={24} md={6}>
+							<div className="editItem">
+								<label>标题名称：</label>
+								<Input className="title" value={this.state.title}  onChange={this.changeText}/>
+							</div>
+						</Col>
+					</Row>
+					
 					<div className="editItem">
 						<label>是否在主页展示：</label>
 						<Switch checked={this.state.isShow} onChange={this.toggleShow}/>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upload, Icon, message , Button, Input , Spin} from 'antd'
+import {Upload, Icon, message , Button, Input , Spin , Row , Col} from 'antd'
 import backService from '../../../service/backService';
 import EditImage from '../component/editImage';
 import ColorPickerComp from '../component/colorPickerComp';
@@ -108,16 +108,21 @@ var editTop=React.createClass({
 					<img src={this.state.img} className="editTopImage"/>
 					
 				</div>
-				<div className="editItem">
-					<label>用户名：</label>
-					<Input type="text" className="userName" value={this.state.userName} onChange={this.changeText}/>
-					
-				</div>
-				<div className="editItem">
-					<label>个性签名：</label>
-					<Input type="text" className="introduce" value={this.state.introduce} onChange={this.changeText}/>
-					
-				</div>
+				<Row>
+					<Col sm={24} md={6}>
+						<div className="editItem">
+							<label>用户名：</label>
+							<Input type="text" className="userName" value={this.state.userName} onChange={this.changeText}/>
+							
+						</div>
+						<div className="editItem">
+							<label>个性签名：</label>
+							<Input type="text" className="introduce" value={this.state.introduce} onChange={this.changeText}/>
+							
+						</div>
+					</Col>
+				</Row>
+				
 				<ColorPickerComp
 					color={this.state.color}
 					callback={this.changeColor}

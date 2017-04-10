@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin } from 'antd'
+import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin , Row , Col  } from 'antd'
 import backService from '../../../service/backService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
@@ -186,18 +186,56 @@ var editLibrary=React.createClass({
 				<div>
 					<Spin spinning={this.state.loading}>
 					<header>{this.state.staticTitle}</header>
-					<div className="editItem">
-						<label>标题名称：</label>
-						<Input className="title" value={this.state.title}  onChange={this.changeText}/>
-					</div>
-					<div className="editItem">
-						<label>是否在主页展示：</label>
-						<Switch checked={this.state.isShow} onChange={this.toggleShow}/>
-					</div>
-					<ColorPickerComp
-						color={this.state.color}
-						callback={this.changeColor}
-					/>
+					<Row>
+						<Col sm={24} md={8}>
+							<div className="editItem">
+								<label>标题名称：</label>
+								<Input className="title" value={this.state.title}  onChange={this.changeText}/>
+							</div>
+							<div className="editItem">
+								<label>是否在主页展示：</label>
+								<Switch checked={this.state.isShow} onChange={this.toggleShow}/>
+							</div>
+							<ColorPickerComp
+								color={this.state.color}
+								callback={this.changeColor}
+							/>
+							<div className="editItem">
+								<label>数据：</label>
+								<Button type="primary" size="small" onClick={this.addData}>
+									<Icon type="plus"/>
+								</Button>
+								<div>
+									{this.state.data.map(function(item,index){
+										return (
+											<div key={"work"+index} className="dataItem">
+												条目标题：<Input value={item.itemTitle} onChange={_.partial(ctx.changeitemTitle,index)} />
+												当前进度：<Input value={item.itemCurrent} placeholder="Number only" onChange={_.partial(ctx.changeitemCurrent,index)} />
+												总进度：<Input value={item.itemSum} onChange={_.partial(ctx.changeitemSum,index)} />
+
+												 条目图片：<img src={item.itemImg} className="itemImage"/>
+												 <Upload
+											        name="file"
+											        showUploadList={false}
+											        action="/upload"
+											        beforeUpload={beforeUpload}
+											        onChange={_.partial(ctx.changeItemImg,index)}
+											      >
+											            
+											            <Button type="primary" size='small' >上传图片</Button>
+											      </Upload>
+												<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
+													<Icon type="delete" />
+												</Button>
+												<br/>
+											</div>
+											)
+									})}
+								</div>
+							</div>
+						</Col>
+					</Row>
+					
 					<div className="editItem">
 						<label>背景图：</label>
 						<Upload
@@ -216,39 +254,7 @@ var editLibrary=React.createClass({
 					    <br/>
 						<img src={this.state.backgroundImg} alt="" className="" />
 					</div>
-					<div className="editItem">
-						<label>数据：</label>
-						<Button type="primary" size="small" onClick={this.addData}>
-							<Icon type="plus"/>
-						</Button>
-						<div>
-							{this.state.data.map(function(item,index){
-								return (
-									<div key={"work"+index} className="dataItem">
-										条目标题：<Input value={item.itemTitle} onChange={_.partial(ctx.changeitemTitle,index)} />
-										当前进度：<Input value={item.itemCurrent} placeholder="Number only" onChange={_.partial(ctx.changeitemCurrent,index)} />
-										总进度：<Input value={item.itemSum} onChange={_.partial(ctx.changeitemSum,index)} />
-
-										 条目图片：<img src={item.itemImg} className="itemImage"/>
-										 <Upload
-									        name="file"
-									        showUploadList={false}
-									        action="/upload"
-									        beforeUpload={beforeUpload}
-									        onChange={_.partial(ctx.changeItemImg,index)}
-									      >
-									            
-									            <Button type="primary" size='small' >上传图片</Button>
-									      </Upload>
-										<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
-											<Icon type="delete" />
-										</Button>
-										<br/>
-									</div>
-									)
-							})}
-						</div>
-					</div>
+					
 					<Button type="primary" onClick={this.editLibrary} >保存</Button>
 					</Spin>
 				</div>

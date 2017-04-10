@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, message , Button, Input  , Modal ,Spin } from 'antd'
+import { Icon, message , Button, Input  , Modal ,Spin ,Row ,Col } from 'antd'
 import backService from '../../../service/backService';
 import _ from 'underscore';
 // import ustr from 'underscore.string';
@@ -150,45 +150,50 @@ var editCategory=React.createClass({
 				<div>
 					<Spin spinning={this.state.loading}>
 					<header>管理分类</header>
-					<div className="editItem">
-						<label>一级菜单：</label>
-						<Button type="primary" size="small" onClick={this.addData}>
-							<Icon type="plus"/>
-						</Button>
-						<div>
-							{this.state.menus.map(function(item,index){
-								return (
-									<div key={"menu"+index} className="dataItem">
-										<Input value={item.menuName} onChange={_.partial(ctx.changeItemTitle,index)} />
-										<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
-											<Icon type="delete" />
-										</Button>
-										<br/>
-										
-										<div style={{padding:'15px 30px'}}>
-											<label>二级菜单：</label>
-											<Button type="primary" size="small" onClick={_.partial(ctx.addItem,index)}>
-												<Icon type="plus"/>
-											</Button>
-											{
-												item.children.map(function(desItem,desIndex){
-													return (
-															<div key={"descriptions"+index+desIndex} className="dataItemDes">
-																<Input value={desItem.categoryName} onChange={_.partial(ctx.changeKey,index,desIndex)} />
-																<Button size="small" onClick={_.partial(ctx.deleteItem,index,desIndex)}>
-																	<Icon type="delete" />
-																</Button>
-															</div>
-														)
-												})
-											}
-										</div>
-										
-									</div>
-									)
-							})}
-						</div>
-					</div>
+					<Row>
+						<Col sm={24} md={8}>
+							<div className="editItem">
+								<label>一级菜单：</label>
+								<Button type="primary" size="small" onClick={this.addData}>
+									<Icon type="plus"/>
+								</Button>
+								<div>
+									{this.state.menus.map(function(item,index){
+										return (
+											<div key={"menu"+index} className="dataItem">
+												<Input value={item.menuName} onChange={_.partial(ctx.changeItemTitle,index)} />
+												<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
+													<Icon type="delete" />
+												</Button>
+												<br/>
+												
+												<div style={{padding:'15px 30px'}}>
+													<label>二级菜单：</label>
+													<Button type="primary" size="small" onClick={_.partial(ctx.addItem,index)}>
+														<Icon type="plus"/>
+													</Button>
+													{
+														item.children.map(function(desItem,desIndex){
+															return (
+																	<div key={"descriptions"+index+desIndex} className="dataItemDes">
+																		<Input value={desItem.categoryName} onChange={_.partial(ctx.changeKey,index,desIndex)} />
+																		<Button size="small" onClick={_.partial(ctx.deleteItem,index,desIndex)}>
+																			<Icon type="delete" />
+																		</Button>
+																	</div>
+																)
+														})
+													}
+												</div>
+												
+											</div>
+											)
+									})}
+								</div>
+							</div>
+						</Col>
+					</Row>
+					
 					<Button type="primary" onClick={this.editCategory} >保存</Button>
 					</Spin>
 				</div>

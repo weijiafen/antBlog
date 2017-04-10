@@ -11,9 +11,9 @@ module.exports = {
         
          new webpack.ProgressPlugin((percentage, message) => {
               const percent = Math.round(percentage * 100);
-              process.stderr.clearLine();
-              process.stderr.cursorTo(0);
-              process.stderr.write(`${percent}% ${message}`);
+              // process.stderr.clearLine();
+              // process.stderr.cursorTo(0);
+              // process.stderr.write(`${percent}% ${message}`);
             }),
          new webpack.optimize.UglifyJsPlugin({
           compress:{

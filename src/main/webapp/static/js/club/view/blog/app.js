@@ -1,7 +1,7 @@
 import React from 'react';
-import { Row , Col} from 'antd';
+import { Row , Col , Layout} from 'antd';
 import Head from './head';
-
+const { Header, Content, Footer, Sider } = Layout;
 var blog=React.createClass({
 	getInitialState(){
 		return {
@@ -31,15 +31,22 @@ var blog=React.createClass({
 				<Row>
 					<Col xs={0} sm={0} md={2} lg={3}></Col>
 					<Col xs={24} sm={24} md={20} lg={18} className="blogBody">
-						<Row>
-							<Col xs={24} sm={24} md={6} lg={6}>
-								<Head userId={this.state.userId} typeId={this.state.typeId} />
-							</Col>
-							<Col xs={24} sm={24} md={18} lg={18}>
-								{this.props.children}
-								
-							</Col>
-						</Row>
+						<Layout>
+							<Sider
+					           breakpoint="md"
+			    				collapsedWidth="0"
+			    				width="300"
+					        >
+					        	<Head userId={this.state.userId} typeId={this.state.typeId} />
+					        </Sider>
+					        <Layout>
+					        	<Content className="">
+					        		{this.props.children}
+					        	</Content>
+					        	
+					        </Layout>
+						</Layout>
+						
 						 
 					</Col>
 					<Col xs={0} sm={0} md={2} lg={3}></Col>

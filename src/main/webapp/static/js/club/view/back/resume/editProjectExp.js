@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin } from 'antd'
+import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin , Row , Col } from 'antd'
 import backService from '../../../service/backService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
@@ -212,72 +212,87 @@ var editProjectExp=React.createClass({
 				<div>
 					<Spin spinning={this.state.loading}>
 					<header>{this.state.staticTitle}</header>
-					<div className="editItem">
-						<label>标题名称：</label>
-						<Input className="title" value={this.state.title}  onChange={this.changeText}/>
-					</div>
-					<div className="editItem">
-						<label>是否在主页展示：</label>
-						<Switch checked={this.state.isShow} onChange={this.toggleShow}/>
-					</div>
-					<div className="editItem">
-						<label>背景图：</label>
-						<Upload
-					        name="file"
-					        showUploadList={false}
-					        action="/upload"
-					        beforeUpload={beforeUpload}
-					        onChange={this.changeBackground} 
-					      >
-					            
-					            <Button type="primary" size='small' >上传新背景图</Button>
-					      </Upload>
-					      <Button onClick={this.resetBgImage} size="small">
-					    	<Icon type="delete" />
-					    	</Button>
-					    <br/>
-						<img src={this.state.backgroundImg} alt="" className="" />
-					</div>
-					<div className="editItem">
-						<label>数据：</label>
-						<Button type="primary" size="small" onClick={this.addData}>
-							<Icon type="plus"/>
-						</Button>
-						<div>
-							{this.state.data.map(function(item,index){
-								return (
-									<div key={"project"+index} className="dataItem">
-										<Input value={item.itemTitle} onChange={_.partial(ctx.changeItemTitle,index)} />
-										<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
-											<Icon type="delete" />
-										</Button>
-										<br/>
-										
-										<div style={{padding:'15px 30px'}}>
-											<label>描述：</label>
-											<Button type="primary" size="small" onClick={_.partial(ctx.addItem,index)}>
-												<Icon type="plus"/>
-											</Button>
-											{
-												item.descriptions.map(function(desItem,desIndex){
-													return (
-															<div key={"descriptions"+index+desIndex} className="dataItemDes">
-																<Input value={desItem.key} onChange={_.partial(ctx.changeKey,index,desIndex)} />
-																<Input value={desItem.value} onChange={_.partial(ctx.changeValue,index,desIndex)}/>
-																<Button size="small" onClick={_.partial(ctx.deleteItem,index,desIndex)}>
-																	<Icon type="delete" />
-																</Button>
-															</div>
-														)
-												})
-											}
-										</div>
-										
-									</div>
-									)
-							})}
-						</div>
-					</div>
+					<Row>
+						<Col sm={24} md={8}>
+							<div className="editItem">
+								<label>标题名称：</label>
+								<Input className="title" value={this.state.title}  onChange={this.changeText}/>
+							</div>
+							<div className="editItem">
+								<label>是否在主页展示：</label>
+								<Switch checked={this.state.isShow} onChange={this.toggleShow}/>
+							</div>
+							<div className="editItem">
+								<label>背景图：</label>
+								<Upload
+							        name="file"
+							        showUploadList={false}
+							        action="/upload"
+							        beforeUpload={beforeUpload}
+							        onChange={this.changeBackground} 
+							      >
+							            
+							            <Button type="primary" size='small' >上传新背景图</Button>
+							      </Upload>
+							      <Button onClick={this.resetBgImage} size="small">
+							    	<Icon type="delete" />
+							    	</Button>
+							    <br/>
+								<img src={this.state.backgroundImg} alt="" className="" />
+							</div>
+							<div className="editItem">
+								<label>数据：</label>
+								<Button type="primary" size="small" onClick={this.addData}>
+									<Icon type="plus"/>
+								</Button>
+								<div>
+									{this.state.data.map(function(item,index){
+										return (
+											<div key={"project"+index} className="dataItem">
+												<Row>
+													<Col sm={22}>
+														<Input value={item.itemTitle} onChange={_.partial(ctx.changeItemTitle,index)} />
+													</Col>
+													<Col sm={2}>
+														<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
+															<Icon type="delete" />
+														</Button>
+													</Col>
+												</Row>
+												<div style={{padding:'15px 30px'}}>
+													<label>描述：</label>
+													<Button type="primary" size="small" onClick={_.partial(ctx.addItem,index)}>
+														<Icon type="plus"/>
+													</Button>
+													{
+														item.descriptions.map(function(desItem,desIndex){
+															return (<Row>
+																	<div key={"descriptions"+index+desIndex} className="dataItemDes">
+																		<Col sm={10}>
+																			<Input value={desItem.key} onChange={_.partial(ctx.changeKey,index,desIndex)} />
+																		</Col>
+																		<Col sm={10}>
+																			<Input value={desItem.value} onChange={_.partial(ctx.changeValue,index,desIndex)}/>
+																		</Col>
+																		<Col sm={4}>
+																			<Button size="small" onClick={_.partial(ctx.deleteItem,index,desIndex)}>
+																				<Icon type="delete" />
+																			</Button>
+																		</Col>
+																	</div>
+																</Row>)
+														})
+													}
+												</div>
+												
+											</div>
+											)
+									})}
+								</div>
+							</div>
+						</Col>
+					</Row>
+					
 					<Button type="primary" onClick={this.editProjectExp} >保存</Button>
 					</Spin>
 				</div>
