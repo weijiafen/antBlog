@@ -2,7 +2,7 @@ import React from 'react';
 require('../../../library/ueditor/ueditor.config.js')
 require('../../../library/ueditor/ueditor.all.min.js')
 require('../../../library/ueditor/lang/zh-cn/zh-cn.js')
-var serverUrl="http://localhost:8080"
+var serverUrl="http://www.yslpartition.com:8080"
 var UEditor = React.createClass({
             displayName: 'UEditor',
             // 设置默认的属性值
