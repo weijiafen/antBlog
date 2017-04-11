@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, message , Button, Input  , Modal ,Spin ,Select , Checkbox  } from 'antd'
-import articalDeTailService from '../../../service/back/articalDeTailService';
+import articalDetailService from '../../../service/back/articalDetailService';
 import _ from 'underscore';
 import UEditor from '../component/ueditor';
 import moment from 'moment';
@@ -39,13 +39,13 @@ var editArtical=React.createClass({
 			})
 			
 		}
-		articalDeTailService.getCategory().then((res)=>{
+		articalDetailService.getCategory().then((res)=>{
 			if(res.status===0){
 				this.setState({
 					menus:res.data.menus
 				},function(){
 					if(id){
-						articalDeTailService.getArticalDetail(id).then((res)=>{
+						articalDetailService.getArticalDetail(id).then((res)=>{
 							if(res.status===0){
 								var menuIndex=findIndex(this.state.menus,res.data.menuId);
 								this.setState({
@@ -101,7 +101,7 @@ var editArtical=React.createClass({
 			message.error("文章标题不能为空！")
 		}else{
 			var articalContent=this.refs.editor.getContent()
-			articalDeTailService.setArticalDetail({
+			articalDetailService.setArticalDetail({
 				id:this.state.id,
 				categoryId:this.state.currentCategory,
 				articalName:this.state.articalName,
