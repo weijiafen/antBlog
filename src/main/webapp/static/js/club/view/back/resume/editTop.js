@@ -1,6 +1,6 @@
 import React from 'react';
 import {Upload, Icon, message , Button, Input , Spin , Row , Col} from 'antd'
-import backService from '../../../service/backService';
+import topService from '../../../service/back/topService';
 import EditImage from '../component/editImage';
 import ColorPickerComp from '../component/colorPickerComp';
 import PubSub from 'pubsub-js';
@@ -30,7 +30,7 @@ var editTop=React.createClass({
 		}
 	},
 	componentDidMount:function(){
-		backService.getTop().then((res)=>{
+		topService.getTop().then((res)=>{
 			this.setState(res.data)
 			this.setState({
 				loading:false
@@ -65,7 +65,7 @@ var editTop=React.createClass({
 		this.setState({
 			loading:true
 		})
-		backService.setTop(this.state).then((res)=>{
+		topService.setTop(this.state).then((res)=>{
 			this.setState({
 				loading:false
 			})

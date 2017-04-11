@@ -1,12 +1,16 @@
 var menus=require('../../modules/blog/menus.js');
 var category=require('../../modules/blog/category.js');
+var fans=require('../../modules/blog/fans.js');
 var User=require('../../modules/resume/user.js');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 
 module.exports=(async (function(req,response){
 	var result={};
+	//博主id
 	var uid=req.query.userId;
+	//游客id,未登录则为undefined
+	var sid=req.session.uid;
 	//建立表联系
 	category.belongsTo(menus);
 	menus.hasMany(category);
@@ -15,12 +19,25 @@ module.exports=(async (function(req,response){
 			id:uid
 		}
 	}))
+	var isFans=false
+	if(sid){
+		var fansData=await(fans.findOne({
+			where:{
+				userId:sid,
+				targetId:uid
+			}
+		}))
+		if(fansData){
+			isFans=true
+		}
+	}
 	result.status=0;
 	result.msg="查询成功";
 	result.data={
 		"name":master.dataValues.userName,
 		"img":master.dataValues.img,
 		"introduce":master.dataValues.introduce,
+		"isFans":isFans,
 		menus:[]
 	};
 	var res=await (menus.findAll({

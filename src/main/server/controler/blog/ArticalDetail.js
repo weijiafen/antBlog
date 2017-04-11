@@ -3,17 +3,15 @@ var agree=require('../../modules/blog/agree');
 var comment=require('../../modules/blog/comment');
 var User=require('../../modules/resume/user');
 var category=require('../../modules/blog/category')
+var notifyFans=require('../../controler/blog/notifyFans')
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 module.exports=(async(function(method,req,res){
 	var result;
-	
 	if(method==="get"){
 		User.hasMany(artical);
 		artical.belongsTo(User);
 		var id=req.query.id
-
-
 		var detail=await(artical.findOne({
 			where:{
 				id:id
@@ -109,6 +107,7 @@ module.exports=(async(function(method,req,res){
 					}
 				}
 			}
+			notifyFans(2,uid,articalName)
 		}else{
 			var nowStamp=new Date().valueOf();
 			var item=await(artical.create({
@@ -131,6 +130,7 @@ module.exports=(async(function(method,req,res){
 					}
 				}
 			}
+			notifyFans(1,uid,articalName)
 		}
 	}
 	else if(method==='delete'){

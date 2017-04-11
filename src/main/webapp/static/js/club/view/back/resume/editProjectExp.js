@@ -1,8 +1,8 @@
 import React from 'react';
 import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin , Row , Col } from 'antd'
-import backService from '../../../service/backService';
-import _ from 'underscore';
-import ustr from 'underscore.string';
+import projectExpService from '../../../service/back/projectExpService';
+import {partial} from 'underscore';
+import {trim} from 'underscore.string';
 function beforeUpload(file) {
 	console.log(file.type)
   const isJPG = file.type === 'image/jpeg';
@@ -32,7 +32,7 @@ var editProjectExp=React.createClass({
 		this.getInitData();
 	},
 	getInitData:function(){
-		backService.getProjectExp().then((res)=>{
+		projectExpService.getProjectExp().then((res)=>{
 			this.setState(res.data)
 			this.setState({
 				staticTitle:res.data.title,
@@ -120,7 +120,7 @@ var editProjectExp=React.createClass({
 			Modal.confirm({
 				title:'删除已保存数据将即刻生效，是否确认删除该条数据？',
 				onOk(){
-					backService.deleteProjectExpItem(ctx.state.data[index].id).then((res)=>{
+					projectExpService.deleteProjectExpItem(ctx.state.data[index].id).then((res)=>{
 						if(res.status===0){
 							var data=ctx.state.data;
 							data.splice(index,1);
@@ -168,7 +168,7 @@ var editProjectExp=React.createClass({
 			Modal.confirm({
 				title:'删除已保存数据将即刻生效，是否确认删除该条数据？',
 				onOk(){
-					backService.deleteProjectExpItemDes(ctx.state.data[index].descriptions[desIndex].id).then((res)=>{
+					projectExpService.deleteProjectExpItemDes(ctx.state.data[index].descriptions[desIndex].id).then((res)=>{
 						if(res.status===0){
 							var data=ctx.state.data;
 							data[index].descriptions.splice(desIndex,1);
@@ -189,14 +189,14 @@ var editProjectExp=React.createClass({
 		})
 	},
 	editProjectExp:function(){
-		if(ustr.trim(this.state.title)===""){
+		if(trim(this.state.title)===""){
 			message.error('标题不能为空！');
 			return ;
 		}else{
 			this.setState({
 				loading:true
 			})
-			backService.setProjectExp(this.state).then((res)=>{
+			projectExpService.setProjectExp(this.state).then((res)=>{
 				this.setState({
 					loading:false
 				})
@@ -251,35 +251,35 @@ var editProjectExp=React.createClass({
 											<div key={"project"+index} className="dataItem">
 												<Row>
 													<Col sm={22}>
-														<Input value={item.itemTitle} onChange={_.partial(ctx.changeItemTitle,index)} />
+														<Input value={item.itemTitle} onChange={partial(ctx.changeItemTitle,index)} />
 													</Col>
 													<Col sm={2}>
-														<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
+														<Button size="small" onClick={partial(ctx.deleteData,index)}>
 															<Icon type="delete" />
 														</Button>
 													</Col>
 												</Row>
 												<div style={{padding:'15px 30px'}}>
 													<label>描述：</label>
-													<Button type="primary" size="small" onClick={_.partial(ctx.addItem,index)}>
+													<Button type="primary" size="small" onClick={partial(ctx.addItem,index)}>
 														<Icon type="plus"/>
 													</Button>
 													{
 														item.descriptions.map(function(desItem,desIndex){
-															return (<Row>
-																	<div key={"descriptions"+index+desIndex} className="dataItemDes">
+															return (<Row  key={"descriptions"+index+desIndex} className="dataItemDes">
+																
 																		<Col sm={10}>
-																			<Input value={desItem.key} onChange={_.partial(ctx.changeKey,index,desIndex)} />
+																			<Input value={desItem.key} onChange={partial(ctx.changeKey,index,desIndex)} />
 																		</Col>
 																		<Col sm={10}>
-																			<Input value={desItem.value} onChange={_.partial(ctx.changeValue,index,desIndex)}/>
+																			<Input value={desItem.value} onChange={partial(ctx.changeValue,index,desIndex)}/>
 																		</Col>
 																		<Col sm={4}>
-																			<Button size="small" onClick={_.partial(ctx.deleteItem,index,desIndex)}>
+																			<Button size="small" onClick={partial(ctx.deleteItem,index,desIndex)}>
 																				<Icon type="delete" />
 																			</Button>
 																		</Col>
-																	</div>
+																	
 																</Row>)
 														})
 													}

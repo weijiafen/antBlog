@@ -1,6 +1,6 @@
 import React from 'react';
 import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin ,Row , Col } from 'antd'
-import backService from '../../../service/backService';
+import competitionService from '../../../service/back/competitionService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
 import ColorPickerComp from '../component/colorPickerComp';
@@ -34,7 +34,7 @@ var editCompetition=React.createClass({
 		this.getInitData();
 	},
 	getInitData:function(){
-		backService.getCompetitions().then((res)=>{
+		competitionService.getCompetitions().then((res)=>{
 			this.setState(res.data)
 			this.setState({
 				staticTitle:res.data.title,
@@ -125,7 +125,7 @@ var editCompetition=React.createClass({
 			Modal.confirm({
 				title:'删除已保存数据将即刻生效，是否确认删除该条数据？',
 				onOk(){
-					backService.deleteCompetitionsItem(ctx.state.data[index].id).then((res)=>{
+					competitionService.deleteCompetitionsItem(ctx.state.data[index].id).then((res)=>{
 						if(res.status===0){
 							var data=ctx.state.data;
 							data.splice(index,1);
@@ -155,7 +155,7 @@ var editCompetition=React.createClass({
 			this.setState({
 				loading:true
 			})
-			backService.setCompetitions(this.state).then((res)=>{
+			competitionService.setCompetitions(this.state).then((res)=>{
 				this.setState({
 					loading:false
 				})

@@ -1,8 +1,8 @@
 import React from 'react';
 import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin ,Select ,Row , Col} from 'antd'
-import backService from '../../../service/backService';
-import _ from 'underscore';
-import ustr from 'underscore.string';
+import skillService from '../../../service/back/skillService';
+import {partial} from 'underscore';
+import {trim} from 'underscore.string';
 import ColorPickerComp from '../component/colorPickerComp';
 function beforeUpload(file) {
 	console.log(file.type)
@@ -34,7 +34,7 @@ var editSkills=React.createClass({
 		this.getInitData();
 	},
 	getInitData:function(){
-		backService.getSkills().then((res)=>{
+		skillService.getSkills().then((res)=>{
 			this.setState(res.data)
 			this.setState({
 				staticTitle:res.data.title,
@@ -122,14 +122,14 @@ var editSkills=React.createClass({
 		})
 	},
 	editSkills:function(){
-		if(ustr.trim(this.state.title)===""){
+		if(trim(this.state.title)===""){
 			message.error('标题不能为空！');
 			return ;
 		}else{
 			this.setState({
 				loading:true
 			})
-			backService.setSkills(this.state).then((res)=>{
+			skillService.setSkills(this.state).then((res)=>{
 				this.getInitData();
 				this.setState({
 					loading:false
@@ -211,9 +211,9 @@ var editSkills=React.createClass({
 										<Row>
 											<Col sm={24} md={10}>
 												<Row>
-													<Col xs={14}><Input value={item.key} onChange={_.partial(ctx.changeKey,index)} /></Col>
+													<Col xs={14}><Input value={item.key} onChange={partial(ctx.changeKey,index)} /></Col>
 													<Col xs={6}>
-														<Select onChange={_.partial(ctx.changeValue,index)} value={item.value} style={{ width: "100%" }}>
+														<Select onChange={partial(ctx.changeValue,index)} value={item.value} style={{ width: "100%" }}>
 															<Select.Option value="1">1</Select.Option>
 															<Select.Option value="2">2</Select.Option>
 															<Select.Option value="3">3</Select.Option>
@@ -222,7 +222,7 @@ var editSkills=React.createClass({
 														</Select>
 													</Col>
 													<Col xs={4}>
-														<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
+														<Button size="small" onClick={partial(ctx.deleteData,index)}>
 															<Icon type="delete" />
 														</Button>
 													</Col>

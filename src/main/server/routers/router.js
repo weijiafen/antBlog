@@ -37,6 +37,7 @@ var getHead=require('../controler/blog/getHead')
 var setAgree=require('../controler/blog/setAgree')
 var getMessageList=require('../controler/blog/getMessageList')
 var email=require('../controler/blog/email')
+var fans=require('../controler/blog/fans')
 var password=require('../controler/password')
 var ueditor = require("ueditor")
 module.exports=function(app){
@@ -76,6 +77,14 @@ module.exports=function(app){
 	//提交邮箱验证码
 	app.post('/emailCaptcha',function(req,res){
 		email('post',req,res);
+	})
+	//关注博主
+	app.post('/blog/fans',function(req,res){
+		fans('post',req,res);
+	})
+	//取消关注博主
+	app.delete('/blog/fans',function(req,res){
+		fans('delete',req,res);
 	})
 	//修改密码
 	app.post('/modifyPassword',function(req,res){

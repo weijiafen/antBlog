@@ -64,6 +64,24 @@ const Service={
             throw error;
         })
     },
+    setFans:(data)=>{
+        return api.post('/blog/fans',{
+            data:data
+        }).then((res)=>{
+            return res
+        },(error)=>{
+            throw error;
+        })
+    },
+    cancelFans:(targetId)=>{
+        return api.delete('/blog/fans',{
+            params:{targetId:targetId}
+        }).then((res)=>{
+            return res
+        },(error)=>{
+            throw error;
+        })
+    },
  
 }
 export default Service;

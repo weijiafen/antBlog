@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, message , Button, Input  , Modal ,Spin ,Row ,Col } from 'antd'
-import backService from '../../../service/backService';
+import categoryService from '../../../service/back/categoryService';
 import _ from 'underscore';
 // import ustr from 'underscore.string';
 var editCategory=React.createClass({
@@ -14,7 +14,7 @@ var editCategory=React.createClass({
 		this.getInitData();
 	},
 	getInitData:function(){
-		backService.getCategory().then((res)=>{
+		categoryService.getCategory().then((res)=>{
 			if(res.status===0){
 				this.setState({menus:res.data.menus})
 			}
@@ -70,7 +70,7 @@ var editCategory=React.createClass({
 			Modal.confirm({
 				title:'删除已保存数据将即刻生效，是否确认删除该条数据？',
 				onOk(){
-					backService.deleteMenu(ctx.state.menus[index].id).then((res)=>{
+					categoryService.deleteMenu(ctx.state.menus[index].id).then((res)=>{
 						if(res.status===0){
 							var menus=ctx.state.menus;
 							menus.splice(index,1);
@@ -116,7 +116,7 @@ var editCategory=React.createClass({
 			Modal.confirm({
 				title:'删除已保存数据将即刻生效，是否确认删除该条数据？',
 				onOk(){
-					backService.deleteCategory(ctx.state.menus[index].children[desIndex].id).then((res)=>{
+					categoryService.deleteCategory(ctx.state.menus[index].children[desIndex].id).then((res)=>{
 						if(res.status===0){
 							var menus=ctx.state.menus;
 							menus[index].children.splice(desIndex,1);
@@ -136,7 +136,7 @@ var editCategory=React.createClass({
 		this.setState({
 			loading:true
 		})
-		backService.setCategory(this.state).then((res)=>{
+		categoryService.setCategory(this.state).then((res)=>{
 			this.setState({
 				loading:false
 			})

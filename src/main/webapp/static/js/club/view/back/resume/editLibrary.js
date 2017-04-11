@@ -1,6 +1,6 @@
 import React from 'react';
 import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin , Row , Col  } from 'antd'
-import backService from '../../../service/backService';
+import libraryService from '../../../service/back/libraryService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
 import ColorPickerComp from '../component/colorPickerComp';
@@ -34,7 +34,7 @@ var editLibrary=React.createClass({
 		this.getInitData();
 	},
 	getInitData:function(){
-		backService.getLibrary().then((res)=>{
+		libraryService.getLibrary().then((res)=>{
 			this.setState(res.data)
 			this.setState({
 				staticTitle:res.data.title,
@@ -135,7 +135,7 @@ var editLibrary=React.createClass({
 			Modal.confirm({
 				title:'删除已保存数据将即刻生效，是否确认删除该条数据？',
 				onOk(){
-					backService.deleteLibraryItem(ctx.state.data[index].id).then((res)=>{
+					libraryService.deleteLibraryItem(ctx.state.data[index].id).then((res)=>{
 						if(res.status===0){
 							var data=ctx.state.data;
 							data.splice(index,1);
@@ -170,7 +170,7 @@ var editLibrary=React.createClass({
 			this.setState({
 				loading:true
 			})
-			backService.setLibrary(this.state).then((res)=>{
+			libraryService.setLibrary(this.state).then((res)=>{
 				this.setState({
 					loading:false
 				})

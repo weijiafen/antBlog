@@ -2,8 +2,8 @@ var express = require('express');
 var app = express();
 
 var router=require('./src/main/server/routers/router.js');
-app.use(express.static('src/main/webapp/build'));
-app.use(express.static('upload'));
+app.use(express.static('src/main/webapp/build',{maxAge:604800}));
+app.use(express.static('upload',{maxAge:604800}));
 router(app);
 
 

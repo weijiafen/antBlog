@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon , Button  , Modal ,Spin , Pagination ,Input   } from 'antd'
-import backService from '../../../service/backService';
+import messageService from '../../../service/back/messageService';
 import blogService from '../../../service/blogService';
 import moment from 'moment';
 import _ from 'underscore'
@@ -17,7 +17,7 @@ var message=React.createClass({
 		}
 	},
 	componentDidMount(){
-		backService.getMessageList({
+		messageService.getMessageList({
 			pageSize:this.state.pageSize,
 			pageNum:this.state.pageNum
 		}).then((res)=>{
@@ -34,7 +34,7 @@ var message=React.createClass({
 			pageNum:current,
 			loading:true
 		},function(){
-			backService.getMessageList({
+			messageService.getMessageList({
 				pageSize:this.state.pageSize,
 				pageNum:this.state.pageNum
 			}).then((res)=>{

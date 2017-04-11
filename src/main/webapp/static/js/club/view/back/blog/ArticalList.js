@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon , Button, Input  , Modal ,Spin ,Select , Table } from 'antd'
-import backService from '../../../service/backService';
+import articalListService from '../../../service/back/articalListService';
 import moment from 'moment';
 import _ from 'underscore'
 import {redirect} from '../../../util/function'
@@ -87,7 +87,7 @@ var ArticalList=React.createClass({
 		}
 	},
 	componentDidMount(){
-		backService.getCategory().then((res)=>{
+		articalListService.getCategory().then((res)=>{
 			if(res.status===0){
 				this.setState({
 					menus:res.data.menus
@@ -152,7 +152,7 @@ var ArticalList=React.createClass({
 	getArticalList(page){
 		var state=this.state;
 		var ctx=this;
-		backService
+		articalListService
 			.getArticalList({
 			menuId:this.state.currentMenu,
             categoryId:this.state.currentCategory,
@@ -182,7 +182,7 @@ var ArticalList=React.createClass({
 	},
 	removeArtical(id){
 		var ctx=this;
-		backService.removeArtical(id).then((res)=>{
+		articalListService.removeArtical(id).then((res)=>{
 			Modal.info({
 				title:res.msg,
 				onCancel:function(){}

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin , Row , Col } from 'antd'
-import backService from '../../../service/backService';
+import infoService from '../../../service/back/infoService';
 import _ from 'underscore';
 import ustr from 'underscore.string';
 function beforeUpload(file) {
@@ -32,7 +32,7 @@ var editInfo=React.createClass({
 		this.getInitData();
 	},
 	getInitData:function(){
-		backService.getPersonalInfo().then((res)=>{
+		infoService.getPersonalInfo().then((res)=>{
 			this.setState(res.data)
 			this.setState({
 				staticTitle:res.data.title,
@@ -121,7 +121,7 @@ var editInfo=React.createClass({
 			this.setState({
 				loading:true
 			})
-			backService.setPersonalInfo(this.state).then((res)=>{
+			infoService.setPersonalInfo(this.state).then((res)=>{
 				this.setState({
 					loading:false
 				})

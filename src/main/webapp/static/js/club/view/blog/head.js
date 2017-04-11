@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row , Col ,Menu} from 'antd';
+import { Row , Col ,Menu , Button , Modal } from 'antd';
 import blogService from '../../service/blogService';
 const SubMenu = Menu.SubMenu;
 var head=React.createClass({
@@ -13,7 +13,8 @@ var head=React.createClass({
 			categoryId:categoryId,
 			menus:[],
 			 openKeys: [],
-			 userId:userId
+			 userId:userId,
+			 isFans:false
 		}
 	},
 	componentWillMount(){
@@ -24,6 +25,7 @@ var head=React.createClass({
 				photo:res.data.img,
 				introduce:res.data.introduce,
 				menus:res.data.menus,
+				isFans:res.data.isFans
 			})
 		})
 	},
@@ -34,21 +36,45 @@ var head=React.createClass({
 			userId:userId,
 			categoryId:categoryId
 		})
-		// blogService.getHead(userId).then((res)=>{
-		// 	this.setState({
-		// 		name:res.name,
-		// 		photo:res.photo,
-		// 		introduce:res.introduce,
-		// 		menus:res.menus,
-		// 	})
-		// })
 	},
 	clickMenu(e){
 		this.setState({
 			categoryId:e.key
 		})
 	},
-	 onOpenChange(openKeys) {
+	setFans(){
+		var ctx=this;
+		blogService.setFans({
+			targetId:this.state.userId
+		})
+		.then((res)=>{
+			if(res.status===0){
+				ctx.setState({
+					isFans:true
+				})
+			}
+			Modal.info({
+				title:res.msg,
+				onCancel:function(){}
+			})
+		})
+	},
+	cancelFans(){
+		var ctx=this;
+		blogService.cancelFans(this.state.userId)
+		.then((res)=>{
+			if(res.status===0){
+				ctx.setState({
+					isFans:false
+				})
+			}
+			Modal.info({
+				title:res.msg,
+				onCancel:function(){}
+			})
+		})
+	},
+	onOpenChange(openKeys) {
     const state = this.state;
     const latestOpenKey = openKeys.find(key => !(state.openKeys.indexOf(key) > -1));
     const latestCloseKey = state.openKeys.find(key => !(openKeys.indexOf(key) > -1));
@@ -64,12 +90,22 @@ var head=React.createClass({
   
 	render:function(){
 		let ctx=this;
+		var fansBtn;
+		if(this.state.isFans){
+			fansBtn=<Button size="small" style={{verticalAlign:"text-bottom",marginLeft:"5px"}} onClick={this.cancelFans}>取消关注</Button>
+		}
+		else{
+			fansBtn=<Button size="small" style={{verticalAlign:"text-bottom",marginLeft:"5px"}} onClick={this.setFans}>关注</Button>
+		}
 		return <section className="blogLeft">
 			<div className="blogInfoContainer">
 				<img src={this.state.photo} />
 				<div className="blogInfo primaryBg">
-					<h2>{this.state.name}</h2>
+					<h2>{this.state.name}
+						{fansBtn}
+					</h2>
 					<p dangerouslySetInnerHTML={{__html:this.state.introduce}}></p>
+
 				</div>
 				
 			</div>

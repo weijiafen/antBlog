@@ -1,7 +1,7 @@
 import React from 'react';
 import {Upload, Icon, message , Button, Input ,Switch , Modal ,Spin ,Row , Col } from 'antd'
-import backService from '../../../service/backService';
-import _ from 'underscore';
+import workExpService from '../../../service/back/workExpService';
+import {partial} from 'underscore';
 import ustr from 'underscore.string';
 function beforeUpload(file) {
 	console.log(file.type)
@@ -32,7 +32,7 @@ var editWorkExp=React.createClass({
 		this.getInitData();
 	},
 	getInitData:function(){
-		backService.getWorkExp().then((res)=>{
+		workExpService.getWorkExp().then((res)=>{
 			this.setState(res.data)
 			this.setState({
 				staticTitle:res.data.title,
@@ -109,7 +109,7 @@ var editWorkExp=React.createClass({
 			Modal.confirm({
 				title:'删除已保存数据将即刻生效，是否确认删除该条数据？',
 				onOk(){
-					backService.deleteWorkExpItem(ctx.state.data[index].id).then((res)=>{
+					workExpService.deleteWorkExpItem(ctx.state.data[index].id).then((res)=>{
 						if(res.status===0){
 							var data=ctx.state.data;
 							data.splice(index,1);
@@ -144,7 +144,7 @@ var editWorkExp=React.createClass({
 			this.setState({
 				loading:true
 			})
-			backService.setWorkExp(this.state).then((res)=>{
+			workExpService.setWorkExp(this.state).then((res)=>{
 				this.setState({
 					loading:false
 				})
@@ -197,11 +197,11 @@ var editWorkExp=React.createClass({
 									{this.state.data.map(function(item,index){
 										return (
 											<div key={"work"+index} className="dataItem">
-												条目标题：<Input value={item.itemTitle} onChange={_.partial(ctx.changeItemTitle,index)} />
-												条目副标题：<Input value={item.itemDate} onChange={_.partial(ctx.changeItemDate,index)} />
+												条目标题：<Input value={item.itemTitle} onChange={partial(ctx.changeItemTitle,index)} />
+												条目副标题：<Input value={item.itemDate} onChange={partial(ctx.changeItemDate,index)} />
 												条目描述：<Input value={item.itemTxt} type="textarea" autosize={{ minRows: 2, maxRows: 6 }}
-												 onChange={_.partial(ctx.changeItemTxt,index)} />
-												<Button size="small" onClick={_.partial(ctx.deleteData,index)}>
+												 onChange={partial(ctx.changeItemTxt,index)} />
+												<Button size="small" onClick={partial(ctx.deleteData,index)}>
 													<Icon type="delete" />
 												</Button>
 												<br/>

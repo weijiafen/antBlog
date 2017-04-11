@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon, message , Button, Input  , Modal ,Spin ,Select } from 'antd'
-import backService from '../../../service/backService';
+import { Icon, message , Button, Input  , Modal ,Spin ,Select , Checkbox  } from 'antd'
+import articalDeTailService from '../../../service/back/articalDeTailService';
 import _ from 'underscore';
 import UEditor from '../component/ueditor';
 import moment from 'moment';
@@ -25,7 +25,8 @@ var editArtical=React.createClass({
 			updateAt:undefined,
 			id:undefined,
 			articalName:'',
-			title:'新增文章'
+			title:'新增文章',
+			notifyFans:true
 		}
 	},
 	componentDidMount(){
@@ -38,13 +39,13 @@ var editArtical=React.createClass({
 			})
 			
 		}
-		backService.getCategory().then((res)=>{
+		articalDeTailService.getCategory().then((res)=>{
 			if(res.status===0){
 				this.setState({
 					menus:res.data.menus
 				},function(){
 					if(id){
-						backService.getArticalDetail(id).then((res)=>{
+						articalDeTailService.getArticalDetail(id).then((res)=>{
 							if(res.status===0){
 								var menuIndex=findIndex(this.state.menus,res.data.menuId);
 								this.setState({
@@ -87,6 +88,11 @@ var editArtical=React.createClass({
 			articalName:e.target.value
 		})
 	},
+	changeNotify(e){
+		this.setState({
+			notifyFans:e.target.checked
+		})
+	},
 	editArtical(){
 		if(this.state.currentCategory===""){
 			message.error("必须选择文章分类")
@@ -95,10 +101,11 @@ var editArtical=React.createClass({
 			message.error("文章标题不能为空！")
 		}else{
 			var articalContent=this.refs.editor.getContent()
-			backService.setArticalDetail({
+			articalDeTailService.setArticalDetail({
 				id:this.state.id,
 				categoryId:this.state.currentCategory,
 				articalName:this.state.articalName,
+				notifyFans:this.state.notifyFans,
 				articalContent:articalContent
 			}).then((res)=>{
 				if(res.status===0){
@@ -149,6 +156,9 @@ var editArtical=React.createClass({
 					<div className="editItem">
 						<label>创建时间：{this.state.createAt?moment(this.state.createAt).format("YYYY-MM-DD HH:mm-ss"):'unknow '}</label>
 						<label>修改时间：{this.state.updateAt?moment(this.state.updateAt).format("YYYY-MM-DD HH:mm-ss"):'unknow '}</label>
+					</div>
+					<div className="editItem">
+						<Checkbox onChange={this.changeNotify} checked={this.state.notifyFans}>向粉丝推送邮箱通知</Checkbox>
 					</div>
 					<div className="editorContainer">
 						<UEditor ref="editor" />
