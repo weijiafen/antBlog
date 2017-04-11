@@ -85,7 +85,7 @@ module.exports=(async(function(method,req,res){
 		var categoryId=req.body.categoryId;
 		var articalName=req.body.articalName;
 		var articalContent=req.body.articalContent;
-		var notifyFans=req.body.notifyFans
+		var isNotifyFans=req.body.notifyFans
 		if(id){
 			var nowStamp=new Date().valueOf();
 			var item=await(artical.update({
@@ -108,7 +108,7 @@ module.exports=(async(function(method,req,res){
 					}
 				}
 			}
-			if(notifyFans){
+			if(isNotifyFans){
 				notifyFans(2,uid,articalName)
 			}
 			
@@ -134,7 +134,7 @@ module.exports=(async(function(method,req,res){
 					}
 				}
 			}
-			if(notifyFans(2,uid,articalName)){
+			if(isNotifyFans){
 				notifyFans(1,uid,articalName)
 			}
 			
