@@ -85,6 +85,7 @@ module.exports=(async(function(method,req,res){
 		var categoryId=req.body.categoryId;
 		var articalName=req.body.articalName;
 		var articalContent=req.body.articalContent;
+		var notifyFans=req.body.notifyFans
 		if(id){
 			var nowStamp=new Date().valueOf();
 			var item=await(artical.update({
@@ -107,7 +108,10 @@ module.exports=(async(function(method,req,res){
 					}
 				}
 			}
-			notifyFans(2,uid,articalName)
+			if(notifyFans){
+				notifyFans(2,uid,articalName)
+			}
+			
 		}else{
 			var nowStamp=new Date().valueOf();
 			var item=await(artical.create({
@@ -130,7 +134,10 @@ module.exports=(async(function(method,req,res){
 					}
 				}
 			}
-			notifyFans(1,uid,articalName)
+			if(notifyFans(2,uid,articalName)){
+				notifyFans(1,uid,articalName)
+			}
+			
 		}
 	}
 	else if(method==='delete'){
