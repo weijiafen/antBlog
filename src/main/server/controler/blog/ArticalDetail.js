@@ -6,6 +6,7 @@ var category=require('../../modules/blog/category')
 var notifyFans=require('../../controler/blog/notifyFans')
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
+var markdown = require('marked');
 module.exports=(async(function(method,req,res){
 	var result;
 	if(method==="get"){
@@ -70,8 +71,13 @@ module.exports=(async(function(method,req,res){
 					updateAt:detail.dataValues.updateAt,
 					author:detail.dataValues.user.dataValues.userName,
 					menuId:categoryData.dataValues.menuId,
-					categoryName:categoryData.dataValues.categoryName
+					categoryName:categoryData.dataValues.categoryName,
+					type:detail.dataValues.type
 				}
+			}
+			//前台请求且是Markdown就转换
+			if(type==1&&detail.dataValues.type==1){
+				result.data.articalContent=markdown(detail.dataValues.articalContent);
 			}
 		}
 		else{
@@ -86,13 +92,15 @@ module.exports=(async(function(method,req,res){
 		var articalName=req.body.articalName;
 		var articalContent=req.body.articalContent;
 		var isNotifyFans=req.body.notifyFans
+		var type=req.body.type
 		if(id){
 			var nowStamp=new Date().valueOf();
 			var item=await(artical.update({
 				categoryId:categoryId,
 				articalName:articalName,
 				articalContent:articalContent,
-				updateAt:nowStamp
+				updateAt:nowStamp,
+				type:type
 			},{
 				where:{
 					userId:uid,
@@ -120,6 +128,7 @@ module.exports=(async(function(method,req,res){
 				articalName:articalName,
 				articalContent:articalContent,
 				reading:0,
+				type:type,
 				createAt:nowStamp,
 				updateAt:nowStamp
 			}))

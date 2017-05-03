@@ -2,6 +2,7 @@ import React from 'react';
 import { Row , Col , Breadcrumb , Icon , Pagination } from 'antd';
 import blogService from '../../service/blogService';
 import moment from 'moment';
+import '../../../../style/markdown.less'
 var content=React.createClass({
 	getInitialState:function(){
 		return {

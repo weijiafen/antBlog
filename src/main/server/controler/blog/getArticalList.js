@@ -6,7 +6,7 @@ var comment=require('../../modules/blog/comment');
 var trimHtml=require('trim-html')
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
-
+var markdown = require('marked');
 module.exports=(async (function(req,response){
 	var result={};
 	var uid;
@@ -112,14 +112,19 @@ module.exports=(async (function(req,response){
 		};
 		for(var item of articalsData){
 			var temp={};
+			let articalContent=item.dataValues.articalContent;
+			if(item.dataValues.type==1){
+				articalContent=markdown(articalContent);
+			}
 			//去除文章正文的Html标签并截取200字
-			var trimmed =trimHtml(item.dataValues.articalContent,{limit:120});
+			var trimmed =trimHtml(articalContent,{limit:120});
 			temp.menuId=item.dataValues.category.dataValues.menuId;
 			temp.categoryName=item.dataValues.category.dataValues.categoryName;
 			temp.categoryId=item.dataValues.category.dataValues.id;
 			temp.id=item.dataValues.id;
 			temp.key=item.dataValues.id;
 			temp.articalName=item.dataValues.articalName;
+			temp.type=item.dataValues.type;
 			temp.articalContent=trimmed.html;
 			temp.reading=item.dataValues.reading;
 			temp.createAt=item.dataValues.createAt;

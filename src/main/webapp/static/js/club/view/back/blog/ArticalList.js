@@ -65,13 +65,13 @@ var ArticalList=React.createClass({
 					key:'operation',
 					title:'操作',
 					dataIndex:'id',
-					render:function(value){
+					render:function(value,row){
 						var obj={
 							children:'',
 							props:{}
 						}
 						obj.children=(<div>
-							<Button onClick={_.partial(ctx.editArtical,value)}>
+							<Button onClick={_.partial(ctx.editArtical,row.type,value)}>
 								<Icon type="edit" />
 							</Button>
 							<Button onClick={_.partial(ctx.removeArtical,value)}>
@@ -174,8 +174,8 @@ var ArticalList=React.createClass({
 				
 			})
 	},
-	editArtical(id){
-		redirect(`/#/back/editArtical/${id}`)
+	editArtical(type,id){
+		redirect(`/#/back/editArtical/${type}/${id}`)
 	},
 	newArtical(){
 		redirect('/#/back/editArtical')
@@ -220,7 +220,13 @@ var ArticalList=React.createClass({
 						<Button type="primary" onClick={this.search}>筛选</Button>
 					</div>
 					<div className="editItem">
-						<Button className="newArticalBtn" type="primary" onClick={this.newArtical}>写文章</Button>
+						<Button className="newArticalBtn" type="primary">
+							<a href="/#/back/editArtical/0">新建普通文章</a>
+						</Button>
+						&nbsp;
+						<Button className="newArticalBtn" type="primary">
+							<a href="/#/back/editArtical/1">新建markdown文章</a>
+						</Button>
 					</div>
 					<Table bordered dataSource={this.state.dataSource} columns={this.state.columns} pagination={ this.paginationConfig() } />
 				</Spin>

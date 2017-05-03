@@ -25,8 +25,10 @@ var editArtical=React.createClass({
 			updateAt:undefined,
 			id:undefined,
 			articalName:'',
+			articalContent:'',
 			title:'新增文章',
-			notifyFans:true
+			notifyFans:false,
+			isMarkdown:!!parseInt(this.props.params.type)
 		}
 	},
 	componentDidMount(){
@@ -52,12 +54,22 @@ var editArtical=React.createClass({
 									articalName:res.data.articalName,
 									createAt:res.data.createAt,
 									updateAt:res.data.updateAt,
+									isMarkdown:!!res.data.type
 								})
 								//模拟切换菜单
 								this.selectMenu(res.data.menuId,{props:{index:menuIndex}});
 								this.selectCategory(res.data.categoryId);
 								setTimeout(function(){
-									ctx.refs.editor.setContent(res.data.articalContent,false)
+									//如果是markdown格式则直接放入articalContent中
+									//否则放入编辑器中
+									if(ctx.state.isMarkdown){
+										ctx.setState({
+											articalContent:res.data.articalContent
+										})
+									}else{
+										ctx.refs.editor.setContent(res.data.articalContent,false)
+									}
+									
 								},0)
 								
 							}
@@ -88,6 +100,11 @@ var editArtical=React.createClass({
 			articalName:e.target.value
 		})
 	},
+	changeArticalContent(e){
+		this.setState({
+			articalContent:e.target.value
+		})
+	},
 	changeNotify(e){
 		this.setState({
 			notifyFans:e.target.checked
@@ -100,13 +117,21 @@ var editArtical=React.createClass({
 		else if(this.state.articalName===""){
 			message.error("文章标题不能为空！")
 		}else{
-			var articalContent=this.refs.editor.getContent()
+			var articalContent;
+			if(this.state.isMarkdown){
+				articalContent=this.state.articalContent
+			}
+			else{
+				articalContent=this.refs.editor.getContent()
+			}
+			
 			articalDetailService.setArticalDetail({
 				id:this.state.id,
 				categoryId:this.state.currentCategory,
 				articalName:this.state.articalName,
 				notifyFans:this.state.notifyFans,
-				articalContent:articalContent
+				articalContent:articalContent,
+				type:Number(this.state.isMarkdown)
 			}).then((res)=>{
 				if(res.status===0){
 					this.setState({
@@ -127,6 +152,12 @@ var editArtical=React.createClass({
 		}
 	},
 	render(){ 
+		var editComponent;
+		if(this.state.isMarkdown){
+			editComponent=<Input onChange={this.changeArticalContent} type="textarea" rows="16" value={this.state.articalContent} style={{fontSize:'16px'}}/>
+		}else{
+			editComponent= <UEditor ref="editor" />
+		}
 		return (
 			<div>
 				<Spin spinning={this.state.loading}>
@@ -158,10 +189,17 @@ var editArtical=React.createClass({
 						<label>修改时间：{this.state.updateAt?moment(this.state.updateAt).format("YYYY-MM-DD HH:mm-ss"):'unknow '}</label>
 					</div>
 					<div className="editItem">
-						<Checkbox onChange={this.changeNotify} checked={this.state.notifyFans}>向粉丝推送邮箱通知</Checkbox>
+						<Checkbox checked={this.state.isMarkdown} disabled>
+							是否使用markdown 
+						</Checkbox>
+					</div>
+					<div className="editItem">
+						<Checkbox onChange={this.changeNotify} checked={this.state.notifyFans}>
+						向粉丝推送邮箱通知
+						</Checkbox>
 					</div>
 					<div className="editorContainer">
-						<UEditor ref="editor" />
+						{editComponent}
 						<div className="editItem">
 							<Button type="primary" onClick={this.editArtical}>
 								保存

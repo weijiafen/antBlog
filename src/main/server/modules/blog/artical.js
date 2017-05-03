@@ -33,6 +33,10 @@ var artical = sequelize.define('artical', {
   userId:{
     type: Sequelize.INTEGER
   },
+  //文档类型，1为markdown；2为html
+  type:{
+    type:Sequelize.INTEGER
+  },
   createAt:{
     type:Sequelize.BIGINT
   },
