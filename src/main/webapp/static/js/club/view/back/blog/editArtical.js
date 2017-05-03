@@ -4,6 +4,8 @@ import articalDetailService from '../../../service/back/articalDetailService';
 import _ from 'underscore';
 import UEditor from '../component/ueditor';
 import moment from 'moment';
+import Markdown from '../../../library/markdown/editor'
+import '../../../../../style/markdown.less'
 function findIndex(arr,id){
 	var index=0;
 	for(var i=0;i<arr.length;i++){
@@ -25,7 +27,6 @@ var editArtical=React.createClass({
 			updateAt:undefined,
 			id:undefined,
 			articalName:'',
-			articalContent:'',
 			title:'新增文章',
 			notifyFans:false,
 			isMarkdown:!!parseInt(this.props.params.type)
@@ -60,12 +61,10 @@ var editArtical=React.createClass({
 								this.selectMenu(res.data.menuId,{props:{index:menuIndex}});
 								this.selectCategory(res.data.categoryId);
 								setTimeout(function(){
-									//如果是markdown格式则直接放入articalContent中
-									//否则放入编辑器中
+									//如果是markdown格式则放入meditor中
+									//否则放入ueditor中
 									if(ctx.state.isMarkdown){
-										ctx.setState({
-											articalContent:res.data.articalContent
-										})
+										ctx.refs.mEditor.setValue(res.data.articalContent)
 									}else{
 										ctx.refs.editor.setContent(res.data.articalContent,false)
 									}
@@ -100,11 +99,6 @@ var editArtical=React.createClass({
 			articalName:e.target.value
 		})
 	},
-	changeArticalContent(e){
-		this.setState({
-			articalContent:e.target.value
-		})
-	},
 	changeNotify(e){
 		this.setState({
 			notifyFans:e.target.checked
@@ -119,7 +113,8 @@ var editArtical=React.createClass({
 		}else{
 			var articalContent;
 			if(this.state.isMarkdown){
-				articalContent=this.state.articalContent
+				articalContent=this.refs.mEditor.getValue()
+				console.log("articalContent",articalContent)
 			}
 			else{
 				articalContent=this.refs.editor.getContent()
@@ -154,7 +149,7 @@ var editArtical=React.createClass({
 	render(){ 
 		var editComponent;
 		if(this.state.isMarkdown){
-			editComponent=<Input onChange={this.changeArticalContent} type="textarea" rows="16" value={this.state.articalContent} style={{fontSize:'16px'}}/>
+			editComponent=<Markdown ref="mEditor" />
 		}else{
 			editComponent= <UEditor ref="editor" />
 		}

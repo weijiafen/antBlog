@@ -1,0 +1,342 @@
+@contentLineHeight: 1.5;
+@toolbarHeight: 43px;
+@editorHeight: 540px;
+@borderColor: #ccc;
+@lightColor: #0081FF;
+
+.editor-title {
+  font-size: 16px;
+}
+
+.md-editor textarea,
+.md-preview,
+.tag-input input {
+  line-height: @contentLineHeight;
+}
+
+/* Style for Editor */
+.md-panel {
+  display: block;
+  position: relative;
+  margin-top: 40px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 14px;
+  overflow: hidden;
+
+  &.fullscreen {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    z-index: 500;
+
+    .md-editor {
+      height: 100%;
+    }
+  }
+
+  &.disabled {
+    textarea { cursor: default; }
+    .tb-btn a {
+      cursor: default;
+
+      &:hover {
+        color: #aaa;
+        background-color: #fff;
+      }
+      &:active {
+        box-shadow: none;
+      }
+    }
+  }
+}
+.md-menubar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: @toolbarHeight;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 0 1px #ccc;
+  z-index: 10;
+  background-color: #fff;
+}
+.md-toolbar, .md-modebar {
+  margin: 0;
+}
+
+.md-toolbar {
+  padding: 0 5px;
+  background-color: #fff;
+}
+.md-modebar .tb-btn { float: right; }
+.tb-btn, .tb-func-btn {
+  float: left;
+  font-size: 14px;
+  list-style: none;
+  margin: 0 2px;
+
+  &.spliter {
+    border-left: 1px solid @borderColor;
+    margin: 6px 2px;
+    height: 24px;
+  }
+
+  a {
+    display: inline-block;
+    position: relative;
+    width: 36px;
+    height: 36px;
+    text-align: center;
+    padding: 9px 0;
+    cursor: pointer;
+    color: #aaa;
+
+    &:hover, &.active {
+      color: @lightColor;
+      background-color: #eee;
+    }
+    &:active {
+      box-shadow: inset 0 1px 5px rgba(0,0,0,0.2);
+    }
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  .badge {
+    position: absolute;
+    padding: 1px 5px;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+.md-editor {
+  width: 50%;
+  height: auto;
+  transition: width .3s;
+  background-color: #fff;
+
+  &.expand { width: 100%; }
+
+  textarea {
+    display: block;
+    border-style: none;
+    resize: none;
+    outline: 0;
+    height: 100%;
+    min-height: @editorHeight;
+    width: 100%;
+    // margin-top: ;
+    padding: (@toolbarHeight + 10px) 15px 0 15px;
+  }
+}
+.md-preview {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  padding: 45px 20px 20px 20px;
+  border-left: 1px solid @borderColor;
+  overflow: auto;
+  transition: left .3s, width .3s;
+
+  &.expand {
+    left: 0;
+    width: 100%;
+    border-left-style: none;
+    background-color: #fff;
+  }
+  &.shrink {
+    left: 100%;
+    width: 0;
+  }
+}
+.md-spliter {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: @toolbarHeight;
+  border-left: 1px solid #ccc;
+  z-index: 105;
+}
+.md-btngroup {
+  margin-top: 20px;
+
+  .help-text {
+    margin-left: 15px;
+  }
+}
+
+
+
+#editor {
+    padding-bottom: 20px;
+    width: 100%;
+    max-width: 1600px
+}
+
+.editor-title {
+    font-size: 18px
+}
+
+.editor-title .textbox,.md-editor textarea,.md-preview,.tag-input input {
+    line-height: 1.5
+}
+
+.tag {
+    display: inline-block;
+    padding: 3px 8px;
+    margin-right: 5px;
+    color: #4682b4;
+    background-color: #add8e6;
+    border-radius: 3px;
+    font-size: .8em;
+    font-weight: 300
+}
+
+.tag-input {
+    position: relative;
+    margin: 20px 0;
+    cursor: text;
+    background-color: #fff
+}
+
+.tag-input input {
+    border: none;
+    padding: 2px 0;
+    margin-left: 3px;
+    font-size: .8em
+}
+
+.md-menubar,.md-resizer {
+    border-bottom: 1px solid #ccc
+}
+
+.tag-input .hidden {
+    position: absolute;
+    opacity: 0;
+    left: 0
+}
+
+.md-panel {
+    display: block;
+    position: relative;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+    overflow: hidden
+}
+
+.md-menubar,.md-panel.fullscreen,.md-preview {
+    top: 0;
+    position: absolute
+}
+
+.md-panel.fullscreen {
+    bottom: 0;
+    left: 0;
+    right: 0
+}
+
+.md-panel.fullscreen .md-editor {
+    height: 95.5%
+}
+
+
+.md-modebar,.md-toolbar {
+    margin: 0
+}
+
+.md-toolbar {
+    padding: 0 5px;
+    background-color: #fff
+}
+
+.tb-btn {
+    float: left;
+    font-size: 16px;
+    color: #aaa;
+    list-style: none;
+    margin: 0 2px
+}
+
+.tb-btn.spliter {
+    border-left: 1px solid #ccc;
+    margin: 6px 2px;
+    height: 24px
+}
+
+.tb-btn a {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    padding: 9px 0;
+    cursor: pointer
+}
+
+.tb-btn a.active,.tb-btn a:hover {
+    color: #0081FF;
+    background-color: #eee
+}
+
+.tb-btn a:active {
+    box-shadow: inset 0 1px 5px rgba(0,0,0,.075)
+}
+
+.md-editor {
+    width: 50%;
+    height: auto;
+    -webkit-transition: width .3s;
+    transition: width .3s;
+    background-color: #fff
+}
+
+
+
+.md-editor textarea {
+    border-style: none;
+    resize: none;
+    outline: 0;
+    height: 100%;
+    min-height: 540px;
+    width: 100%;
+    margin-top: 37px;
+    padding: 10px 15px 0
+}
+
+
+.md-resizer,.md-spliter {
+    position: absolute;
+    left: 50%
+}
+
+.md-spliter {
+    top: 0;
+    height: 37px;
+    border-left: 1px solid #ccc;
+    z-index: 105
+}
+
+.md-resizer {
+    width: 50px;
+    height: 4px;
+    margin-left: -25px;
+    bottom: -7px;
+    border-top: 1px solid #ccc;
+    cursor: row-resize
+}
+
+.md-btngroup {
+    margin-top: 20px
+}
+
+.md-btngroup .help-text {
+    margin-left: 15px
+}
